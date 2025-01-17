@@ -9,6 +9,8 @@ namespace Infrastructure.DbConfigurations
         public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+            builder.HasOne(x => x.Order).WithMany().HasForeignKey(x => x.OrderId);
             builder.HasOne(x => x.MenuItem).WithMany().HasForeignKey(x => x.MenuItemId);
         }
     }

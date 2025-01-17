@@ -10,6 +10,7 @@ namespace Infrastructure.DbConfigurations
         public void Configure(EntityTypeBuilder<Contact> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasIndex(x => x.FirstName);
             builder.HasIndex(x => x.LastName);
             builder.HasIndex(x => x.PassportSeries);

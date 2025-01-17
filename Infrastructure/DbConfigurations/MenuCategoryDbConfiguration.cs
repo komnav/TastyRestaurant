@@ -9,6 +9,7 @@ namespace Infrastructure.DbConfigurations
         public void Configure(EntityTypeBuilder<MenuCategory> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
             builder.HasIndex(x => x.Name);
         }
     }

@@ -6,11 +6,11 @@ namespace Domain.Entities
     {
         public int Id { get; set; }
         public int TableId { get; set; }
-        public required Table Table { get; set; }
+        public Table? Table { get; set; }
         public int CustomerId { get; set; }
-        public required Customer Customer { get; set; }
-        public required DateTime From { get; set; }
-        public required DateTime To { get; set; }
+        public Customer? Customer { get; set; }
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
         public string? Notes { get; set; }
         public ReservationStatus Status { get; set; }
     }

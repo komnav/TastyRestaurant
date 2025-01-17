@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.DbConfigurations
 {
-    public class OrderDbConfiguration : IEntityTypeConfiguration<Order>
+    public class CutomerDbConfiduration : IEntityTypeConfiguration<Customer>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<Customer> builder)
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.HasOne(x => x.Table).WithMany().HasForeignKey(x => x.TableId);
+            builder.HasOne(x => x.Contact).WithMany().HasForeignKey(x => x.ContactId);
         }
     }
 }
