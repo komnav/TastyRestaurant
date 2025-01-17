@@ -18,6 +18,12 @@ namespace Infrastructure.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteByCategoryAsync(int categoryId)
+        {
+            await _dbContext.MenuItems.Where(x => x.CategoryId == categoryId).ExecuteDeleteAsync();
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<MenuItem> GetAsync(int id)
         {
             return await _dbContext.MenuItems.SingleAsync(x => x.Id.Equals(id));
@@ -33,6 +39,14 @@ namespace Infrastructure.Repositories
                 .SetProperty(x => x.CategoryId, item.CategoryId)
                 .SetProperty(x => x.Name, item.Name)
                 .SetProperty(x => x.Status, item.Status));
+        }
+
+        public async Task UpdateByCategoryAsync(int categoryId)
+        {
+            await _dbContext.MenuItems
+                .Where(x => x.CategoryId == categoryId)
+                .ExecuteUpdateAsync(x => x
+                .SetProperty(x => x.CategoryId, categoryId));
         }
     }
 }

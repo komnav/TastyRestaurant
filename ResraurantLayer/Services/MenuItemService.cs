@@ -11,9 +11,19 @@ namespace ResraurantLayer.Services
             await _menuItemRepository.CreateAsync(menuItem);
         }
 
+        public async Task UpdateByCategoryAsync(int categoryId)
+        {
+            await _menuItemRepository.UpdateByCategoryAsync(categoryId);
+        }
+
         public async Task DeleteAsync(int id)
         {
             await _menuItemRepository.DeleteAsync(id);
+        }
+
+        public async Task DeleteByCategoryAsync(int categoryId)
+        {
+            await _menuItemRepository.UpdateByCategoryAsync(categoryId);
         }
 
         public async Task<MenuItem> GetAsync(int id)
