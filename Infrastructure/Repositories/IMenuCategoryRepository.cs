@@ -4,9 +4,9 @@ namespace Infrastructure.Repositories
 {
     public interface IMenuCategoryRepository
     {
-        public Task CreateAsync(MenuCategory menuCategory);
-        public Task DeleteAsync(int id);
-        public Task UpdateAsync(int id, MenuCategory menuCategory);
-        public Task<MenuCategory> GetAsync(int id);
+         Task<MenuCategory> CreateAsync(MenuCategory menuCategory);
+         Task<int> DeleteAsync(int id);
+         Task<MenuCategory> UpdateAsync(int id, MenuCategory menuCategory);
+         Task<MenuCategory> GetAsync(int id);
     }
 }

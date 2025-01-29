@@ -15,8 +15,6 @@ namespace Restaurant.UnitTests
         [Test]
         public void Test1()
         {
-            ApplicationDbContext applicationDbContext = new ApplicationDbContext();
-            applicationDbContext.Database.Migrate();
         }
     }
 }

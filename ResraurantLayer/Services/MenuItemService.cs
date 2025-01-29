@@ -6,24 +6,14 @@ namespace ResraurantLayer.Services
     public class MenuItemService(MenuItemRepository menuItemRepository) : IMenuItemService
     {
         private readonly MenuItemRepository _menuItemRepository = menuItemRepository;
-        public async Task CreateAsync(MenuItem menuItem)
+        public async Task<MenuItem> CreateAsync(MenuItem menuItem)
         {
             await _menuItemRepository.CreateAsync(menuItem);
+            return menuItem;
         }
-
-        public async Task UpdateByCategoryAsync(int categoryId)
+        public async Task<int> DeleteAsync(int id)
         {
-            await _menuItemRepository.UpdateByCategoryAsync(categoryId);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            await _menuItemRepository.DeleteAsync(id);
-        }
-
-        public async Task DeleteByCategoryAsync(int categoryId)
-        {
-            await _menuItemRepository.UpdateByCategoryAsync(categoryId);
+            return await _menuItemRepository.DeleteAsync(id);
         }
 
         public async Task<MenuItem> GetAsync(int id)
@@ -31,9 +21,9 @@ namespace ResraurantLayer.Services
             return await _menuItemRepository.GetAsync(id);
         }
 
-        public async Task UpdateAsync(int id, MenuItem menuItem)
+        public async Task<MenuItem> UpdateAsync(int id, MenuItem menuItem)
         {
-            await _menuItemRepository.UpdateAsync(id, menuItem);
+            return await _menuItemRepository.UpdateAsync(id, menuItem);
         }
     }
 }

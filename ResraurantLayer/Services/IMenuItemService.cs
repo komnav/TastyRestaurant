@@ -4,11 +4,9 @@ namespace ResraurantLayer.Services
 {
     public interface IMenuItemService
     {
-        public Task CreateAsync(MenuItem menuItem);
-        public Task UpdateByCategoryAsync(int categoryId);
-        public Task DeleteAsync(int id);
-        public Task DeleteByCategoryAsync(int categoryId);
-        public Task UpdateAsync(int id, MenuItem menuItem);
-        public Task<MenuItem> GetAsync(int id);
+        Task<MenuItem> CreateAsync(MenuItem menuItem);
+        Task<int> DeleteAsync(int id);
+        Task<MenuItem> UpdateAsync(int id, MenuItem menuItem);
+        Task<MenuItem> GetAsync(int id);
     }
 }
