@@ -1,17 +1,24 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using ResraurantLayer.Dtos;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Text;
 using System.Text.Json;
+
 
 namespace Restaurant.WebApi.Middleware
 {
-    public class ExceptionHandlermiddleware
+    public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly IWebHostEnvironment _environment;
+        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
-        public ExceptionHandlermiddleware(RequestDelegate next)
+        public ExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger)
         {
             _next = next;
+            _environment = environment;
+            _logger = logger;
         }
 
 
@@ -30,39 +37,40 @@ namespace Restaurant.WebApi.Middleware
         private async Task HandlerExceptionAsync(HttpContext context, Exception exception)
         {
             var code = HttpStatusCode.InternalServerError;
-            var message = "An error has occurred.";
+            var message = _environment.IsProduction() ? "Internal server error" : GetMessageDetails(exception);
 
-            switch (exception)
-            {
-                case KeyNotFoundException:
-                    code = HttpStatusCode.NotFound;
-                    message = JsonSerializer.Serialize("Resource not found.");
-                    break;
-
-                case ValidationException validationException:
-                    code = HttpStatusCode.BadRequest;
-                    message = JsonSerializer.Serialize(validationException.Message);
-                    break;
-
-                case InvalidOperationException:
-                    code = HttpStatusCode.BadRequest;
-                    message = JsonSerializer.Serialize(exception.Message);
-                    break;
-
-            }
             if (exception.InnerException is Npgsql.PostgresException pgException)
             {
                 if (pgException.SqlState == "23505")
                 {
-                    code = HttpStatusCode.BadRequest;
-                    message = JsonSerializer.Serialize("A record with this value already exists.");
+                    code = HttpStatusCode.Conflict;
+                    message = "Duplicate data was added.";
                 }
             }
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
 
-            await context.Response.WriteAsync(message);
+            var errorResponse = new ErrorResponseModel((int)code, message);
+            await context.Response.WriteAsJsonAsync(errorResponse);
+
+            if (code == HttpStatusCode.InternalServerError)
+            {
+                _logger.LogError(exception, message);
+            }
+        }
+
+        string GetMessageDetails(Exception? exception)
+        {
+            StringBuilder messageBuilder = new StringBuilder();
+
+            while (exception != null)
+            {
+                messageBuilder.AppendLine(exception.Message);
+                exception = exception.InnerException;
+            }
+
+            return messageBuilder.ToString();
         }
     }
 }

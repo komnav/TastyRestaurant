@@ -2,6 +2,7 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using ResraurantLayer.Services;
+using Restaurant.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,6 @@ using var scope = scopeFactory.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 dbContext.Database.Migrate();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -33,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseAuthorization();
 

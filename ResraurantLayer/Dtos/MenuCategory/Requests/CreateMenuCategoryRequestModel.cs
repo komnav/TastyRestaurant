@@ -1,3 +1,5 @@
-﻿namespace ResraurantLayer.Dtos.MenuCategory.Requests;
+﻿using System.ComponentModel.DataAnnotations;
 
-public record CreateMenuCategoryRequestModel(string Name);
+namespace ResraurantLayer.Dtos.MenuCategory.Requests;
+
+public record CreateMenuCategoryRequestModel([Required]string Name);
