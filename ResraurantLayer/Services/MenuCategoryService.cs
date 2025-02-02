@@ -1,34 +1,48 @@
 ﻿using Domain.Entities;
-using Infrastructure;
+using Infrastructure.Repositories;
+using ResraurantLayer.Dtos.MenuCategory.Responses;
+using ResraurantLayer.Exceptions;
 
 namespace ResraurantLayer.Services
 {
-    public class MenuCategoryService(MenuCategoryService menuCategory) : IMenuCategoryService
+    public class MenuCategoryService(IMenuCategoryRepository menuCategoryRepository) : IMenuCategoryService
     {
-        private readonly IMenuCategoryService _menuCategory = menuCategory;
-        public async Task<MenuCategory> CreateAsync(MenuCategory menuCategory)
+        private readonly IMenuCategoryRepository _menuCategoryRepository = menuCategoryRepository;
+        public async Task<CreateMenuCategoryResponseModel> CreateAsync(string name)
         {
-            return await _menuCategory.CreateAsync(menuCategory);
+            var menuCategory = new MenuCategory
+            {
+                Name = name
+            };
+
+
+            var rows = await _menuCategoryRepository.CreateAsync(menuCategory);
+            if (rows <= 0)
+            {
+                throw new ResourceWasNotCreatedException(nameof(menuCategory), name);
+            }
+
+            return new CreateMenuCategoryResponseModel(menuCategory.Id, menuCategory.Name);
         }
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _menuCategory.DeleteAsync(id);
+            return await _menuCategoryRepository.DeleteAsync(id);
         }
 
         public Task<List<MenuCategory>> GetAllAsync()
         {
-            return _menuCategory.GetAllAsync();
+            return _menuCategoryRepository.GetAllAsync();
         }
 
-        public async Task<MenuCategory> GetAsync(int id)
+        public async Task<MenuCategory?> GetAsync(int id)
         {
-            return await _menuCategory.GetAsync(id);
+            return await _menuCategoryRepository.GetAsync(id);
         }
 
         public async Task<MenuCategory> UpdateAsync(int id, MenuCategory menuCategory)
         {
-            return await _menuCategory.UpdateAsync(id, menuCategory);
+            return await _menuCategoryRepository.UpdateAsync(id, menuCategory);
         }
     }
 }

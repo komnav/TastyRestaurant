@@ -6,23 +6,39 @@ namespace Infrastructure.Repositories
     public class MenuCategoryRepository(ApplicationDbContext dbContext) : IMenuCategoryRepository
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
-        public async Task<MenuCategory> CreateAsync(MenuCategory menuCategory)
+        public async Task<int> CreateAsync(MenuCategory menuCategory)
         {
             await _dbContext.MenuCategories.AddAsync(menuCategory);
-            await _dbContext.SaveChangesAsync();
-            return menuCategory;
+            return await _dbContext.SaveChangesAsync();
         }
 
         public async Task<int> DeleteAsync(int id)
         {
-            await _dbContext.MenuCategories.Where(x => x.Id == id).ExecuteDeleteAsync();
+            await _dbContext.MenuCategories
+                .Where(x => x.Id == id)
+                .ExecuteDeleteAsync();
+
             await _dbContext.SaveChangesAsync();
             return id;
         }
 
-        public async Task<MenuCategory> GetAsync(int id)
+        public async Task<List<MenuCategory>> GetAllAsync()
         {
-            return await _dbContext.MenuCategories.SingleAsync(x => x.Id.Equals(id));
+            return await _dbContext.MenuCategories.ToListAsync();
+        }
+
+        public async Task<MenuCategory?> GetAsync(int id)
+        {
+            return await _dbContext.MenuCategories
+                .FirstOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public async Task<List<MenuCategory>> GetByCategories(int parentId)
+        {
+            var categories = await _dbContext.MenuCategories
+                .Where(x => x.ParentId == parentId)
+                .ToListAsync();
+            return categories;
         }
 
         public async Task<MenuCategory> UpdateAsync(int id, MenuCategory menuCategory)

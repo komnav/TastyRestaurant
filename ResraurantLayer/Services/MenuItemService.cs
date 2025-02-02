@@ -3,9 +3,9 @@ using Infrastructure.Repositories;
 
 namespace ResraurantLayer.Services
 {
-    public class MenuItemService(MenuItemRepository menuItemRepository) : IMenuItemService
+    public class MenuItemService(IMenuItemRepository menuItemRepository) : IMenuItemService
     {
-        private readonly MenuItemRepository _menuItemRepository = menuItemRepository;
+        private readonly IMenuItemRepository _menuItemRepository = menuItemRepository;
         public async Task<MenuItem> CreateAsync(MenuItem menuItem)
         {
             await _menuItemRepository.CreateAsync(menuItem);
@@ -14,6 +14,11 @@ namespace ResraurantLayer.Services
         public async Task<int> DeleteAsync(int id)
         {
             return await _menuItemRepository.DeleteAsync(id);
+        }
+
+        public async Task<List<MenuItem>> GetAll()
+        {
+            return await _menuItemRepository.GetAllAsync();
         }
 
         public async Task<MenuItem> GetAsync(int id)

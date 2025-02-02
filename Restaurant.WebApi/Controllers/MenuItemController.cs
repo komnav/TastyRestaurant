@@ -5,6 +5,7 @@ using ResraurantLayer.Services;
 namespace Restaurant.WebApi.Controllers
 {
     [ApiController]
+    [Route("MenuItem")]
     public class MenuItemController(IMenuItemService menuItemService) : ControllerBase
     {
         private readonly IMenuItemService _menuItemService = menuItemService;
@@ -16,6 +17,7 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpDelete]
+        [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _menuItemService.DeleteAsync(id);
@@ -30,9 +32,16 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("{id}")]
         public async Task<MenuItem> Get([FromRoute] int id)
         {
             return await _menuItemService.GetAsync(id);
+        }
+
+        [HttpGet]
+        public async Task<List<MenuItem>> GetAll()
+        {
+            return await _menuItemService.GetAll();
         }
     }
 }
