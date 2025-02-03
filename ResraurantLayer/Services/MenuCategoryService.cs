@@ -38,7 +38,11 @@ namespace ResraurantLayer.Services
         {
             var menuCategory = await _menuCategoryRepository.GetAllAsync();
 
-            return menuCategory != null ? new List<GetMenuCategoryResponseModel>() : new();
+            return menuCategory.Select(menuCategory => new GetMenuCategoryResponseModel(
+                menuCategory.Id,
+                menuCategory.Name,
+                menuCategory.ParentId
+                )).ToList();
         }
 
         public async Task<GetMenuCategoryResponseModel?> GetAsync(int id)

@@ -28,8 +28,8 @@ namespace Restaurant.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPut]
-        public async Task<UpdateResponseModel> Update([FromRoute] int id, [FromBody] UpdateMenuCategoryRequestModel request)
+        [HttpPut("{id}")]
+        public async Task<UpdateResponseModel> Update( int id, [FromBody] UpdateMenuCategoryRequestModel request)
         {
             var updateCategory = await _menuCategoryService.UpdateAsync(id, request);
             return updateCategory;
@@ -37,13 +37,13 @@ namespace Restaurant.WebApi.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<MenuCategory?> Get([FromRoute] int id)
+        public async Task<GetMenuCategoryResponseModel?> Get([FromRoute] int id)
         {
             return await _menuCategoryService.GetAsync(id);
         }
 
         [HttpGet]
-        public async Task<List<MenuCategory>> GetAll()
+        public async Task<List<GetMenuCategoryResponseModel>> GetAll()
         {
             return await _menuCategoryService.GetAllAsync();
         }

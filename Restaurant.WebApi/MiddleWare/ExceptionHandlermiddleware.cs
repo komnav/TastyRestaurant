@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using ResraurantLayer.Dtos;
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text;
-using System.Text.Json;
 
 
 namespace Restaurant.WebApi.Middleware
@@ -39,13 +38,10 @@ namespace Restaurant.WebApi.Middleware
             var code = HttpStatusCode.InternalServerError;
             var message = _environment.IsProduction() ? "Internal server error" : GetMessageDetails(exception);
 
-            if (exception.InnerException is Npgsql.PostgresException pgException)
+            if (IsPostgresDuplicateException(exception))
             {
-                if (pgException.SqlState == "23505")
-                {
-                    code = HttpStatusCode.Conflict;
-                    message = "Duplicate data was added.";
-                }
+                code = HttpStatusCode.Conflict;
+                message = "Duplicate data was added.";
             }
 
             context.Response.ContentType = "application/json";
@@ -58,6 +54,20 @@ namespace Restaurant.WebApi.Middleware
             {
                 _logger.LogError(exception, message);
             }
+        }
+
+        bool IsPostgresDuplicateException(Exception? exception)
+        {
+            while (exception != null)
+            {
+                if (exception is PostgresException postgresException && postgresException.SqlState == PostgresErrorCodes.UniqueViolation)
+                {
+                    return true;
+                }
+
+                exception = exception.InnerException;
+            }
+            return false;
         }
 
         string GetMessageDetails(Exception? exception)

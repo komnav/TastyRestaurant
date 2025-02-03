@@ -14,12 +14,9 @@ namespace Infrastructure.Repositories
 
         public async Task<int> DeleteAsync(int id)
         {
-            await _dbContext.MenuCategories
-                .Where(x => x.Id == id)
-                .ExecuteDeleteAsync();
-
-            await _dbContext.SaveChangesAsync();
-            return id;
+            return await _dbContext.MenuCategories
+                 .Where(x => x.Id == id)
+                 .ExecuteDeleteAsync();
         }
 
         public async Task<List<MenuCategory>> GetAllAsync()
@@ -33,22 +30,13 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<List<MenuCategory>> GetByCategories(int parentId)
-        {
-            var categories = await _dbContext.MenuCategories
-                .Where(x => x.ParentId == parentId)
-                .ToListAsync();
-            return categories;
-        }
-
         public async Task<int> UpdateAsync(int id, string name, int? parentId)
         {
-            await _dbContext.MenuCategories
-                .Where(x => x.Id == id)
-                .ExecuteUpdateAsync(s => s
-                .SetProperty(x => x.ParentId, parentId)
-                .SetProperty(x => x.Name, name));
-            return await _dbContext.SaveChangesAsync();
+            return await _dbContext.MenuCategories
+                   .Where(x => x.Id == id)
+                   .ExecuteUpdateAsync(s => s
+                   .SetProperty(x => x.ParentId, parentId)
+                   .SetProperty(x => x.Name, name));
         }
     }
 }
