@@ -41,13 +41,13 @@ namespace Infrastructure.Repositories
             return categories;
         }
 
-        public async Task<int> UpdateAsync(int id, MenuCategory menuCategory)
+        public async Task<int> UpdateAsync(int id, string name, int? parentId)
         {
             await _dbContext.MenuCategories
                 .Where(x => x.Id == id)
                 .ExecuteUpdateAsync(s => s
-                .SetProperty(x => x.ParentId, menuCategory.ParentId)
-                .SetProperty(x => x.Name, menuCategory.Name));
+                .SetProperty(x => x.ParentId, parentId)
+                .SetProperty(x => x.Name, name));
             return await _dbContext.SaveChangesAsync();
         }
     }

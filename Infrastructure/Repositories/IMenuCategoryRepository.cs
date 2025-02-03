@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories
     {
         Task<int> CreateAsync(MenuCategory menuCategory);
         Task<int> DeleteAsync(int id);
-        Task<int> UpdateAsync(int id, MenuCategory menuCategory);
+        Task<int> UpdateAsync(int id, string name, int? parentId);
         Task<MenuCategory?> GetAsync(int id);
         Task<List<MenuCategory>> GetByCategories(int parentId);
         Task<List<MenuCategory>> GetAllAsync();
