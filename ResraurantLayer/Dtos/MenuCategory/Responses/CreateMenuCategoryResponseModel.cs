@@ -1,4 +1,4 @@
-﻿namespace ResraurantLayer.Dtos.MenuCategory.Responses;
+﻿namespace RestaurantLayer.Dtos.MenuCategory.Responses;
 
 public record CreateMenuCategoryResponseModel(
     int Id,

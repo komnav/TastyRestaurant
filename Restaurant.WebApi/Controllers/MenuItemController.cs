@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using ResraurantLayer.Services;
+using RestaurantLayer.Services;
 
 namespace Restaurant.WebApi.Controllers
 {

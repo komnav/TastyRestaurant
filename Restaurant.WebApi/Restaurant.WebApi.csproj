@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
-    <ProjectReference Include="..\ResraurantLayer\ResraurantLayer.csproj" />
+    <ProjectReference Include="..\ResraurantLayer\RestaurantLayer.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using ResraurantLayer.Dtos.MenuCategory.Requests;
-using ResraurantLayer.Dtos.MenuCategory.Responses;
 using ResraurantLayer.Services;
+using RestaurantLayer.Dtos.MenuCategory.Requests;
+using RestaurantLayer.Dtos.MenuCategory.Responses;
 
 namespace Restaurant.WebApi.Controllers
 {
@@ -28,9 +28,16 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<MenuCategory> Update([FromRoute] int id, [FromBody] MenuCategory menuCategory)
+        public async Task<UpdateMenuCategoryResponseModel> Update([FromRoute] int id, [FromBody] UpdateMenuCategoryRequestModel request)
         {
-            return await _menuCategoryService.UpdateAsync(id, menuCategory);
+            var menuCategory = new MenuCategory
+            {
+                Id = id,
+                Name = request.Name,
+                ParentId = request.ParentId,
+            };
+            var updateCategory = await _menuCategoryService.UpdateAsync(id,menuCategory);
+            return updateCategory;
         }
 
         [HttpGet]

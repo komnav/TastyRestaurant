@@ -1,7 +1,7 @@
-﻿namespace ResraurantLayer.Dtos.MenuCategory.UpdateResponseModel
+﻿namespace RestaurantLayer.Dtos.MenuCategory.UpdateResponseModel
 {
-    public record class AffectedRows
-    {
-        public int Id;
-    }
+    public record AffectedRows(
+      int Id
+    );
+
 }

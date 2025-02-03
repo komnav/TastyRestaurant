@@ -1,7 +1,9 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repositories;
-using ResraurantLayer.Dtos.MenuCategory.Responses;
-using ResraurantLayer.Exceptions;
+using ResrautantLayer.Exceptions;
+using RestaurantLayer.Dtos.MenuCategory.Responses;
+using System.Xml.Linq;
+
 
 namespace ResraurantLayer.Services
 {
@@ -40,9 +42,23 @@ namespace ResraurantLayer.Services
             return await _menuCategoryRepository.GetAsync(id);
         }
 
-        public async Task<MenuCategory> UpdateAsync(int id, MenuCategory menuCategory)
+        public async Task<CreateMenuCategoryResponseModel> UpdateAsync(int id, MenuCategory menuCategory)
         {
-            return await _menuCategoryRepository.UpdateAsync(id, menuCategory);
+            var categoryMenu = new MenuCategory
+            {
+                Id = id,
+                Name = menuCategory.Name,
+                ParentId = menuCategory.ParentId 
+            };
+
+            var rows = await _menuCategoryRepository.UpdateAsync(id, categoryMenu);
+
+            if (rows <= 0)
+            {
+                throw new ResourceWasNotCreatedException(nameof(categoryMenu), menuCategory);
+            }
+
+            return new UpdateMenuCategoryResponseModel(categoryMenu.Id, categoryMenu.Name, menuCategory.ParentId);
         }
     }
 }

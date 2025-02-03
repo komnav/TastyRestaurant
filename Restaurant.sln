@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.UnitTests", "Restaurant.UnitTests\Restaurant.UnitTests.csproj", "{B277C6C4-E301-4D38-9E39-8EF864648903}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant.WebApi", "Restaurant.WebApi\Restaurant.WebApi.csproj", "{B344C11A-F0B6-4F68-B105-D7CB7EAAEBDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.WebApi", "Restaurant.WebApi\Restaurant.WebApi.csproj", "{B344C11A-F0B6-4F68-B105-D7CB7EAAEBDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResraurantLayer", "ResraurantLayer\ResraurantLayer.csproj", "{C50848A9-23AF-47A3-BF3F-9F224318C653}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantLayer", "ResraurantLayer\RestaurantLayer.csproj", "{C50848A9-23AF-47A3-BF3F-9F224318C653}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

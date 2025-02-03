@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace ResraurantLayer.Services
+namespace RestaurantLayer.Services
 {
     public interface IMenuItemService
     {

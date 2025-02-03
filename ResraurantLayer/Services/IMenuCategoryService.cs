@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
-using ResraurantLayer.Dtos.MenuCategory.Requests;
-using ResraurantLayer.Dtos.MenuCategory.Responses;
+using RestaurantLayer.Dtos.MenuCategory.Requests;
+using RestaurantLayer.Dtos.MenuCategory.Responses;
 
 namespace ResraurantLayer.Services
 {
@@ -8,7 +8,7 @@ namespace ResraurantLayer.Services
     {
         Task<CreateMenuCategoryResponseModel> CreateAsync(string name);
         Task<int> DeleteAsync(int id);
-        Task<MenuCategory> UpdateAsync(int id, MenuCategory menuCategory);
+        Task<CreateMenuCategoryResponseModel> UpdateAsync(int id, MenuCategory menuCategory);
         Task<MenuCategory?> GetAsync(int id);
         Task<List<MenuCategory>> GetAllAsync();
     }

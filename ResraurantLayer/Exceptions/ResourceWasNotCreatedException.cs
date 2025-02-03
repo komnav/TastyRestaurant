@@ -1,4 +1,4 @@
-﻿namespace ResraurantLayer.Exceptions
+﻿namespace ResrautantLayer.Exceptions
 {
     public class ResourceWasNotCreatedException : Exception
     {
