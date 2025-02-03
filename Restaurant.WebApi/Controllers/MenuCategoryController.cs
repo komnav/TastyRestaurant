@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using ResraurantLayer.Services;
+using RestaurantLayer.Dtos;
 using RestaurantLayer.Dtos.MenuCategory.Requests;
 using RestaurantLayer.Dtos.MenuCategory.Responses;
 
@@ -28,15 +29,9 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<UpdateMenuCategoryResponseModel> Update([FromRoute] int id, [FromBody] UpdateMenuCategoryRequestModel request)
+        public async Task<UpdateResponseModel> Update([FromRoute] int id, [FromBody] UpdateMenuCategoryRequestModel request)
         {
-            var menuCategory = new MenuCategory
-            {
-                Id = id,
-                Name = request.Name,
-                ParentId = request.ParentId,
-            };
-            var updateCategory = await _menuCategoryService.UpdateAsync(id,menuCategory);
+            var updateCategory = await _menuCategoryService.UpdateAsync(id, request);
             return updateCategory;
         }
 

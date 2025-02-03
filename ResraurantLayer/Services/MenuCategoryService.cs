@@ -1,15 +1,17 @@
-﻿using Domain.Entities;
+﻿using AutoMapper;
+using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
 using RestaurantLayer.Dtos;
 using RestaurantLayer.Dtos.MenuCategory.Requests;
 using RestaurantLayer.Dtos.MenuCategory.Responses;
-using System.Xml.Linq;
 
 
 namespace ResraurantLayer.Services
 {
-    public class MenuCategoryService(IMenuCategoryRepository menuCategoryRepository) : IMenuCategoryService
+    public class MenuCategoryService(
+        IMenuCategoryRepository menuCategoryRepository
+        ) : IMenuCategoryService
     {
         private readonly IMenuCategoryRepository _menuCategoryRepository = menuCategoryRepository;
         public async Task<CreateMenuCategoryResponseModel> CreateAsync(string name)
@@ -18,7 +20,6 @@ namespace ResraurantLayer.Services
             {
                 Name = name
             };
-
 
             var rows = await _menuCategoryRepository.CreateAsync(menuCategory);
             if (rows <= 0)
@@ -39,9 +40,19 @@ namespace ResraurantLayer.Services
             return _menuCategoryRepository.GetAllAsync();
         }
 
-        public async Task<MenuCategory?> GetAsync(int id)
+        public async Task<GetMenuCategoryResponseModel?> GetAsync(int id)
         {
-            return await _menuCategoryRepository.GetAsync(id);
+            var menuCategory = await _menuCategoryRepository.GetAsync(id);
+
+            if (menuCategory == null)
+            {
+                return null;
+            }
+
+            return new GetMenuCategoryResponseModel(
+                menuCategory.Id,
+                menuCategory.Name,
+                menuCategory.ParentId);
         }
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuCategoryRequestModel request)
