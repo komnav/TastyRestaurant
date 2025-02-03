@@ -11,6 +11,6 @@ namespace ResraurantLayer.Services
         Task<int> DeleteAsync(int id);
         Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuCategoryRequestModel menuCategory);
         Task<GetMenuCategoryResponseModel?> GetAsync(int id);
-        Task<List<MenuCategory>> GetAllAsync();
+        Task<List<GetMenuCategoryResponseModel>> GetAllAsync();
     }
 }

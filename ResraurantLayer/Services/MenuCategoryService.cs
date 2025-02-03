@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
 using RestaurantLayer.Dtos;
@@ -35,9 +34,11 @@ namespace ResraurantLayer.Services
             return await _menuCategoryRepository.DeleteAsync(id);
         }
 
-        public Task<List<MenuCategory>> GetAllAsync()
+        public async Task<List<GetMenuCategoryResponseModel>> GetAllAsync()
         {
-            return _menuCategoryRepository.GetAllAsync();
+            var menuCategory = await _menuCategoryRepository.GetAllAsync();
+
+            return menuCategory != null ? new List<GetMenuCategoryResponseModel>() : new();
         }
 
         public async Task<GetMenuCategoryResponseModel?> GetAsync(int id)
