@@ -3,6 +3,6 @@
     public enum MenuItemStatus
     {
         Available,
-        NotAvailable,
+        NotAvailable
     }
 }

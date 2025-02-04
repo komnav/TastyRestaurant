@@ -1,5 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantLayer.Dtos.MenuItem.Requests;
+using RestaurantLayer.Dtos.MenuItem.Response;
 using RestaurantLayer.Services;
 
 namespace Restaurant.WebApi.Controllers
@@ -11,7 +13,7 @@ namespace Restaurant.WebApi.Controllers
         private readonly IMenuItemService _menuItemService = menuItemService;
 
         [HttpPost]
-        public async Task<MenuItem> Create([FromBody] MenuItem menuItem)
+        public async Task<CreateMenuItemResponseModel> Create([FromBody] CreateMenuItemRequestModel menuItem)
         {
             return await _menuItemService.CreateAsync(menuItem);
         }
@@ -25,7 +27,7 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] MenuItem menuItem)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateMenuItemRequestModel menuItem)
         {
             await _menuItemService.UpdateAsync(id, menuItem);
             return Ok();
