@@ -12,5 +12,6 @@ namespace RestaurantLayer.Services
         Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuItemRequestModel menuItem);
         Task<GetMenuItemResponseModel?> GetAsync(int id);
         Task<List<GetMenuItemResponseModel>> GetAll();
+        Task<GetMenuItemResponseModel?> GetByCategoryAsync(int categoryId);
     }
 }

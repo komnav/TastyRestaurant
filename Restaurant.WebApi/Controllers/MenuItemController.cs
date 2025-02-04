@@ -44,5 +44,11 @@ namespace Restaurant.WebApi.Controllers
         {
             return await _menuItemService.GetAll();
         }
+
+        [HttpGet("GetByCategory/{categoryId}")]
+        public async Task<GetMenuItemResponseModel?> GetByCategory(int categoryId)
+        {
+            return await _menuItemService.GetByCategoryAsync(categoryId);
+        }
     }
 }

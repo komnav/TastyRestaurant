@@ -33,6 +33,11 @@ namespace Infrastructure.Repositories
 
         }
 
+        public async Task<MenuItem?> GetByCategoryAsync(int categoryId)
+        {
+            return await _dbContext.MenuItems.FirstOrDefaultAsync(x => x.CategoryId == categoryId);
+        }
+
         public async Task<int> UpdateAsync(int id, int categoryId, decimal price, string name, MenuItemStatus status)
         {
             return await _dbContext.MenuItems

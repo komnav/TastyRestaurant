@@ -57,6 +57,16 @@ namespace ResraurantLayer.Services
             return new GetMenuItemResponseModel(id, menuItem.CategoryId, menuItem.Price, menuItem.Name, menuItem.Status);
         }
 
+        public async Task<GetMenuItemResponseModel?> GetByCategoryAsync(int categoryId)
+        {
+            var menuItem = await _menuItemRepository.GetByCategoryAsync(categoryId);
+            if (menuItem == null)
+            {
+                return null;
+            }
+            return new GetMenuItemResponseModel(menuItem.Id, categoryId, menuItem.Price, menuItem.Name, menuItem.Status);
+        }
+
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuItemRequestModel request)
         {
             var rows = await _menuItemRepository.UpdateAsync(id, request.CategoryId, request.Price, request.Name, request.Status);
