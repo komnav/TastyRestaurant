@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories
         Task<int> CreateAsync(Table table);
         Task<int> UpdateAsync(int id, int number, int capacity, TableType status);
         Task<int> DeleteAsync(int id);
-        Task<Table> GetAsync(int id);
+        Task<Table?> GetAsync(int id);
         Task<List<Table>> GetAllAsync();
     }
 }

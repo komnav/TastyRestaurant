@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -12,24 +13,32 @@ namespace Infrastructure.Repositories
             return await _dbContext.SaveChangesAsync();
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Tables
+                .Where(x => x.Id.Equals(id))
+                .ExecuteDeleteAsync();
         }
 
-        public Task<List<Table>> GetAllAsync()
+        public async Task<List<Table>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Tables.ToListAsync();
         }
 
-        public Task<Table> GetAsync(int id)
+        public async Task<Table?> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Tables.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<int> UpdateAsync(int id, int number, int capacity, TableType status)
+        public async Task<int> UpdateAsync(int id, int number, int capacity, TableType type)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Tables
+                .Where(x => x.Id == id)
+                .ExecuteUpdateAsync(x => x
+                .SetProperty(x => x.Number, number)
+                .SetProperty(x => x.Capacity, capacity)
+                .SetProperty(x => x.Type, type
+                    ));
         }
     }
 }
