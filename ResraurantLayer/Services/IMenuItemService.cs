@@ -10,7 +10,7 @@ namespace RestaurantLayer.Services
         Task<CreateMenuItemResponseModel> CreateAsync(CreateMenuItemRequestModel createMenuItem);
         Task<int> DeleteAsync(int id);
         Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuItemRequestModel menuItem);
-        Task<MenuItem> GetAsync(int id);
-        Task<List<MenuItem>> GetAll();
+        Task<GetMenuItemResponseModel?> GetAsync(int id);
+        Task<List<GetMenuItemResponseModel>> GetAll();
     }
 }

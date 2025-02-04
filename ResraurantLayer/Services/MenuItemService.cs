@@ -33,14 +33,28 @@ namespace ResraurantLayer.Services
             return await _menuItemRepository.DeleteAsync(id);
         }
 
-        public async Task<List<MenuItem>> GetAll()
+        public async Task<List<GetMenuItemResponseModel>> GetAll()
         {
-            return await _menuItemRepository.GetAllAsync();
+            var menuItem = await _menuItemRepository.GetAllAsync();
+
+            return menuItem.Select(menuItem => new GetMenuItemResponseModel(
+                menuItem.Id,
+                menuItem.CategoryId,
+                menuItem.Price,
+                menuItem.Name,
+                menuItem.Status
+                )).ToList();
         }
 
-        public async Task<MenuItem> GetAsync(int id)
+        public async Task<GetMenuItemResponseModel?> GetAsync(int id)
         {
-            return await _menuItemRepository.GetAsync(id);
+            var menuItem = await _menuItemRepository.GetAsync(id);
+
+            if (menuItem == null)
+            {
+                return null;
+            }
+            return new GetMenuItemResponseModel(id, menuItem.CategoryId, menuItem.Price, menuItem.Name, menuItem.Status);
         }
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuItemRequestModel request)

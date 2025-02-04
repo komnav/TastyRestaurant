@@ -20,8 +20,7 @@ namespace Restaurant.WebApi.Controllers
             return createdCategory;
         }
 
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _menuCategoryService.DeleteAsync(id);
@@ -35,8 +34,7 @@ namespace Restaurant.WebApi.Controllers
             return updateCategory;
         }
 
-        [HttpGet]
-        [Route("{id}")]
+        [HttpGet("{id}")]
         public async Task<GetMenuCategoryResponseModel?> Get([FromRoute] int id)
         {
             return await _menuCategoryService.GetAsync(id);

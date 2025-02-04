@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantLayer.Dtos;
 using RestaurantLayer.Dtos.MenuItem.Requests;
 using RestaurantLayer.Dtos.MenuItem.Response;
 using RestaurantLayer.Services;
@@ -18,30 +19,28 @@ namespace Restaurant.WebApi.Controllers
             return await _menuItemService.CreateAsync(menuItem);
         }
 
-        [HttpDelete]
-        [Route("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             await _menuItemService.DeleteAsync(id);
             return Ok();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateMenuItemRequestModel menuItem)
+        [HttpPut("{id}")]
+        public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuItemRequestModel menuItem)
         {
-            await _menuItemService.UpdateAsync(id, menuItem);
-            return Ok();
+            var updateMenuItem = await _menuItemService.UpdateAsync(id, menuItem);
+            return updateMenuItem;
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        public async Task<MenuItem> Get([FromRoute] int id)
+        [HttpGet("{id}")]
+        public async Task<GetMenuItemResponseModel?> Get([FromRoute] int id)
         {
             return await _menuItemService.GetAsync(id);
         }
 
         [HttpGet]
-        public async Task<List<MenuItem>> GetAll()
+        public async Task<List<GetMenuItemResponseModel>> GetAll()
         {
             return await _menuItemService.GetAll();
         }
