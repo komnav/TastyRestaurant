@@ -60,7 +60,7 @@ namespace RestaurantLayer.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateTableRequestModel request)
         {
-            var table = await _tableRepository.UpdateAsync(id, request.Number, request.Number, request.Type);
+            var table = await _tableRepository.UpdateAsync(id, request.Number, request.Capacity, request.Type);
 
             return new UpdateResponseModel(table);
         }

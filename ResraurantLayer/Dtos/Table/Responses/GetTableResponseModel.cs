@@ -5,6 +5,6 @@ namespace RestaurantLayer.Dtos.Table.Responses;
 public record GetTableResponseModel(
     int Id,
     int Number,
-    int Capaciry,
+    int Capacity,
     TableType Type
     );
