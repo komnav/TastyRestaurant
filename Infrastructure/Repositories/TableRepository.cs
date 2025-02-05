@@ -16,7 +16,7 @@ namespace Infrastructure.Repositories
         public async Task<int> DeleteAsync(int id)
         {
             return await _dbContext.Tables
-                .Where(x => x.Id.Equals(id))
+                .Where(x => x.Id == id)
                 .ExecuteDeleteAsync();
         }
 

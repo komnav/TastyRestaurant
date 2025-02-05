@@ -20,7 +20,7 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _menuItemService.DeleteAsync(id);
             return Ok();
@@ -29,8 +29,8 @@ namespace Restaurant.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuItemRequestModel menuItem)
         {
-            var updateMenuItem = await _menuItemService.UpdateAsync(id, menuItem);
-            return updateMenuItem;
+            return await _menuItemService.UpdateAsync(id, menuItem);
+
         }
 
         [HttpGet("{id}")]
@@ -46,7 +46,7 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpGet("GetByCategory/{categoryId}")]
-        public async Task<GetMenuItemResponseModel?> GetByCategory(int categoryId)
+        public async Task<List<GetMenuItemResponseModel>> GetByCategory(int categoryId)
         {
             return await _menuItemService.GetByCategoryAsync(categoryId);
         }

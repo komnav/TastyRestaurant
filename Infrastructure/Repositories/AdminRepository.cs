@@ -29,7 +29,7 @@ namespace Infrastructure.Repositories
             return await _dbContext.Admins.SingleAsync(x => x.Id == id);
         }
 
-        public async Task<int> UpdateAsync(int id, int contactId)
+        public async Task<int> UpdateAsync(int id, int? contactId)
         {
             return await _dbContext.Admins
                 .Where(x => x.Id == id)

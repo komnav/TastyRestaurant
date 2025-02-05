@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <ApplicationManifest>Dtos\Admin\Requests\GetAdminRequestModel.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <ItemGroup>
