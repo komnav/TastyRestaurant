@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using ResraurantLayer.Dtos;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 
@@ -12,8 +13,10 @@ namespace Restaurant.WebApi.Middleware
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger<ExceptionHandlerMiddleware> _logger;
-
-        public ExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger)
+        public ExceptionHandlerMiddleware(
+            RequestDelegate next,
+            IWebHostEnvironment environment,
+            ILogger<ExceptionHandlerMiddleware> logger)
         {
             _next = next;
             _environment = environment;
@@ -23,6 +26,7 @@ namespace Restaurant.WebApi.Middleware
 
         public async Task Invoke(HttpContext context)
         {
+            var startTime = Stopwatch.GetTimestamp();
             try
             {
                 await _next(context);
@@ -31,6 +35,10 @@ namespace Restaurant.WebApi.Middleware
             {
                 await HandlerExceptionAsync(context, exception);
             }
+            var endTime = Stopwatch.GetTimestamp();
+
+            var diff = Stopwatch.GetElapsedTime(startTime, endTime);
+            Console.WriteLine($"Time spend: {diff}");
         }
 
         private async Task HandlerExceptionAsync(HttpContext context, Exception exception)
