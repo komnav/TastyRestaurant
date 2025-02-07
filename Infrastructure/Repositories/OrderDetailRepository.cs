@@ -30,7 +30,7 @@ namespace Infrastructure.Repositories
             return await _dbContext.OrderDetails.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<int> UpdateAsync(int id, int orderId, int menuItemId, int quantity, int price, OrderDetailStatus status)
+        public async Task<int> UpdateAsync(int id, int orderId, int menuItemId, int quantity, decimal price, OrderDetailStatus status)
         {
             return await _dbContext.OrderDetails
                 .Where(x => x.Id == id)
