@@ -27,9 +27,9 @@ namespace Infrastructure.Repositories
             return await _dbContext.MenuItems.ToListAsync();
         }
 
-        public async Task<MenuItem> GetAsync(int id)
+        public async Task<MenuItem?> GetAsync(int id)
         {
-            return await _dbContext.MenuItems.SingleAsync(x => x.Id.Equals(id));
+            return await _dbContext.MenuItems.FirstOrDefaultAsync(x => x.Id.Equals(id));
 
         }
 
