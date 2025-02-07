@@ -24,9 +24,9 @@ namespace Infrastructure.Repositories
             return await _dbContext.Admins.ToListAsync();
         }
 
-        public async Task<Admin> GetAsync(int id)
+        public async Task<Admin?> GetAsync(int id)
         {
-            return await _dbContext.Admins.SingleAsync(x => x.Id == id);
+            return await _dbContext.Admins.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<int> UpdateAsync(int id, int? contactId)
