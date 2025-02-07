@@ -30,7 +30,7 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
-        public async Task<int> UpdateAsync(int id, string name, int? parentId)
+        public async Task<int> UpdateAsync(int id, string name, int parentId)
         {
             return await _dbContext.MenuCategories
                    .Where(x => x.Id == id)
