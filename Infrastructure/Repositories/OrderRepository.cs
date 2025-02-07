@@ -1,70 +1,44 @@
-﻿
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
-    public class OrderRepository
+    public class OrderRepository(ApplicationDbContext dbContext) : IOrderRepository
     {
-        private readonly ApplicationDbContext _dbContext;
-        public OrderRepository(ApplicationDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        private readonly ApplicationDbContext _dbContext = dbContext;
 
-        public async Task<List<Order>> Get()
+        public async Task<Order?> GetAsync(int id)
         {
             return await _dbContext.Orders
-                .AsNoTracking()
-                .ToListAsync();
-        }
-        public async Task<Order?> GetById(int id)
-        {
-            return await _dbContext.Orders
-                .AsNoTracking()
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
-        public async Task<List<Order>> GetByFilter(DateTime dateTime, OrdersStatus status)
-        {
-            var query = _dbContext.Orders.AsNoTracking();
 
-            if (!string.IsNullOrEmpty(dateTime.ToString()))
-            {
-                query = query.Where(x => x.DateTime == dateTime);
-            }
-            if (!string.IsNullOrEmpty(status.ToString()))
-            {
-                query = query.Where(x => x.Status == status);
-            }
-            return await query.ToListAsync();
+        public async Task<int> CreateAsync(Order order)
+        {
+            await _dbContext.AddAsync(order);
+            return await _dbContext.SaveChangesAsync();
+        }
+        public async Task<int> UpdateAsync(int id, int tableId, DateTime dateTime, OrdersStatus ordersStatus)
+        {
+            return await _dbContext.Orders
+                  .Where(x => x.Id == id)
+                  .ExecuteUpdateAsync(s => s
+                  .SetProperty(s => s.Id, id)
+                  .SetProperty(s => s.DateTime, dateTime)
+                  .SetProperty(s => s.Status, ordersStatus)
+                  .SetProperty(s => s.TableId, tableId));
+        }
+        public async Task<int> DeleteAsync(int id)
+        {
+            return await _dbContext.Orders
+                 .Where(x => x.Id == id)
+                 .ExecuteDeleteAsync();
         }
 
-        public async Task Add(int id, DateTime dateTime, OrdersStatus ordersStatus)
+        public async Task<List<Order>> GetAllAsync()
         {
-            var orderEntity = new Order
-            {
-                Id = id,
-                DateTime = dateTime,
-                Status = ordersStatus
-            };
-            await _dbContext.AddAsync(orderEntity);
-            await _dbContext.SaveChangesAsync();
-        }
-        public async Task Update(int id, DateTime dateTime, OrdersStatus ordersStatus)
-        {
-            await _dbContext.Orders
-                .Where(x => x.Id == id)
-                .ExecuteUpdateAsync(s => s
-                .SetProperty(s => s.Id, id)
-                .SetProperty(s => s.DateTime, dateTime)
-                .SetProperty(s => s.Status, ordersStatus));
-        }
-        public async Task Delete(int id)
-        {
-            await _dbContext.Orders
-                .Where(x => x.Id == id)
-                .ExecuteDeleteAsync();
+            return await _dbContext.Orders.ToListAsync();
         }
     }
 }
