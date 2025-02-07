@@ -54,6 +54,8 @@ namespace RestaurantLayer.Services
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateCustomerRequestModel request)
         {
             var updateCustomer = await _customerRepository.UpdateAsync(id, request.ContactId);
+
+            return new UpdateResponseModel(updateCustomer);
         }
     }
 }
