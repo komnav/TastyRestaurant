@@ -27,6 +27,7 @@ namespace Restaurant.WebApi.Middleware
         public async Task Invoke(HttpContext context)
         {
             var startTime = Stopwatch.GetTimestamp();
+
             try
             {
                 await _next(context);
