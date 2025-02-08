@@ -1,3 +1,12 @@
-﻿namespace RestaurantLayer.Dtos.Reservation.Requests;
+﻿using Domain.Enums;
 
-public record UpdateReservationRequestModel();
+namespace RestaurantLayer.Dtos.Reservation.Requests;
+
+public record UpdateReservationRequestModel(
+    int TableId,
+    int CustomerId,
+    DateTime From,
+    DateTime To,
+    string? Notes,
+    ReservationStatus Status
+    );

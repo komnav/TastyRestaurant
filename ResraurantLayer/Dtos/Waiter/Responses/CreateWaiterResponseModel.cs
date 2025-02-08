@@ -1,3 +1,5 @@
 ﻿namespace RestaurantLayer.Dtos.Waiter.Responses;
 
-public record CreateWaiterResponseModel();
+public record CreateWaiterResponseModel(
+    int? ContactId
+    );

@@ -3,6 +3,7 @@ using Infrastructure.Repositories;
 using RestaurantLayer.Dtos;
 using RestaurantLayer.Dtos.Customer.Requests;
 using RestaurantLayer.Dtos.Customer.Responses;
+using RestaurantLayer.Exceptions;
 
 namespace RestaurantLayer.Services
 {
@@ -20,7 +21,7 @@ namespace RestaurantLayer.Services
 
             if (rows <= 0)
             {
-                return null;
+                throw new ResourceWasNotCreatedExceptionForIntType(rows);
             }
 
             return new CreateCustomerResponseModel(addCustomer.ContactId);

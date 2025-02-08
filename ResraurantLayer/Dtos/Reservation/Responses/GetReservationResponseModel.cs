@@ -1,3 +1,13 @@
-﻿namespace RestaurantLayer.Dtos.Reservation.Responses;
+﻿using Domain.Enums;
 
-public record GetReservationResponseModel();
+namespace RestaurantLayer.Dtos.Reservation.Responses;
+
+public record GetReservationResponseModel(
+    int Id,
+    int TableId,
+    int CustomerId,
+    DateTime From,
+    DateTime To,
+    string? Notes,
+    ReservationStatus Status
+    );

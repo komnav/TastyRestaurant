@@ -13,7 +13,7 @@ namespace Infrastructure
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Cooker> Cookers { get; set; }
-        public DbSet<Waiter> Warenches { get; set; }
+        public DbSet<Waiter> Waiters { get; set; }
         public DbSet<Cashier> Cashier { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<MenuCategory> MenuCategories { get; set; }

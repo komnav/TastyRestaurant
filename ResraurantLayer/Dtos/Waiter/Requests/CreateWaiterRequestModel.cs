@@ -1,3 +1,5 @@
 ﻿namespace RestaurantLayer.Dtos.Waiter.Requests;
 
-public record CreateWaiterRequestModel();
+public record CreateWaiterRequestModel(
+    int? ContactId
+    );

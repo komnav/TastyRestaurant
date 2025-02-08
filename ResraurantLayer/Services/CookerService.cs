@@ -3,6 +3,7 @@ using Infrastructure.Repositories;
 using RestaurantLayer.Dtos;
 using RestaurantLayer.Dtos.Cooker.Request;
 using RestaurantLayer.Dtos.Cooker.Response;
+using RestaurantLayer.Exceptions;
 
 namespace RestaurantLayer.Services
 {
@@ -19,7 +20,7 @@ namespace RestaurantLayer.Services
 
             if (addCooker <= 0)
             {
-                return null;
+                throw new ResourceWasNotCreatedExceptionForIntType(addCooker);
             }
 
             return new CreateCookerResponseModel(cooker.ContactId);

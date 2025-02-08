@@ -30,7 +30,8 @@ namespace Infrastructure.Repositories
             return await _dbContext.Reservations.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<int> UpdateAsync(int id, int tableId, int customerId, DateTime from, DateTime to, string notes, ReservationStatus status)
+        public async Task<int> UpdateAsync
+            (int id, int tableId, int customerId, DateTime from, DateTime to, string? notes, ReservationStatus status)
         {
             return await _dbContext.Reservations
                 .Where(x => x.Id == id)

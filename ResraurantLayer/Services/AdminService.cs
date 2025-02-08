@@ -21,7 +21,7 @@ namespace RestaurantLayer.Services
 
             if (rows <= 0)
             {
-                return null;
+                throw new ResourceWasNotCreatedExceptionForIntType(rows);
             }
             return new CreateAdminResponseModel(admin.ContactId);
         }
