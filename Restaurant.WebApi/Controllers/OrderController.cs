@@ -18,7 +18,7 @@ namespace Restaurant.WebApi.Controllers
             return await _orderService.CreateAsync(request);
         }
 
-        [HttpDelete]
+        [HttpPut]
         public async Task<UpdateResponseModel> Update(int id, UpdateOrderRequestModel request)
         {
             return await _orderService.UpdateAsync(id, request);
