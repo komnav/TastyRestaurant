@@ -1,4 +1,6 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantLayer.Dtos;
 using RestaurantLayer.Dtos.MenuItem.Requests;
@@ -7,18 +9,21 @@ using RestaurantLayer.Services;
 
 namespace Restaurant.WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("MenuItem")]
     public class MenuItemController(IMenuItemService menuItemService) : ControllerBase
     {
         private readonly IMenuItemService _menuItemService = menuItemService;
 
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpPost]
         public async Task<CreateMenuItemResponseModel> Create([FromBody] CreateMenuItemRequestModel menuItem)
         {
             return await _menuItemService.CreateAsync(menuItem);
         }
 
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -26,6 +31,7 @@ namespace Restaurant.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = UserRoles.SuperAdmin)]
         [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuItemRequestModel menuItem)
         {

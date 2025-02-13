@@ -32,19 +32,7 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = true
     };
 });
-builder.Services.AddAuthorization(x =>
-{
-    x.AddPolicy(AuthConstants.AdminUserPolicyName,
-        p => p.RequireClaim(AuthConstants.AdminUserClaimName, "true"));
-
-    x.AddPolicy(AuthConstants.TrustedMemberPolicyName,
-        p => p.RequireAssertion(c =>
-            c.User.HasClaim(m => m is { Type: AuthConstants.AdminUserClaimName, Value: "true" }) ||
-            c.User.HasClaim(m => m is { Type: AuthConstants.TrustedMemberClaimName, Value: "true" })));
-});
-
-
-
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 
@@ -55,10 +43,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options
 builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 builder.Services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
-
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IMenuCategoryService, MenuCategoryService>();
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<ITableService, TableService>();
