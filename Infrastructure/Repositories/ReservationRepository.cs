@@ -37,7 +37,7 @@ namespace Infrastructure.Repositories
                 .Where(x => x.Id == id)
                 .ExecuteUpdateAsync(x => x
                 .SetProperty(x => x.TableId, tableId)
-                .SetProperty(x => x.CustomerId, customerId)
+                .SetProperty(x => x.UserId, customerId)
                 .SetProperty(x => x.From, from)
                 .SetProperty(x => x.To, to)
                 .SetProperty(x => x.Notes, notes)

@@ -14,7 +14,7 @@ namespace RestaurantLayer.Services
         {
             var addReservation = new Reservation
             {
-                CustomerId = request.CustomerId,
+                UserId = request.CustomerId,
                 TableId = request.TableId,
                 From = request.From,
                 To = request.To,
@@ -32,7 +32,7 @@ namespace RestaurantLayer.Services
             return new CreateReservationResponseModel(
                 addReservation.Id,
                 addReservation.TableId,
-                addReservation.CustomerId,
+                addReservation.UserId,
                 addReservation.From,
                 addReservation.To,
                 addReservation.Notes,
@@ -51,7 +51,7 @@ namespace RestaurantLayer.Services
             return getReservations.Select(getReservations => new GetReservationResponseModel(
                 getReservations.Id,
                 getReservations.TableId,
-                getReservations.CustomerId,
+                getReservations.UserId,
                 getReservations.From,
                 getReservations.To,
                 getReservations.Notes,
@@ -71,7 +71,7 @@ namespace RestaurantLayer.Services
             return new GetReservationResponseModel(
                 getReservation.Id,
                 getReservation.TableId,
-                getReservation.CustomerId,
+                getReservation.UserId,
                 getReservation.From,
                 getReservation.To,
                 getReservation.Notes,

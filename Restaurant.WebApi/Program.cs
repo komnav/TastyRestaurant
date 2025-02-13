@@ -1,7 +1,6 @@
 using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ResraurantLayer.Services;
@@ -23,14 +22,14 @@ builder.Services.AddAuthentication(x =>
 {
     x.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = config["JwtSettings:Issuer"],
-        ValidAudience = config["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey
-        (Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
-        ValidateIssuer = true,
-        ValidateAudience = true,
+        IssuerSigningKey = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+        ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
-        ValidateIssuerSigningKey = true
+        ValidIssuer = config["Jwt:Issuer"],
+        ValidAudience = config["Jwt:Audience"],
+        ValidateIssuer = true,
+        ValidateAudience = true
     };
 });
 builder.Services.AddAuthorization(x =>
@@ -56,41 +55,27 @@ builder.Services.AddDbContext<ApplicationDbContext>(options
 builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 builder.Services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
-builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-builder.Services.AddScoped<IWaiterRepository, WaiterRepository>();
-builder.Services.AddScoped<IContactRepository, ContactRepository>();
-builder.Services.AddScoped<ICashierRepository, CashierRepository>();
-builder.Services.AddScoped<ICookerRepository, CookerRepository>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IMenuCategoryService, MenuCategoryService>();
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
 builder.Services.AddScoped<ITableService, TableService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
-builder.Services.AddScoped<IWaiterService, WaiterService>();
-builder.Services.AddScoped<IContactService, ContactService>();
-builder.Services.AddScoped<ICookerService, CookerService>();
-builder.Services.AddScoped<ICashierService, CashierService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-
+builder.Services.AddScoped<DbInitilizer>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<TokenGenerator>();
-
 
 var app = builder.Build();
 
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using var scope = scopeFactory.CreateScope();
-var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-dbContext.Database.Migrate();
+var initilizer = scope.ServiceProvider.GetRequiredService<DbInitilizer>();
+initilizer.Init();
 
 if (app.Environment.IsDevelopment())
 {

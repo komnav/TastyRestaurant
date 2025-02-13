@@ -22,42 +22,6 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cashier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Cashier");
-                });
-
             modelBuilder.Entity("Domain.Entities.Contact", b =>
                 {
                     b.Property<int>("Id")
@@ -99,43 +63,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PhoneNumber");
 
-                    b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cooker", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Cookers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Customers");
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("Domain.Entities.MenuCategory", b =>
@@ -256,9 +184,6 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime>("From")
                         .HasColumnType("timestamp with time zone");
 
@@ -274,11 +199,14 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("To")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("TableId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservations");
                 });
@@ -305,7 +233,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Tables");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Waiter", b =>
+            modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -316,47 +244,27 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("ContactId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContactId");
 
-                    b.ToTable("Waiters");
-                });
+                    b.HasIndex("Password");
 
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
-                {
-                    b.HasOne("Domain.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
+                    b.HasIndex("UserName");
 
-                    b.Navigation("Contact");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cashier", b =>
-                {
-                    b.HasOne("Domain.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.Navigation("Contact");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cooker", b =>
-                {
-                    b.HasOne("Domain.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.Navigation("Contact");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
-                {
-                    b.HasOne("Domain.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.Navigation("Contact");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.MenuItem", b =>
@@ -400,15 +308,15 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Reservation", b =>
                 {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Table", "Table")
                         .WithMany()
                         .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -417,7 +325,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Table");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Waiter", b =>
+            modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.HasOne("Domain.Entities.Contact", "Contact")
                         .WithMany()

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250114080235_Initialize")]
-    partial class Initialize
+    [Migration("20250213165305_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,42 +24,6 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Admins");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cashier", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Cashier");
-                });
 
             modelBuilder.Entity("Domain.Entities.Contact", b =>
                 {
@@ -102,45 +66,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PhoneNumber");
 
-                    b.ToTable("Contacts");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cooker", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("Cookers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Phone")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customer");
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("Domain.Entities.MenuCategory", b =>
@@ -160,7 +86,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("MenuCategories");
                 });
@@ -190,6 +117,9 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("MenuItems");
                 });
 
@@ -207,9 +137,14 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TableId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Order");
+                    b.HasIndex("TableId");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("Domain.Entities.OrderDetail", b =>
@@ -223,20 +158,25 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MenuItemId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("OrderId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<decimal>("TotalSum")
-                        .HasColumnType("numeric");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MenuItemId");
 
-                    b.ToTable("OrderDetail");
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("Domain.Entities.Reservation", b =>
@@ -246,9 +186,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("From")
                         .HasColumnType("timestamp with time zone");
@@ -265,13 +202,16 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("To")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Reservation");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Domain.Entities.Table", b =>
@@ -296,7 +236,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Tables");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Waiter", b =>
+            modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -307,38 +247,27 @@ namespace Infrastructure.Migrations
                     b.Property<int?>("ContactId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContactId");
 
-                    b.ToTable("Warenches");
-                });
+                    b.HasIndex("Password");
 
-            modelBuilder.Entity("Domain.Entities.Admin", b =>
-                {
-                    b.HasOne("Domain.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
+                    b.HasIndex("UserName");
 
-                    b.Navigation("Contact");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cashier", b =>
-                {
-                    b.HasOne("Domain.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.Navigation("Contact");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Cooker", b =>
-                {
-                    b.HasOne("Domain.Entities.Contact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.Navigation("Contact");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Domain.Entities.MenuItem", b =>
@@ -350,6 +279,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Order", b =>
+                {
+                    b.HasOne("Domain.Entities.Table", "Table")
+                        .WithMany()
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Table");
+                });
+
             modelBuilder.Entity("Domain.Entities.OrderDetail", b =>
                 {
                     b.HasOne("Domain.Entities.MenuItem", "MenuItem")
@@ -358,20 +298,28 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("MenuItem");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Domain.Entities.Reservation", b =>
                 {
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.Table", "Table")
                         .WithMany()
                         .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -380,7 +328,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Table");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Waiter", b =>
+            modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.HasOne("Domain.Entities.Contact", "Contact")
                         .WithMany()
