@@ -17,12 +17,25 @@ namespace Restaurant.WebApi.Middleware
         {
             var startTime = Stopwatch.GetTimestamp();
 
-            await _next(context);
+            try
+            {
+                await _next(context);
+            }
 
-            var endTime = Stopwatch.GetTimestamp();
+            finally
+            {
+                var endTime = Stopwatch.GetTimestamp();
 
-            var diff = Stopwatch.GetElapsedTime(startTime, endTime);
-            _logger.LogInformation($" Code Execution Time: {diff}");
+
+                var diff = Stopwatch.GetElapsedTime(startTime, endTime);
+
+
+                string requestPath = context.Request.Path;
+                string method = context.Request.Method;
+
+                _logger.LogInformation($"Code Execution Time: {diff} on {requestPath} {method}");
+            }
+
         }
 
     }

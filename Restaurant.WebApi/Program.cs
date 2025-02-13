@@ -1,16 +1,57 @@
 using Infrastructure;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ResraurantLayer.Services;
+using Restaurant.WebApi;
 using Restaurant.WebApi.Middleware;
 using RestaurantLayer.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var config = builder.Configuration;
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = config["JwtSettings:Issuer"],
+        ValidAudience = config["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization(x =>
+{
+    x.AddPolicy(AuthConstants.AdminUserPolicyName,
+        p => p.RequireClaim(AuthConstants.AdminUserClaimName, "true"));
+
+    x.AddPolicy(AuthConstants.TrustedMemberPolicyName,
+        p => p.RequireAssertion(c =>
+            c.User.HasClaim(m => m is { Type: AuthConstants.AdminUserClaimName, Value: "true" }) ||
+            c.User.HasClaim(m => m is { Type: AuthConstants.TrustedMemberClaimName, Value: "true" })));
+});
+
+
+
 
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options
     => options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection")));
+
 
 builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
 builder.Services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
@@ -41,6 +82,9 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<TokenGenerator>();
+
+
 var app = builder.Build();
 
 var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
@@ -59,6 +103,8 @@ app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.UseMiddleware<EfficientStopwatch>();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
