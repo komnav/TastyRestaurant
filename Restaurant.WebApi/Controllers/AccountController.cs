@@ -28,15 +28,17 @@ public class AccountController(IAccountService accountService, ApplicationDbCont
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequestModel request)
     {
-        var user = await applicationDbContext.Users
-            .FirstOrDefaultAsync(s => s.UserName.ToLower() == request.UserName.ToLower() && s.Password == request.Password);
+        var getUser = await applicationDbContext.Users
+         .FirstOrDefaultAsync(s => s.UserName.ToLower() == request.UserName.ToLower() && s.Password == request.Password);
 
-        if (user == null)
+        // var getUser = await _accountService.GetAsync(request.UserName, request.Password);
+
+        if (getUser == null)
         {
             return Unauthorized();
         }
 
-        var token = _accountService.CreateToken(user);
+        var token = _accountService.CreateToken(getUser);
 
         return Ok(new AuthResponse { Token = token });
     }

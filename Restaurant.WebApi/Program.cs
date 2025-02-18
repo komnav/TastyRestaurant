@@ -2,16 +2,21 @@ using Infrastructure;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using ResraurantLayer.Services;
-using Restaurant.WebApi;
 using Restaurant.WebApi.Middleware;
+using RestaurantLayer.Dtos;
 using RestaurantLayer.Services;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-
 var config = builder.Configuration;
+
+builder.Services.Configure<JwtSettingOptions>(
+    builder.Configuration.GetSection("Jwt"));
+
+var jwtSettings = config.GetSection("Jwt").Get<JwtSettingOptions>();
 
 builder.Services.AddAuthentication(x =>
 {
@@ -20,14 +25,15 @@ builder.Services.AddAuthentication(x =>
     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(x =>
 {
+
     x.TokenValidationParameters = new TokenValidationParameters
     {
         IssuerSigningKey = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(config["Jwt:Key"]!)),
+            Encoding.UTF8.GetBytes(jwtSettings!.Key)),
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
-        ValidIssuer = config["Jwt:Issuer"],
-        ValidAudience = config["Jwt:Audience"],
+        ValidIssuer = jwtSettings.Issuer,
+        ValidAudience = jwtSettings.Audience,
         ValidateIssuer = true,
         ValidateAudience = true
     };
@@ -47,6 +53,8 @@ builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+
+
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IMenuCategoryService, MenuCategoryService>();
 builder.Services.AddScoped<IMenuItemService, MenuItemService>();
@@ -54,7 +62,11 @@ builder.Services.AddScoped<ITableService, TableService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+
+
 builder.Services.AddScoped<DbInitilizer>();
+
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

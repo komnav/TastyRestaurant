@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantLayer.Dtos;
 using RestaurantLayer.Dtos.Order.Requests;
 using RestaurantLayer.Dtos.Order.Responses;
@@ -12,18 +14,23 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly IOrderService _orderService = orderService;
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateOrderResponseModel> Create(CreateOrderRequestModel request)
         {
             return await _orderService.CreateAsync(request);
         }
 
+
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPut]
         public async Task<UpdateResponseModel> Update(int id, UpdateOrderRequestModel request)
         {
             return await _orderService.UpdateAsync(id, request);
         }
 
+
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpDelete]
         public async Task<int> Delete(int id)
         {

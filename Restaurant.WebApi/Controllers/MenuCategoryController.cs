@@ -1,4 +1,6 @@
 ﻿using Domain.Entities;
+using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResraurantLayer.Services;
 using RestaurantLayer.Dtos;
@@ -13,6 +15,7 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly IMenuCategoryService _menuCategoryService = menuCategoryService;
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateMenuCategoryResponseModel> Create([FromBody] CreateMenuCategoryRequestModel request)
         {
@@ -20,6 +23,7 @@ namespace Restaurant.WebApi.Controllers
             return createdCategory;
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -27,8 +31,9 @@ namespace Restaurant.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPut("{id}")]
-        public async Task<UpdateResponseModel> Update( int id, [FromBody] UpdateMenuCategoryRequestModel request)
+        public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuCategoryRequestModel request)
         {
             var updateCategory = await _menuCategoryService.UpdateAsync(id, request);
             return updateCategory;

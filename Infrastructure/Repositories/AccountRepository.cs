@@ -16,9 +16,10 @@ namespace Infrastructure.Repositories
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<User?> GetAsync(string username)
+        public async Task<User> GetAsync(string username, string password)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(x => x.UserName == username);
+            return await _dbContext.Users
+                .FirstOrDefaultAsync(s => s.UserName.ToLower() == username.ToLower() && s.Password == password);
         }
     }
 }
