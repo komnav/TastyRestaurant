@@ -1,8 +1,8 @@
-﻿using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Reservation.Requests;
-using RestaurantLayer.Dtos.Reservation.Responses;
+﻿using Application.Dtos;
+using Application.Dtos.Reservation.Requests;
+using Application.Dtos.Reservation.Responses;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public interface IReservationService
     {

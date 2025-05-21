@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace RestaurantLayer.Dtos.Table.Responses;
+namespace Application.Dtos.Table.Responses;
 
 public record CreateTableResponseModel(
     int Id,

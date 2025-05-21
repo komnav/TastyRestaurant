@@ -1,9 +1,9 @@
 ﻿using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Role.Requests;
-using RestaurantLayer.Services;
+using Application.Dtos;
+using Application.Dtos.Role.Requests;
+using Application.Services;
 
 namespace Restaurant.WebApi.Controllers
 {

@@ -1,7 +1,7 @@
-﻿using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Role.Requests;
+﻿using Application.Dtos;
+using Application.Dtos.Role.Requests;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public interface IUpdateRolesService
     {

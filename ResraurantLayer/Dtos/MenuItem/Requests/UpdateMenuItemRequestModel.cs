@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace RestaurantLayer.Dtos.MenuItem.Requests;
+namespace Application.Dtos.MenuItem.Requests;
 
 public record UpdateMenuItemRequestModel(
     int CategoryId,

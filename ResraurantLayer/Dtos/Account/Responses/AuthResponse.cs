@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RestaurantLayer.Dtos.Account.Responses
+namespace Application.Dtos.Account.Responses
 {
     public class AuthResponse
     {

@@ -1,7 +1,7 @@
 ﻿using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantLayer.Dtos.MenuItem.Response;
+namespace Application.Dtos.MenuItem.Response;
 
 public record GetMenuItemResponseModel(
     int Id,

@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace RestaurantLayer.Dtos.Reservation.Responses;
+namespace Application.Dtos.Reservation.Responses;
 
 public record GetReservationResponseModel(
     int Id,

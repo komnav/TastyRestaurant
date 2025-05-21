@@ -1,11 +1,11 @@
-﻿using Domain.Entities;
+﻿using Application.Dtos;
+using Application.Dtos.Reservation.Requests;
+using Application.Dtos.Reservation.Responses;
+using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Reservation.Requests;
-using RestaurantLayer.Dtos.Reservation.Responses;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public class ReservationService(IReservationRepository reservationRepository) : IReservationService
     {

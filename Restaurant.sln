@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.UnitTests", "Res
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant.WebApi", "Restaurant.WebApi\Restaurant.WebApi.csproj", "{B344C11A-F0B6-4F68-B105-D7CB7EAAEBDE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantLayer", "ResraurantLayer\RestaurantLayer.csproj", "{C50848A9-23AF-47A3-BF3F-9F224318C653}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "ResraurantLayer\Application.csproj", "{C50848A9-23AF-47A3-BF3F-9F224318C653}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{065E96DB-74E2-4A40-888E-DC4F6C58CD12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D691EE55-42A6-46E6-A07F-AB25FB11DB0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,5 +49,12 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {489A7680-60F0-498A-9969-35C537CDC1EB}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{397D5791-AE54-40E2-BD85-0CB736F555E8} = {065E96DB-74E2-4A40-888E-DC4F6C58CD12}
+		{8664E244-9566-40B6-A14E-560CA460A7A5} = {065E96DB-74E2-4A40-888E-DC4F6C58CD12}
+		{B344C11A-F0B6-4F68-B105-D7CB7EAAEBDE} = {065E96DB-74E2-4A40-888E-DC4F6C58CD12}
+		{C50848A9-23AF-47A3-BF3F-9F224318C653} = {065E96DB-74E2-4A40-888E-DC4F6C58CD12}
+		{B277C6C4-E301-4D38-9E39-8EF864648903} = {D691EE55-42A6-46E6-A07F-AB25FB11DB0A}
 	EndGlobalSection
 EndGlobal

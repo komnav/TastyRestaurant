@@ -1,4 +1,4 @@
-﻿namespace RestaurantLayer.Dtos.Account.Responses
+﻿namespace Application.Dtos.Account.Responses
 {
     public class GetUserResponseModel
     {

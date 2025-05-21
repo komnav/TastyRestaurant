@@ -1,8 +1,8 @@
-﻿using Infrastructure.Repositories;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Role.Requests;
+﻿using Application.Dtos;
+using Application.Dtos.Role.Requests;
+using Infrastructure.Repositories;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public class UpdateRolesService(IUpdateRolesRepository updateRolesRepository) : IUpdateRolesService
     {

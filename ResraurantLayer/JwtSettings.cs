@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Application.Dtos;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using RestaurantLayer.Dtos;
 
 namespace RestaurantLayer
 {

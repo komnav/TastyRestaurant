@@ -1,4 +1,4 @@
-﻿namespace RestaurantLayer.Dtos.MenuItem.Requests;
+﻿namespace Application.Dtos.MenuItem.Requests;
 
 public record CreateMenuItemRequestModel(
     int? CategoryId,

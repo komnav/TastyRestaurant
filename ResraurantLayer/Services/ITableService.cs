@@ -1,8 +1,8 @@
-﻿using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Table.Requests;
-using RestaurantLayer.Dtos.Table.Responses;
+﻿using Application.Dtos;
+using Application.Dtos.Table.Requests;
+using Application.Dtos.Table.Responses;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public interface ITableService
     {

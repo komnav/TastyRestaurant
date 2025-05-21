@@ -1,11 +1,11 @@
-﻿using Domain.Entities;
+﻿using Application.Dtos;
+using Application.Dtos.Table.Requests;
+using Application.Dtos.Table.Responses;
+using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Table.Requests;
-using RestaurantLayer.Dtos.Table.Responses;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public class TableService(ITableRepository tableRepository) : ITableService
     {

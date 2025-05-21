@@ -1,9 +1,9 @@
 ﻿using Domain.Entities;
-using RestaurantLayer.Dtos.Account.Requests;
-using RestaurantLayer.Dtos.Account.Responses;
 using System.ComponentModel.DataAnnotations;
+using Application.Dtos.Account.Requests;
+using Application.Dtos.Account.Responses;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public interface IAccountService
     {

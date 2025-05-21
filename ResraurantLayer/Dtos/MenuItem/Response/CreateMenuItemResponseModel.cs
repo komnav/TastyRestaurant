@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace RestaurantLayer.Dtos.MenuItem.Response;
+namespace Application.Dtos.MenuItem.Response;
 
 public record CreateMenuItemResponseModel(
     int? CategoryId,

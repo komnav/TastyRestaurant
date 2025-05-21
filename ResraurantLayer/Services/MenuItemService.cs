@@ -1,10 +1,10 @@
 ﻿using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.MenuItem.Requests;
-using RestaurantLayer.Dtos.MenuItem.Response;
-using RestaurantLayer.Services;
+using Application.Dtos;
+using Application.Dtos.MenuItem.Requests;
+using Application.Dtos.MenuItem.Response;
+using Application.Services;
 
 namespace ResraurantLayer.Services
 {

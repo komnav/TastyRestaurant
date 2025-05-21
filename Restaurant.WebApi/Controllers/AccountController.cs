@@ -1,17 +1,11 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Domain.Entities;
-using Domain.Enums;
-using Infrastructure;
+﻿using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using RestaurantLayer.Dtos.Account.Requests;
-using RestaurantLayer.Dtos.Account.Responses;
-using RestaurantLayer.Services;
+using Application.Dtos.Account.Requests;
+using Application.Dtos.Account.Responses;
+using Application.Services;
 
-namespace Identity.Api.Controllers;
+namespace Restaurant.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace RestaurantLayer.Dtos.OrderDetail.Requests;
+namespace Application.Dtos.OrderDetail.Requests;
 
 public record CreateOrderDetailRequestModel(
     int OrderId,

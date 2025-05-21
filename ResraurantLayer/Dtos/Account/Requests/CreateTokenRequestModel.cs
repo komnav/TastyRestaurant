@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace RestaurantLayer.Dtos.Account.Requests;
+namespace Application.Dtos.Account.Requests;
 
 public class CreateTokenRequestModel
 {

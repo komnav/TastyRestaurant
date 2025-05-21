@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantLayer.Dtos.MenuCategory.Responses;
+namespace Application.Dtos.MenuCategory.Responses;
 
 public record GetMenuCategoryResponseModel(
     int Id,

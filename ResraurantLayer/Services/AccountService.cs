@@ -3,15 +3,15 @@ using Domain.Enums;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Account.Requests;
-using RestaurantLayer.Dtos.Account.Responses;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.Dtos;
+using Application.Dtos.Account.Requests;
+using Application.Dtos.Account.Responses;
 
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public class AccountService(IAccountRepository accountRepository, IOptions<JwtSettingOptions> jwtSettings) : IAccountService
     {
@@ -43,14 +43,14 @@ namespace RestaurantLayer.Services
 
         }
 
-        public string CreateToken(User request)
+        public string CreateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtSettings.Key);
 
             var claims = new List<Claim>
         {
-            new(ClaimTypes.Role, request.Role),
+            new(ClaimTypes.Role, user.Role),
         };
 
             var tokenDescriptor = new SecurityTokenDescriptor

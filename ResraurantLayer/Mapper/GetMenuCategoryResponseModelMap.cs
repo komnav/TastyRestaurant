@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.Dtos.MenuCategory.Responses;
+using AutoMapper;
 using Domain.Entities;
-using RestaurantLayer.Dtos.MenuCategory.Responses;
 
-namespace RestaurantLayer.Mapper
+namespace Application.Mapper
 {
     public class GetMenuCategoryResponseModelMap : Profile
     {

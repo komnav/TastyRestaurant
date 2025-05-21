@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.MenuCategory.Requests;
-using RestaurantLayer.Dtos.MenuCategory.Responses;
+using Application.Dtos;
+using Application.Dtos.MenuCategory.Requests;
+using Application.Dtos.MenuCategory.Responses;
 
 namespace ResraurantLayer.Services
 {
