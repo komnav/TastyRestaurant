@@ -6,9 +6,14 @@ namespace Infrastructure
 {
     public class DbInitilizer(ApplicationDbContext applicationDbContext)
     {
+        public bool SupportMigration { get; set; } = true;
+
         public void Init()
         {
-            applicationDbContext.Database.Migrate();
+            if (SupportMigration)
+            {
+                applicationDbContext.Database.Migrate();
+            }
 
             if (!applicationDbContext.Users.Any(s => s.Role == UserRoles.SuperAdmin))
             {
