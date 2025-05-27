@@ -1,11 +1,8 @@
-using System.Net;
 using System.Net.Http.Json;
 using Domain.Entities;
 using Domain.Enums;
-using FluentAssertions;
 
-
-namespace Restaurant.Tests.Integration;
+namespace Restaurant.Tests.Integration.TableTests;
 
 public class DeleteTableTests : BaseTest
 {

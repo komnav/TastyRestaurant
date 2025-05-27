@@ -1,10 +1,8 @@
 using System.Net.Http.Json;
 using Application.Dtos.Table.Requests;
-using Domain.Entities;
 using Domain.Enums;
 
-
-namespace Restaurant.Tests.Integration;
+namespace Restaurant.Tests.Integration.TableTests;
 
 public class UpdateTableTests : BaseTest
 {

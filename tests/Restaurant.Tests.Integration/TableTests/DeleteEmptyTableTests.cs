@@ -1,7 +1,7 @@
 using System.Net;
 using FluentAssertions;
 
-namespace Restaurant.Tests.Integration;
+namespace Restaurant.Tests.Integration.TableTests;
 
 public class DeleteEmptyTableTests : BaseTest
 {

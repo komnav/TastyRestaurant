@@ -4,7 +4,7 @@ using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
 
-namespace Restaurant.Tests.Integration;
+namespace Restaurant.Tests.Integration.TableTests;
 
 public class CreateTableTests : BaseTest
 {
