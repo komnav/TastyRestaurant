@@ -1,19 +1,18 @@
 using Infrastructure;
+using Infrastructure.Extensions;
+using Restaurant.WebApi.Extensions;
 using Restaurant.WebApi.Middleware;
-using Restaurant.WebApi.DI;
+using RestaurantLayer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddJwtTokenService();
+builder.JwtAuthServiceExtensions();
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-builder.AddDbContextToPostgres();
-
-builder.AddRepositoryLayer();
+builder.AddInfrastructureLayer();
 builder.AddServiceLayer();
-builder.AddDbContextLayer();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

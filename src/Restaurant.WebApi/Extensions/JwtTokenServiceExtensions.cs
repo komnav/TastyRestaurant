@@ -3,11 +3,11 @@ using Application.Dtos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Restaurant.WebApi.DI;
+namespace Restaurant.WebApi.Extensions;
 
 public static class JwtTokenServiceExtensions
 {
-    public static void AddJwtTokenService(this WebApplicationBuilder builder)
+    public static void JwtAuthServiceExtensions(this WebApplicationBuilder builder)
     {
         var config = builder.Configuration;
 

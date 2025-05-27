@@ -14,14 +14,14 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly ITableService _tableService = tableService;
 
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateTableResponseModel> Create([FromBody] CreateTableRequestModel request)
         {
             return await _tableService.CreateAsync(request);
         }
 
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
@@ -46,7 +46,7 @@ namespace Restaurant.WebApi.Controllers
             return await _tableService.GetAllAsync();
         }
 
-        //[Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, UpdateTableRequestModel request)
         {
