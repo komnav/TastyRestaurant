@@ -14,21 +14,24 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly ITableService _tableService = tableService;
 
-
-        // [Authorize(Roles = UserRoles.Admin)]
+        //[Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateTableResponseModel> Create([FromBody] CreateTableRequestModel request)
         {
             return await _tableService.CreateAsync(request);
         }
 
-
-        [Authorize(Roles = UserRoles.Admin)]
+        //[Authorize(Roles = UserRoles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            await _tableService.Delete(id);
-            return Ok();
+            var affectedCount = await _tableService.Delete(id);
+            if (affectedCount > 0)
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
 
         [HttpGet("{id}")]
@@ -43,13 +46,11 @@ namespace Restaurant.WebApi.Controllers
             return await _tableService.GetAllAsync();
         }
 
-
-        [Authorize(Roles = UserRoles.Admin)]
+        //[Authorize(Roles = UserRoles.Admin)]
         [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, UpdateTableRequestModel request)
         {
-            var updateTable = await _tableService.UpdateAsync(id, request);
-            return updateTable;
+            return await _tableService.UpdateAsync(id, request);
         }
     }
 }

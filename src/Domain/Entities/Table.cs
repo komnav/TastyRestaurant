@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public class Table
+    public class  Table
     {
         public int Id { get; set; }
         public int Number { get; set; }

@@ -12,14 +12,13 @@ public class CreateTableTests : BaseTest
     public async Task CreateTableEndpointTest()
     {
         //Arrange
-        var request = new CreateTableRequestModel(1, 10, TableType.Cabin);
+        var request = new CreateTableRequestModel(1234, 10, TableType.Cabin);
 
         //Act
-        var response = await _httpClient.PostAsJsonAsync("/Table", request);
+        var response = await HttpClient.PostAsJsonAsync("/Table", request);
 
         //Assert
         response.EnsureSuccessStatusCode();
-
         var table = await GetEntity<Table>(t =>
             t.Number == request.Number 
             && t.Capacity == request.Capacity

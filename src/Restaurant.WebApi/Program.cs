@@ -1,13 +1,5 @@
 using Infrastructure;
-using Infrastructure.Repositories;
-using ResraurantLayer.Services;
 using Restaurant.WebApi.Middleware;
-using Application.Dtos;
-using Application.Services;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Restaurant.WebApi.DI;
 
 var builder = WebApplication.CreateBuilder(args);
