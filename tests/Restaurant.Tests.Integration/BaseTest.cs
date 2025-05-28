@@ -7,21 +7,22 @@ namespace Restaurant.Tests.Integration;
 
 public abstract class BaseTest
 {
-    private CustomWebApplicationFactory<Program> _factory;
-    protected HttpClient _httpClient;
-    
+    private IntegrationTestWebAppFactory<Program> _factory;
+    protected HttpClient HttpClient;
+
     [SetUp]
-    public void SetUp()
+    public async Task SetUp()
     {
-        _factory = new CustomWebApplicationFactory<Program>();
-        _httpClient = _factory.CreateClient();
+        _factory = new IntegrationTestWebAppFactory<Program>();
+        HttpClient = _factory.CreateClient();
+        await _factory.InitializeAsync();
     }
 
     [TearDown]
-    public void TearDown()
+    public async Task TearDown()
     {
-        _httpClient.Dispose();
-        _factory.Dispose();
+        HttpClient.Dispose();
+        await _factory.DisposeAsync();
     }
 
     protected async Task<T?> GetEntity<T>(Expression<Func<T, bool>> expression) where T : class

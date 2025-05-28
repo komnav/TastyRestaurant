@@ -7,6 +7,7 @@ namespace Infrastructure.Repositories
     public class TableRepository(ApplicationDbContext dbContext) : ITableRepository
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
+
         public async Task<int> CreateAsync(Table table)
         {
             await _dbContext.Tables.AddAsync(table);
@@ -35,9 +36,9 @@ namespace Infrastructure.Repositories
             return await _dbContext.Tables
                 .Where(x => x.Id == id)
                 .ExecuteUpdateAsync(x => x
-                .SetProperty(x => x.Number, number)
-                .SetProperty(x => x.Capacity, capacity)
-                .SetProperty(x => x.Type, type
+                    .SetProperty(table => table.Number, number)
+                    .SetProperty(table => table.Capacity, capacity)
+                    .SetProperty(table => table.Type, type
                     ));
         }
     }

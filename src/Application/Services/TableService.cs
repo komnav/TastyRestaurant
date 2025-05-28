@@ -10,6 +10,7 @@ namespace Application.Services
     public class TableService(ITableRepository tableRepository) : ITableService
     {
         private readonly ITableRepository _tableRepository = tableRepository;
+
         public async Task<CreateTableResponseModel> CreateAsync(CreateTableRequestModel request)
         {
             var table = new Table
@@ -18,7 +19,6 @@ namespace Application.Services
                 Capacity = request.Capacity,
                 Type = request.Type
             };
-
             var rows = await _tableRepository.CreateAsync(table);
 
             if (rows <= 0)
@@ -29,9 +29,9 @@ namespace Application.Services
             return new CreateTableResponseModel(table.Id, table.Number, table.Capacity, table.Type);
         }
 
-        public Task<int> Delete(int id)
+        public async Task<int> Delete(int id)
         {
-            return _tableRepository.DeleteAsync(id);
+            return await _tableRepository.DeleteAsync(id);
         }
 
         public async Task<List<GetTableResponseModel>> GetAllAsync()
@@ -43,7 +43,7 @@ namespace Application.Services
                 table.Number,
                 table.Capacity,
                 table.Type
-                )).ToList();
+            )).ToList();
         }
 
         public async Task<GetTableResponseModel?> GetAsync(int id)
@@ -61,7 +61,6 @@ namespace Application.Services
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateTableRequestModel request)
         {
             var table = await _tableRepository.UpdateAsync(id, request.Number, request.Capacity, request.Type);
-
             return new UpdateResponseModel(table);
         }
     }
