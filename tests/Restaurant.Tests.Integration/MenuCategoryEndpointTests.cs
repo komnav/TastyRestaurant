@@ -30,17 +30,26 @@ public class MenuCategoryEndpointTests : BaseTest
         var requestForCreated = new CreateMenuCategoryRequestModel("18067-ium");
 
         //Act
-        var response = await HttpClient.PostAsJsonAsync("/MenuCategory", requestForCreated);
+        await HttpClient.PostAsJsonAsync("/MenuCategory", requestForCreated);
+        var response2 = await HttpClient.PostAsJsonAsync("/MenuCategory", requestForCreated);
 
         //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        response2.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 
     [Test]
     public async Task DeleteMenuCategoryEndpointTest()
     {
+        //Arrange
+        var menuCategory = new MenuCategory
+        {
+            Name = "Shula",
+            ParentId = 1
+        };
+        await CreateEntity(menuCategory);
+
         //Act
-        var response = await HttpClient.DeleteAsync("/MenuCategory/7");
+        var response = await HttpClient.DeleteAsync($"/MenuCategory/{menuCategory.Id}");
 
         //Assert
         response.EnsureSuccessStatusCode();
@@ -60,10 +69,17 @@ public class MenuCategoryEndpointTests : BaseTest
     public async Task UpdateMenuCategoryEndpointTest()
     {
         //Assert
+        var createMenuCategory = new MenuCategory
+        {
+            Name = "Shula",
+            ParentId = 1
+        };
+        await CreateEntity(createMenuCategory);
         var updateMenuCategory = new UpdateMenuCategoryRequestModel("10-um", 1);
 
         //Act
-        var responseForUpdate = await HttpClient.PutAsJsonAsync("/MenuCategory/1", updateMenuCategory);
+        var responseForUpdate =
+            await HttpClient.PutAsJsonAsync($"/MenuCategory/{createMenuCategory.Id}", updateMenuCategory);
 
         //Assert
         responseForUpdate.EnsureSuccessStatusCode();
@@ -78,33 +94,64 @@ public class MenuCategoryEndpointTests : BaseTest
     public async Task UpdateDuplicateMenuCategoryEndpointTest()
     {
         //Assert
-        var updateMenuCategory = new UpdateMenuCategoryRequestModel("10-um", 1);
+        var createMenuCategory = new MenuCategory
+        {
+            Name = "Shula",
+            ParentId = 1
+        };
+        await CreateEntity(createMenuCategory);
+        var createMenuCategory2 = new MenuCategory
+        {
+            Name = "Shula2",
+            ParentId = 1
+        };
+        await CreateEntity(createMenuCategory2);
+        var updateMenuCategory = new UpdateMenuCategoryRequestModel("11-um", 1);
 
         //Act
-        var responseForUpdate = await HttpClient.PutAsJsonAsync("/MenuCategory/2", updateMenuCategory);
+        var responseForUpdate =
+            await HttpClient.PutAsJsonAsync($"/MenuCategory/{createMenuCategory.Id}", updateMenuCategory);
+        var responseForUpdate2 =
+            await HttpClient.PutAsJsonAsync($"/MenuCategory/{createMenuCategory2.Id}", updateMenuCategory);
+
 
         //Assert
-        responseForUpdate.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        responseForUpdate2.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 
     [Test]
     public async Task GetMenuCategoryEndpointTest()
     {
+        //Assert
+        var createMenuCategory = new MenuCategory
+        {
+            Name = "Shula",
+            ParentId = 1
+        };
+        await CreateEntity(createMenuCategory);
         //Act
         var response = await HttpClient.GetFromJsonAsync<List<MenuCategory>>("/MenuCategory");
 
         //Assert
         response.Should().NotBeNull();
+        
     }
 
     [Test]
     public async Task GetMenuItemByIdEndpointTest()
     {
+        //Assert
+        var createMenuCategory = new MenuCategory
+        {
+            Name = "Shula",
+            ParentId = 1
+        };
+        await CreateEntity(createMenuCategory);
         //Act
-        var response = await HttpClient.GetFromJsonAsync<MenuCategory>("/MenuCategory/2");
+        var response = await HttpClient.GetFromJsonAsync<MenuCategory>($"/MenuCategory/{createMenuCategory.Id}");
 
         //Assert
-        response.ParentId.Should().Be(null);
-        response.Name.Should().Be("Test123");
+        response.ParentId.Should().Be(1);
+        response.Name.Should().Be("Shula");
     }
 }

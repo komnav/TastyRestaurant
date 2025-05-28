@@ -1,5 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Enums;
+﻿using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Application.Dtos;
@@ -9,7 +8,7 @@ using Application.Services;
 
 namespace Restaurant.WebApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("MenuItem")]
     public class MenuItemController(IMenuItemService menuItemService) : ControllerBase

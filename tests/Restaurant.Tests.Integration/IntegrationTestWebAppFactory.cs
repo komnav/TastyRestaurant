@@ -13,10 +13,10 @@ public class IntegrationTestWebAppFactory<TProgram> : WebApplicationFactory<TPro
 {
     private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
         .WithImage("postgres:latest")
-        .WithDatabase("Restourant")
+        .WithDatabase("RestaurantDbInContainer")
         .WithUsername("postgres")
         .WithPassword("admin")
-        .WithPortBinding(5432)
+        .WithPortBinding(5433)
         .Build();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
