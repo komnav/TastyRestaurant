@@ -19,16 +19,20 @@ namespace Restaurant.WebApi.Controllers
         [HttpPost]
         public async Task<CreateMenuCategoryResponseModel> Create([FromBody] CreateMenuCategoryRequestModel request)
         {
-            var createdCategory = await _menuCategoryService.CreateAsync(request.Name);
-            return createdCategory;
+            return await _menuCategoryService.CreateAsync(request.Name);
         }
 
         [Authorize(Roles = UserRoles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            await _menuCategoryService.DeleteAsync(id);
-            return Ok();
+            var affectedRows = await _menuCategoryService.DeleteAsync(id);
+            if (affectedRows > 0)
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
 
         [Authorize(Roles = UserRoles.Admin)]
