@@ -9,12 +9,11 @@ namespace Restaurant.Tests.Integration;
 
 public class MenuItemEndpointTests : BaseTest
 {
-    [Ignore("Success")]
     [Test]
     public async Task CreateMenuItemEndpointTest()
     {
         //Arrange
-        var requestForCreated = new CreateMenuItemRequestModel(1, 50, "Burger5");
+        var requestForCreated = new CreateMenuItemRequestModel(1, 50, "Burgdsfdser5");
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("/MenuItem", requestForCreated);
@@ -29,7 +28,6 @@ public class MenuItemEndpointTests : BaseTest
         menuItem.Should().NotBeNull();
     }
 
-    [Ignore("Success")]
     [Test]
     public async Task CreateDuplicateMenuItemEndpointTest()
     {
@@ -43,7 +41,6 @@ public class MenuItemEndpointTests : BaseTest
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 
-    [Ignore("Success")]
     [Test]
     public async Task DeleteMenuItemEndpointTest()
     {
@@ -54,7 +51,6 @@ public class MenuItemEndpointTests : BaseTest
         response.EnsureSuccessStatusCode();
     }
 
-    [Ignore("Success")]
     [Test]
     public async Task DeleteEmptyMenuItemEndpointTest()
     {
@@ -65,7 +61,6 @@ public class MenuItemEndpointTests : BaseTest
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
-    [Ignore("Success")]
     [Test]
     public async Task UpdateMenuItemEndpointTest()
     {
@@ -86,7 +81,6 @@ public class MenuItemEndpointTests : BaseTest
         menuItem.Should().NotBeNull();
     }
 
-    [Ignore("Success")]
     [Test]
     public async Task UpdateDuplicateMenuItemEndpointTest()
     {
@@ -99,5 +93,38 @@ public class MenuItemEndpointTests : BaseTest
 
         //Assert
         responseForUpdate2.StatusCode.Should().Be(HttpStatusCode.Conflict);
+    }
+
+    [Test]
+    public async Task GetMenuItemEndpointTest()
+    {
+        //Act
+        var response = await HttpClient.GetFromJsonAsync<List<MenuItem>>("/MenuItem");
+
+        //Assert
+        response.Should().NotBeNull();
+    }
+
+    [Test]
+    public async Task GetMenuItemByIdEndpointTest()
+    {
+        //Act
+        var response = await HttpClient.GetFromJsonAsync<MenuItem>("/MenuItem/12");
+
+        //Assert
+        response.CategoryId.Should().Be(1);
+        response.Price.Should().Be(34);
+        response.Name.Should().Be("Shurbo");
+        response.Status.Should().Be(MenuItemStatus.NotAvailable);
+    }
+
+    [Test]
+    public async Task GetMenuItemByCategoryIdEndpointTest()
+    {
+        //Act
+        var response = await HttpClient.GetFromJsonAsync<List<MenuItem>>("/MenuItem/GetByCategory/1");
+
+        //Assert
+        response.Should().NotBeNull();
     }
 }
