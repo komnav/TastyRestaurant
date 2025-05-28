@@ -9,7 +9,7 @@ namespace Restaurant.Tests.Integration;
 public class MenuItemEndpointTests : BaseTest
 {
     [Test]
-    public async Task CreateMenuItemByIdEndpointTest()
+    public async Task CreateMenuItemEndpointTest()
     {
         //Arrange
         var requestForCreated = new CreateMenuItemRequestModel(1, 50, "Burger5");
