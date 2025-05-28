@@ -41,7 +41,7 @@ public class TableEndpointTests : BaseTest
 
         table.Should().NotBeNull();
     }
-    
+
     [Test]
     public async Task DeleteEmptyTableEndpointTest()
     {
@@ -51,27 +51,26 @@ public class TableEndpointTests : BaseTest
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
-    
+
     [Test]
     public async Task DeleteTableEndpointTest()
     {
         //Arrange
         var table = new Table
         {
-            Id = 64,
             Number = 74,
             Capacity = 213,
             Type = TableType.Cabin
         };
-        
+
         //Act
         var create = await HttpClient.PostAsJsonAsync("/Table", table);
-        var response = await HttpClient.DeleteAsync("/Table/134");
-        
+        var response = await HttpClient.DeleteAsync("/Table/36");
+
         //Assert
         response.EnsureSuccessStatusCode();
     }
-    
+
     [Test]
     public async Task GetTableByIdEndpointTest()
     {
@@ -84,7 +83,7 @@ public class TableEndpointTests : BaseTest
         table.Capacity.Should().Be(10);
         table.Type.Should().Be(TableType.Table);
     }
-    
+
     [Test]
     public async Task GetTableEndpointTest()
     {
@@ -95,7 +94,7 @@ public class TableEndpointTests : BaseTest
         //Assert
         tables.Should().NotBeEmpty();
     }
-    
+
     [Test]
     public async Task UpdateTableEndpointTest()
     {
@@ -109,6 +108,4 @@ public class TableEndpointTests : BaseTest
         //Assert
         response2.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
-    
-    
 }
