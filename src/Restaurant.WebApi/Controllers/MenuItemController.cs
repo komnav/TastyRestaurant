@@ -27,8 +27,13 @@ namespace Restaurant.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _menuItemService.DeleteAsync(id);
-            return Ok();
+            var affectedRows = await _menuItemService.DeleteAsync(id);
+            if (affectedRows > 0)
+            {
+                return Ok();
+            }
+
+            return NotFound();
         }
 
         [Authorize(Roles = UserRoles.SuperAdmin)]
@@ -36,7 +41,6 @@ namespace Restaurant.WebApi.Controllers
         public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuItemRequestModel menuItem)
         {
             return await _menuItemService.UpdateAsync(id, menuItem);
-
         }
 
         [HttpGet("{id}")]

@@ -47,6 +47,7 @@ public class MenuItemEndpointTests : BaseTest
     [Test]
     public async Task DeleteMenuItemEndpointTest()
     {
+        //Arrange
         var menuItem = new MenuItem
         {
             CategoryId = 1,
@@ -60,5 +61,15 @@ public class MenuItemEndpointTests : BaseTest
 
         //Assert
         response.EnsureSuccessStatusCode();
+    }
+
+    [Test]
+    public async Task DeleteEmptyMenuItemEndpointTest()
+    {
+        //Act
+        var response = await HttpClient.DeleteAsync($"/MenuItem/123");
+
+        //Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }
