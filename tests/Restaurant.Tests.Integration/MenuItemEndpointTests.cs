@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using Application.Dtos.MenuItem.Requests;
 using Domain.Entities;
@@ -25,5 +26,18 @@ public class MenuItemEndpointTests : BaseTest
             && m.Name == requestForCreated.Name);
 
         menuItem.Should().NotBeNull();
+    }
+
+    [Test]
+    public async Task CreateDuplicateMenuItemEndpointTest()
+    {
+        //Arrange
+        var requestForCreated = new CreateMenuItemRequestModel(1, 50, "Burger5");
+
+        //Act
+        var response = await HttpClient.PostAsJsonAsync("/MenuItem", requestForCreated);
+
+        //Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 }
