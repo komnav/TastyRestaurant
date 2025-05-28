@@ -96,14 +96,27 @@ public class TableEndpointTests : BaseTest
     }
 
     [Test]
-    public async Task UpdateTableEndpointTest()
+    public async Task UpdateDuplicateTableEndpointTest()
     {
         //Arrange
         var request = new UpdateTableRequestModel(121, 213, TableType.Table);
 
         //Act
         var response = await HttpClient.PutAsJsonAsync("/Table/32", request);
-        var response2 = await HttpClient.PutAsJsonAsync("/Table/32", request);
+        var response2 = await HttpClient.PutAsJsonAsync("/Table/33", request);
+
+        //Assert
+        response2.StatusCode.Should().Be(HttpStatusCode.Conflict);
+    }
+
+    [Test]
+    public async Task UpdateTableEndpointTest()
+    {
+        //Arrange
+        var request = new UpdateTableRequestModel(121, 213, TableType.Table);
+
+        //Act
+        var response2 = await HttpClient.PutAsJsonAsync("/Table/33", request);
 
         //Assert
         response2.StatusCode.Should().Be(HttpStatusCode.Conflict);
