@@ -15,22 +15,27 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
 
-        var request = new CreateMenuItemRequestModel(menuCategory.Id, 50, "Burger5");
+        var createMenuItem = new MenuItem
+        {
+            CategoryId = menuCategory.Id,
+            Price = 132,
+            Name = "Burger"
+        };
 
         //Act
-        var response = await HttpClient.PostAsJsonAsync("MenuItem", request);
+        var response = await HttpClient.PostAsJsonAsync("MenuItem", createMenuItem);
 
         //Assert
         response.EnsureSuccessStatusCode();
         var menuItem = await GetEntity<MenuItem>(m =>
-            m.CategoryId == request.CategoryId
-            && m.Price == request.Price
-            && m.Name == request.Name);
+            m.CategoryId == createMenuItem.CategoryId
+            && m.Price == createMenuItem.Price
+            && m.Name == createMenuItem.Name);
 
         menuItem.Should().NotBeNull();
     }
@@ -41,15 +46,22 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
 
-        var request = new CreateMenuItemRequestModel(menuCategory.Id, 50, "Burger5");
+        var menuItem = new MenuItem
+        {
+            CategoryId = menuCategory.Id,
+            Price = 132,
+            Name = "Burger"
+        };
+        await CreateEntity(menuItem);
+
+        var request = new CreateMenuItemRequestModel(menuCategory.Id, 50, "Burger");
 
         //Act
-        await HttpClient.PostAsJsonAsync("/MenuItem", request);
         var response = await HttpClient.PostAsJsonAsync("/MenuItem", request);
 
         //Assert
@@ -62,7 +74,7 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -71,7 +83,7 @@ public class MenuItemEndpointTests : BaseTest
         {
             CategoryId = menuCategory.Id,
             Price = 132,
-            Name = "Burger5"
+            Name = "Burger"
         };
         await CreateEntity(menuItem);
 
@@ -98,7 +110,7 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -107,7 +119,7 @@ public class MenuItemEndpointTests : BaseTest
         {
             CategoryId = menuCategory.Id,
             Price = 132,
-            Name = "Burger5"
+            Name = "Burger"
         };
         await CreateEntity(menuItem);
         var updateMenuItem = new UpdateMenuItemRequestModel(1, 34, "pizza", MenuItemStatus.NotAvailable);
@@ -118,12 +130,13 @@ public class MenuItemEndpointTests : BaseTest
         //Assert
         responseForUpdate.EnsureSuccessStatusCode();
         var getMenuItem = await GetEntity<MenuItem>(t =>
+            t.Id == menuItem.Id &&
             t.CategoryId == updateMenuItem.CategoryId &&
             t.Price == updateMenuItem.Price &&
             t.Name == updateMenuItem.Name &&
             t.Status == updateMenuItem.Status);
 
-        menuItem.Should().NotBeNull();
+        getMenuItem.Should().NotBeNull();
     }
 
     [Test]
@@ -132,32 +145,30 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
 
-        var menuItem = new MenuItem
+        var firstMenuItem = new MenuItem
         {
             CategoryId = menuCategory.Id,
             Price = 132,
-            Name = "Burger5"
+            Name = "Burger"
         };
-        await CreateEntity(menuItem);
-        
-        var menuItem2 = new MenuItem
+        await CreateEntity(firstMenuItem);
+
+        var secondMenuItem = new MenuItem
         {
             CategoryId = menuCategory.Id,
             Price = 132,
-            Name = "Burger6"
+            Name = "KFC"
         };
-        await CreateEntity(menuItem2);
-        
-        var updateMenuItem = new UpdateMenuItemRequestModel(1, 34, "Shurbo", MenuItemStatus.NotAvailable);
+        await CreateEntity(secondMenuItem);
+        var updateMenuItem = new UpdateMenuItemRequestModel(1, 34, "KFC", MenuItemStatus.NotAvailable);
 
         //Act
-        await HttpClient.PutAsJsonAsync($"/MenuItem/{menuItem.Id}", updateMenuItem);
-        var responseForUpdate2 = await HttpClient.PutAsJsonAsync($"/MenuItem/{menuItem2.Id}", updateMenuItem);
+        var responseForUpdate2 = await HttpClient.PutAsJsonAsync($"/MenuItem/{firstMenuItem.Id}", updateMenuItem);
 
         //Assert
         responseForUpdate2.StatusCode.Should().Be(HttpStatusCode.Conflict);
@@ -169,7 +180,7 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -178,7 +189,7 @@ public class MenuItemEndpointTests : BaseTest
         {
             CategoryId = menuCategory.Id,
             Price = 132,
-            Name = "Burger5"
+            Name = "Burger"
         };
         await CreateEntity(menuItem);
 
@@ -195,7 +206,7 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -204,7 +215,7 @@ public class MenuItemEndpointTests : BaseTest
         {
             CategoryId = menuCategory.Id,
             Price = 132,
-            Name = "Burger5",
+            Name = "Burger",
             Status = MenuItemStatus.NotAvailable
         };
         await CreateEntity(menuItem);
@@ -213,10 +224,10 @@ public class MenuItemEndpointTests : BaseTest
         var response = await HttpClient.GetFromJsonAsync<MenuItem>($"/MenuItem/{menuItem.Id}");
 
         //Assert
-        response.CategoryId.Should().Be(1);
-        response.Price.Should().Be(132);
-        response.Name.Should().Be("Burger5");
-        response.Status.Should().Be(MenuItemStatus.NotAvailable);
+        response.CategoryId.Should().Be(menuItem.CategoryId);
+        response.Price.Should().Be(menuItem.Price);
+        response.Name.Should().Be(menuItem.Name);
+        response.Status.Should().Be(menuItem.Status);
     }
 
     [Test]
@@ -225,7 +236,7 @@ public class MenuItemEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -234,7 +245,7 @@ public class MenuItemEndpointTests : BaseTest
         {
             CategoryId = menuCategory.Id,
             Price = 132,
-            Name = "Burger5"
+            Name = "Burger"
         };
         await CreateEntity(menuItem);
 

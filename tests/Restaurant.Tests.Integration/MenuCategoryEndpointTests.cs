@@ -12,14 +12,20 @@ public class MenuCategoryEndpointTests : BaseTest
     public async Task CreateMenuCategoryEndpointTest()
     {
         //Arrange
-        var request = new CreateMenuCategoryRequestModel("18067-ium");
+        var request = new MenuCategory
+        {
+            Name = "1-um",
+            ParentId = 1
+        };
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("MenuCategory", request);
 
         //Assert
         response.EnsureSuccessStatusCode();
-        var menuCategory = await GetEntity<MenuCategory>(c => c.Name == request.Name);
+        var menuCategory = await GetEntity<MenuCategory>(c =>
+            c.Name == request.Name);
+
         menuCategory.Should().NotBeNull();
     }
 
@@ -27,14 +33,18 @@ public class MenuCategoryEndpointTests : BaseTest
     public async Task CreateDuplicateMenuCategoryEndpointTest()
     {
         //Arrange
-        var requestForCreated = new CreateMenuCategoryRequestModel("17-ium");
+        var menuCategory = new MenuCategory
+        {
+            Name = "1-um",
+            ParentId = 1
+        };
+        await CreateEntity(menuCategory);
 
         //Act
-        await HttpClient.PostAsJsonAsync("/MenuCategory", requestForCreated);
-        var response2 = await HttpClient.PostAsJsonAsync("/MenuCategory", requestForCreated);
+        var response = await HttpClient.PostAsJsonAsync("/MenuCategory", menuCategory);
 
         //Assert
-        response2.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 
     [Test]
@@ -43,7 +53,7 @@ public class MenuCategoryEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -71,19 +81,21 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
-        var updateMenuCategory = new UpdateMenuCategoryRequestModel("10-um", 1);
 
+        var updateMenuCategory = new UpdateMenuCategoryRequestModel("2-um", 1);
+        
         //Act
-        var responseForUpdate =
+        var response =
             await HttpClient.PutAsJsonAsync($"/MenuCategory/{createMenuCategory.Id}", updateMenuCategory);
 
         //Assert
-        responseForUpdate.EnsureSuccessStatusCode();
+        response.EnsureSuccessStatusCode();
         var menuCategory = await GetEntity<MenuCategory>(t =>
+            t.Id == createMenuCategory.Id &&
             t.Name == updateMenuCategory.Name &&
             t.ParentId == updateMenuCategory.ParentId);
 
@@ -96,27 +108,24 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
-        var createMenuCategory2 = new MenuCategory
+        var createSecondMenuCategory = new MenuCategory
         {
-            Name = "Shula2",
+            Name = "2-um",
             ParentId = 1
         };
-        await CreateEntity(createMenuCategory2);
-        var updateMenuCategory = new UpdateMenuCategoryRequestModel("11-um", 1);
+        await CreateEntity(createSecondMenuCategory);
+        var updateMenuCategory = new UpdateMenuCategoryRequestModel("1-um", 1);
 
         //Act
-        var responseForUpdate =
-            await HttpClient.PutAsJsonAsync($"/MenuCategory/{createMenuCategory.Id}", updateMenuCategory);
-        var responseForUpdate2 =
-            await HttpClient.PutAsJsonAsync($"/MenuCategory/{createMenuCategory2.Id}", updateMenuCategory);
-
+        var response =
+            await HttpClient.PutAsJsonAsync($"/MenuCategory/{createSecondMenuCategory.Id}", updateMenuCategory);
 
         //Assert
-        responseForUpdate2.StatusCode.Should().Be(HttpStatusCode.Conflict);
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 
     [Test]
@@ -125,7 +134,7 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
@@ -134,7 +143,6 @@ public class MenuCategoryEndpointTests : BaseTest
 
         //Assert
         response.Should().NotBeNull();
-        
     }
 
     [Test]
@@ -143,7 +151,7 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
@@ -151,7 +159,7 @@ public class MenuCategoryEndpointTests : BaseTest
         var response = await HttpClient.GetFromJsonAsync<MenuCategory>($"/MenuCategory/{createMenuCategory.Id}");
 
         //Assert
-        response.ParentId.Should().Be(1);
-        response.Name.Should().Be("Shula");
+        response.ParentId.Should().Be(createMenuCategory.ParentId);
+        response.Name.Should().Be(createMenuCategory.Name);
     }
 }
