@@ -87,7 +87,7 @@ public class MenuCategoryEndpointTests : BaseTest
         await CreateEntity(createMenuCategory);
 
         var updateMenuCategory = new UpdateMenuCategoryRequestModel("2-um", 1);
-        
+
         //Act
         var response =
             await HttpClient.PutAsJsonAsync($"/MenuCategory/{createMenuCategory.Id}", updateMenuCategory);
@@ -138,10 +138,12 @@ public class MenuCategoryEndpointTests : BaseTest
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
+
         //Act
         var response = await HttpClient.GetFromJsonAsync<List<MenuCategory>>("/MenuCategory");
 
         //Assert
+        response.Count.Should().Be(1);
         response.Should().NotBeNull();
     }
 
