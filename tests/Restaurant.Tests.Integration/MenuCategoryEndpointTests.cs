@@ -12,14 +12,20 @@ public class MenuCategoryEndpointTests : BaseTest
     public async Task CreateMenuCategoryEndpointTest()
     {
         //Arrange
-        var request = new CreateMenuCategoryRequestModel("18067-ium");
+        var request = new MenuCategory
+        {
+            Name = "1-um",
+            ParentId = 1
+        };
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("MenuCategory", request);
 
         //Assert
         response.EnsureSuccessStatusCode();
-        var menuCategory = await GetEntity<MenuCategory>(c => c.Name == request.Name);
+        var menuCategory = await GetEntity<MenuCategory>(c =>
+            c.Name == request.Name);
+
         menuCategory.Should().NotBeNull();
     }
 
@@ -29,7 +35,7 @@ public class MenuCategoryEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -47,7 +53,7 @@ public class MenuCategoryEndpointTests : BaseTest
         //Arrange
         var menuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(menuCategory);
@@ -75,11 +81,12 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
-        var updateMenuCategory = new UpdateMenuCategoryRequestModel("10-um", 1);
+
+        var updateMenuCategory = new UpdateMenuCategoryRequestModel("2-um", 1);
 
         //Act
         var response =
@@ -88,6 +95,7 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         response.EnsureSuccessStatusCode();
         var menuCategory = await GetEntity<MenuCategory>(t =>
+            t.Id == createMenuCategory.Id &&
             t.Name == updateMenuCategory.Name &&
             t.ParentId == updateMenuCategory.ParentId);
 
@@ -100,17 +108,17 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
         var createSecondMenuCategory = new MenuCategory
         {
-            Name = "Shula2",
+            Name = "2-um",
             ParentId = 1
         };
         await CreateEntity(createSecondMenuCategory);
-        var updateMenuCategory = new UpdateMenuCategoryRequestModel("Shula", 1);
+        var updateMenuCategory = new UpdateMenuCategoryRequestModel("1-um", 1);
 
         //Act
         var response =
@@ -126,14 +134,16 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
+
         //Act
         var response = await HttpClient.GetFromJsonAsync<List<MenuCategory>>("/MenuCategory");
 
         //Assert
+        response.Count.Should().Be(1);
         response.Should().NotBeNull();
     }
 
@@ -143,7 +153,7 @@ public class MenuCategoryEndpointTests : BaseTest
         //Assert
         var createMenuCategory = new MenuCategory
         {
-            Name = "Shula",
+            Name = "1-um",
             ParentId = 1
         };
         await CreateEntity(createMenuCategory);
@@ -151,7 +161,7 @@ public class MenuCategoryEndpointTests : BaseTest
         var response = await HttpClient.GetFromJsonAsync<MenuCategory>($"/MenuCategory/{createMenuCategory.Id}");
 
         //Assert
-        response.ParentId.Should().Be(1);
-        response.Name.Should().Be("Shula");
+        response.ParentId.Should().Be(createMenuCategory.ParentId);
+        response.Name.Should().Be(createMenuCategory.Name);
     }
 }
