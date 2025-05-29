@@ -27,7 +27,7 @@ public class MenuCategoryEndpointTests : BaseTest
     public async Task CreateDuplicateMenuCategoryEndpointTest()
     {
         //Arrange
-        var requestForCreated = new CreateMenuCategoryRequestModel("18067-ium");
+        var requestForCreated = new CreateMenuCategoryRequestModel("17-ium");
 
         //Act
         await HttpClient.PostAsJsonAsync("/MenuCategory", requestForCreated);

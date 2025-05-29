@@ -8,7 +8,7 @@ using Application.Services;
 
 namespace Restaurant.WebApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("MenuItem")]
     public class MenuItemController(IMenuItemService menuItemService) : ControllerBase
