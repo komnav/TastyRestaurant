@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using RestaurantLayer.Repositories;
 
 namespace Infrastructure.Repositories
 {

@@ -1,40 +1,35 @@
 using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RestaurantLayer.Repositories;
 
 namespace Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddInfrastructureLayer(this WebApplicationBuilder builder)
+    public static void AddInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        builder.AddDbContextToPostgres();
-        builder.AddDbContextLayer();
-        builder.AddRepositoryLayer();
+        services.AddDbContextLayer(configuration);
+        services.AddRepositoryLayer();
     }
 
-    private static void AddDbContextLayer(this WebApplicationBuilder builder)
+    private static void AddDbContextLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        builder.Services.AddScoped<DbInitilizer>();
+        services.AddScoped<DbInitilizer>();
+        services.AddDbContext<ApplicationDbContext>(options
+            => options.UseNpgsql(configuration.GetConnectionString("DbConnection")));
     }
 
-    private static void AddDbContextToPostgres(this WebApplicationBuilder builder)
+    private static void AddRepositoryLayer(this IServiceCollection services)
     {
-        builder.Services.AddDbContext<ApplicationDbContext>(options
-            => options.UseNpgsql(builder.Configuration.GetConnectionString("DbConnection")));
-    }
-
-    private static void AddRepositoryLayer(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
-        builder.Services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
-        builder.Services.AddScoped<ITableRepository, TableRepository>();
-        builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-        builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
-        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-        builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-        builder.Services.AddScoped<IUpdateRolesRepository, UpdateRolesRepository>();
+        services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+        services.AddScoped<IMenuCategoryRepository, MenuCategoryRepository>();
+        services.AddScoped<ITableRepository, TableRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
+        services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IUpdateRolesRepository, UpdateRolesRepository>();
     }
 }

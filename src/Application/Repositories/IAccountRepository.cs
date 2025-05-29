@@ -1,7 +1,6 @@
 ﻿using Domain.Entities;
-using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.Repositories
+namespace RestaurantLayer.Repositories
 {
     public interface IAccountRepository
     {

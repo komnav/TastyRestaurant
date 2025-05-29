@@ -11,7 +11,7 @@ builder.JwtAuthServiceExtensions();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-builder.AddInfrastructureLayer();
+builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.AddServiceLayer();
 
 builder.Services.AddEndpointsApiExplorer();

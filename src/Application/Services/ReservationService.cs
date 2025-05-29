@@ -4,12 +4,14 @@ using Application.Dtos.Reservation.Responses;
 using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
+using RestaurantLayer.Repositories;
 
 namespace Application.Services
 {
     public class ReservationService(IReservationRepository reservationRepository) : IReservationService
     {
         private readonly IReservationRepository _reservationRepository = reservationRepository;
+
         public async Task<CreateReservationResponseModel> CreateAsync(CreateReservationRequestModel request)
         {
             var addReservation = new Reservation
@@ -56,7 +58,7 @@ namespace Application.Services
                 getReservations.To,
                 getReservations.Notes,
                 getReservations.Status
-                )).ToList();
+            )).ToList();
         }
 
         public async Task<GetReservationResponseModel?> GetAsync(int id)
@@ -76,13 +78,14 @@ namespace Application.Services
                 getReservation.To,
                 getReservation.Notes,
                 getReservation.Status
-                );
+            );
         }
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateReservationRequestModel request)
         {
             var updateReservation = await _reservationRepository
-                .UpdateAsync(id, request.TableId, request.CustomerId, request.From, request.To, request.Notes, request.Status);
+                .UpdateAsync(id, request.TableId, request.CustomerId, request.From, request.To, request.Notes,
+                    request.Status);
 
             return new UpdateResponseModel(updateReservation);
         }

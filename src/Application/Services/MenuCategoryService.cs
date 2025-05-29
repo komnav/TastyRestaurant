@@ -4,15 +4,17 @@ using ResrautantLayer.Exceptions;
 using Application.Dtos;
 using Application.Dtos.MenuCategory.Requests;
 using Application.Dtos.MenuCategory.Responses;
+using RestaurantLayer.Repositories;
 
 
 namespace ResraurantLayer.Services
 {
     public class MenuCategoryService(
         IMenuCategoryRepository menuCategoryRepository
-        ) : IMenuCategoryService
+    ) : IMenuCategoryService
     {
         private readonly IMenuCategoryRepository _menuCategoryRepository = menuCategoryRepository;
+
         public async Task<CreateMenuCategoryResponseModel> CreateAsync(string name)
         {
             var menuCategory = new MenuCategory
@@ -42,7 +44,7 @@ namespace ResraurantLayer.Services
                 menuCategory.Id,
                 menuCategory.Name,
                 menuCategory.ParentId
-                )).ToList();
+            )).ToList();
         }
 
         public async Task<GetMenuCategoryResponseModel?> GetAsync(int id)

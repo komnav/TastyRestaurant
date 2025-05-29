@@ -4,12 +4,14 @@ using Application.Dtos.Order.Responses;
 using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
+using RestaurantLayer.Repositories;
 
 namespace Application.Services
 {
     public class OrderService(IOrderRepository orderRepository) : IOrderService
     {
         private readonly IOrderRepository _orderRepository = orderRepository;
+
         public async Task<CreateOrderResponseModel> CreateAsync(CreateOrderRequestModel request)
         {
             var addOrder = new Order
@@ -25,6 +27,7 @@ namespace Application.Services
             {
                 throw new ResourceWasNotCreatedException(nameof(addOrder));
             }
+
             return new CreateOrderResponseModel(addOrder.Id, addOrder.TableId, addOrder.DateTime, addOrder.Status);
         }
 
@@ -42,7 +45,7 @@ namespace Application.Services
                 getOrders.TableId,
                 getOrders.DateTime,
                 getOrders.Status
-                )).ToList();
+            )).ToList();
         }
 
         public async Task<GetOrderResponseModel?> GetAsync(int id)
@@ -59,7 +62,7 @@ namespace Application.Services
                 getOrder.TableId,
                 getOrder.DateTime,
                 getOrder.Status
-                );
+            );
         }
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateOrderRequestModel request)
