@@ -4,6 +4,7 @@ using Application.Dtos.Table.Responses;
 using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
+using RestaurantLayer.Repositories;
 
 namespace Application.Services
 {

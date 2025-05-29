@@ -5,12 +5,14 @@ using Application.Dtos;
 using Application.Dtos.MenuItem.Requests;
 using Application.Dtos.MenuItem.Response;
 using Application.Services;
+using RestaurantLayer.Repositories;
 
 namespace ResraurantLayer.Services
 {
     public class MenuItemService(IMenuItemRepository menuItemRepository) : IMenuItemService
     {
         private readonly IMenuItemRepository _menuItemRepository = menuItemRepository;
+
         public async Task<CreateMenuItemResponseModel> CreateAsync(CreateMenuItemRequestModel request)
         {
             var menuItem = new MenuItem
@@ -28,6 +30,7 @@ namespace ResraurantLayer.Services
 
             return new CreateMenuItemResponseModel(menuItem.CategoryId, menuItem.Price, menuItem.Name, menuItem.Status);
         }
+
         public async Task<int> DeleteAsync(int id)
         {
             return await _menuItemRepository.DeleteAsync(id);
@@ -43,7 +46,7 @@ namespace ResraurantLayer.Services
                 menuItem.Price,
                 menuItem.Name,
                 menuItem.Status
-                )).ToList();
+            )).ToList();
         }
 
         public async Task<GetMenuItemResponseModel?> GetAsync(int id)
@@ -54,7 +57,9 @@ namespace ResraurantLayer.Services
             {
                 return null;
             }
-            return new GetMenuItemResponseModel(id, menuItem.CategoryId, menuItem.Price, menuItem.Name, menuItem.Status);
+
+            return new GetMenuItemResponseModel(id, menuItem.CategoryId, menuItem.Price, menuItem.Name,
+                menuItem.Status);
         }
 
         public async Task<List<GetMenuItemResponseModel>> GetByCategoryAsync(int categoryId)
@@ -62,17 +67,18 @@ namespace ResraurantLayer.Services
             var menuItems = await _menuItemRepository.GetByCategoryAsync(categoryId);
 
             return menuItems.Select(menuItem => new GetMenuItemResponseModel(
-                 menuItem.Id,
+                menuItem.Id,
                 menuItem.CategoryId,
                 menuItem.Price,
                 menuItem.Name,
                 menuItem.Status
-                )).ToList();
+            )).ToList();
         }
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuItemRequestModel request)
         {
-            var rows = await _menuItemRepository.UpdateAsync(id, request.CategoryId, request.Price, request.Name, request.Status);
+            var rows = await _menuItemRepository.UpdateAsync(id, request.CategoryId, request.Price, request.Name,
+                request.Status);
 
             return new UpdateResponseModel(rows);
         }

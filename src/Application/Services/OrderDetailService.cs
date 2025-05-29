@@ -4,12 +4,14 @@ using Application.Dtos.OrderDetail.Responses;
 using Domain.Entities;
 using Infrastructure.Repositories;
 using ResrautantLayer.Exceptions;
+using RestaurantLayer.Repositories;
 
 namespace Application.Services
 {
     public class OrderDetailService(IOrderDetailRepository orderDetailRepository) : IOrderDetailService
     {
         private readonly IOrderDetailRepository _orderDetailRepository = orderDetailRepository;
+
         public async Task<CreateOrderDetailResponseModel> CreateAsync(CreateOrderDetailRequestModel request)
         {
             var addOrderDetail = new OrderDetail
@@ -28,7 +30,8 @@ namespace Application.Services
                 throw new ResourceWasNotCreatedException(nameof(addOrderDetail));
             }
 
-            return new CreateOrderDetailResponseModel(addOrderDetail.Id, addOrderDetail.MenuItemId, addOrderDetail.OrderId, addOrderDetail.Quantity, addOrderDetail.Price, addOrderDetail.Status);
+            return new CreateOrderDetailResponseModel(addOrderDetail.Id, addOrderDetail.MenuItemId,
+                addOrderDetail.OrderId, addOrderDetail.Quantity, addOrderDetail.Price, addOrderDetail.Status);
         }
 
         public async Task<int> DeleteAsync(int id)
@@ -47,7 +50,7 @@ namespace Application.Services
                 getOrderDetails.Quantity,
                 getOrderDetails.Price,
                 getOrderDetails.Status
-                )).ToList();
+            )).ToList();
         }
 
         public async Task<GetOrderDetailResponseModel?> GetAsync(int id)
@@ -70,7 +73,8 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateOrderDetailRequestModel request)
         {
-            var updateOrderDetail = await _orderDetailRepository.UpdateAsync(id, request.OrderId, request.MenuItemId, request.Quantity, request.Price, request.Status);
+            var updateOrderDetail = await _orderDetailRepository.UpdateAsync(id, request.OrderId, request.MenuItemId,
+                request.Quantity, request.Price, request.Status);
 
             return new UpdateResponseModel(updateOrderDetail);
         }

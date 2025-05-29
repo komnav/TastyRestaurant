@@ -14,8 +14,8 @@ public abstract class BaseTest
     public async Task SetUp()
     {
         _factory = new IntegrationTestWebAppFactory<Program>();
-        HttpClient = _factory.CreateClient();
         await _factory.InitializeAsync();
+        HttpClient = _factory.CreateClient();
     }
 
     [TearDown]
@@ -31,6 +31,17 @@ public abstract class BaseTest
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             return await dbContext.Set<T>().FirstOrDefaultAsync(expression);
+        }
+    }
+
+    protected async Task<T?> CreateEntity<T>(T entity) where T : class
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await dbContext.Set<T>().AddAsync(entity);
+            await dbContext.SaveChangesAsync();
+            return entity;
         }
     }
 }
