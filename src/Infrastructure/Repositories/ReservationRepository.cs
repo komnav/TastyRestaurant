@@ -33,7 +33,8 @@ namespace Infrastructure.Repositories
         }
 
         public async Task<int> UpdateAsync
-            (int id, int tableId, int customerId, DateTimeOffset from, DateTimeOffset to, string? notes, ReservationStatus status)
+        (int id, int tableId, int customerId, DateTimeOffset from, DateTimeOffset to, string? notes,
+            ReservationStatus status)
         {
             return await _dbContext.Reservations
                 .Where(x => x.Id == id)
@@ -48,12 +49,11 @@ namespace Infrastructure.Repositories
 
         public async Task<int> CancelReservation(int reservationId)
         {
-            return await _dbContext.Reservations
-                .Where(x => x.Id == reservationId)
-                .ExecuteDeleteAsync();
+            return await DeleteAsync(reservationId);
         }
 
-        public async Task<List<Reservation>> GetExistingReservations(int tableId, DateTimeOffset from, DateTimeOffset to)
+        public async Task<List<Reservation>> GetExistingReservations(int tableId, DateTimeOffset from,
+            DateTimeOffset to)
         {
             return await _dbContext.Reservations.Where(x => x.TableId == tableId && x.From == from && x.To == to)
                 .ToListAsync();

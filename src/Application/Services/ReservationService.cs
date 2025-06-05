@@ -20,12 +20,31 @@ namespace Application.Services
             {
                 UserId = request.CustomerId,
                 TableId = request.TableId,
-                From = request.From.AddSeconds(-request.From.Second),
-                To = request.To.AddSeconds(-request.To.Second),
+                From = new DateTimeOffset
+                (
+                    request.From.Year,
+                    request.From.Month,
+                    request.From.Day,
+                    request.From.Hour,
+                    request.From.Minute,
+                    0,
+                    request.From.Offset
+                ),
+                To = new DateTimeOffset
+                (
+                    request.To.Year,
+                    request.To.Month,
+                    request.To.Day,
+                    request.To.Hour,
+                    request.To.Minute,
+                    0,
+                    request.To.Offset
+                ),
                 Notes = request.Notes
             };
 
-            var checkForDuplicate = await GetExistingReservations(request.TableId, request.From, request.To);
+            var checkForDuplicate =
+                await GetExistingReservations(addReservation.TableId, addReservation.From, addReservation.To);
             if (!checkForDuplicate)
             {
                 throw new ResourceAlreadyExist(nameof(addReservation));
@@ -42,8 +61,26 @@ namespace Application.Services
                 addReservation.Id,
                 addReservation.TableId,
                 addReservation.UserId,
-                addReservation.From.AddSeconds(-addReservation.From.Second),
-                addReservation.To.AddSeconds(-addReservation.To.Second),
+                new DateTimeOffset
+                (
+                    addReservation.From.Year,
+                    addReservation.From.Month,
+                    addReservation.From.Day,
+                    addReservation.From.Hour,
+                    addReservation.From.Minute,
+                    0,
+                    request.From.Offset
+                ),
+                new DateTimeOffset
+                (
+                    addReservation.To.Year,
+                    addReservation.To.Month,
+                    addReservation.To.Day,
+                    addReservation.To.Hour,
+                    addReservation.To.Minute,
+                    0,
+                    request.To.Offset
+                ),
                 addReservation.Notes,
                 addReservation.Status);
         }
@@ -61,8 +98,26 @@ namespace Application.Services
                 getReservations.Id,
                 getReservations.TableId,
                 getReservations.UserId,
-                getReservations.From.AddSeconds(-getReservations.From.Second),
-                getReservations.To.AddSeconds(-getReservations.To.Second),
+                new DateTimeOffset
+                (
+                    getReservations.From.Year,
+                    getReservations.From.Month,
+                    getReservations.From.Day,
+                    getReservations.From.Hour,
+                    getReservations.From.Minute,
+                    0,
+                    getReservations.From.Offset
+                ),
+                new DateTimeOffset
+                (
+                    getReservations.To.Year,
+                    getReservations.To.Month,
+                    getReservations.To.Day,
+                    getReservations.To.Hour,
+                    getReservations.To.Minute,
+                    0,
+                    getReservations.To.Offset
+                ),
                 getReservations.Notes,
                 getReservations.Status
             )).ToList();
@@ -92,9 +147,26 @@ namespace Application.Services
             return new GetReservationResponseModel(
                 getReservation.Id,
                 getReservation.TableId,
-                getReservation.UserId,
-                getReservation.From.AddSeconds(-getReservation.From.Second),
-                getReservation.To.AddSeconds(-getReservation.To.Second),
+                getReservation.UserId, new DateTimeOffset
+                (
+                    getReservation.From.Year,
+                    getReservation.From.Month,
+                    getReservation.From.Day,
+                    getReservation.From.Hour,
+                    getReservation.From.Minute,
+                    0,
+                    getReservation.From.Offset
+                ),
+                new DateTimeOffset
+                (
+                    getReservation.To.Year,
+                    getReservation.To.Month,
+                    getReservation.To.Day,
+                    getReservation.To.Hour,
+                    getReservation.To.Minute,
+                    0,
+                    getReservation.To.Offset
+                ),
                 getReservation.Notes,
                 getReservation.Status
             );
@@ -113,8 +185,26 @@ namespace Application.Services
                     id,
                     request.TableId,
                     request.CustomerId,
-                    request.From.AddSeconds(-request.From.Second),
-                    request.To.AddSeconds(-request.To.Second), request.Notes,
+                    new DateTimeOffset
+                    (
+                        request.From.Year,
+                        request.From.Month,
+                        request.From.Day,
+                        request.From.Hour,
+                        request.From.Minute,
+                        0,
+                        request.From.Offset
+                    ),
+                    new DateTimeOffset(
+                        request.To.Year,
+                        request.To.Month,
+                        request.To.Day,
+                        request.To.Hour,
+                        request.To.Minute,
+                        0,
+                        request.To.Offset
+                    ),
+                    request.Notes,
                     request.Status);
             if (updateReservation <= 0)
             {
