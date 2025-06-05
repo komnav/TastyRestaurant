@@ -46,7 +46,7 @@ public abstract class BaseTest
         }
     }
 
-    protected async Task<int> CreateUser(Contact contact, User entity)
+    protected async Task<int> CreateUser(Contact contact, User? entity)
     {
         using (var scope = _factory.Services.CreateScope())
         {
