@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Infrastructure.Repositories;
 using Application.Dtos;
 using Application.Dtos.MenuCategory.Requests;
 using Application.Dtos.MenuCategory.Responses;

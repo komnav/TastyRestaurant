@@ -6,7 +6,9 @@ namespace Application.Services
 {
     public interface IRolesService
     {
-        Task<CreateRolesResponseModel> CreateAsync(CreateRolesRequestModel requestModel);
         Task<UpdateResponseModel> UpdateAsync(UpdateRolesRequestModel request);
+        Task<int> DeleteAsync(string userName, string roles);
+        Task<GetRoleResponseModel> GetUserRoleByNameAsync(string role);
+        Task<List<GetRoleResponseModel>> GetUsersAsync();
     }
 }

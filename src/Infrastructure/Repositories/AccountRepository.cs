@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using RestaurantLayer.Repositories;
 
@@ -8,7 +7,7 @@ namespace Infrastructure.Repositories
     public class AccountRepository(ApplicationDbContext dbContext) : IAccountRepository
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
-        public async Task<int> CreateAsync(Contact contact, User user)
+        public async Task<int> CreateAsync(Contact contact, User? user)
         {
             await _dbContext.Contacts.AddAsync(contact);
 
@@ -17,7 +16,7 @@ namespace Infrastructure.Repositories
             return await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<User> GetAsync(string username, string password)
+        public async Task<User?> GetAsync(string username, string password)
         {
             return await _dbContext.Users
                 .FirstOrDefaultAsync(s => s.UserName.ToLower() == username.ToLower() && s.Password == password);

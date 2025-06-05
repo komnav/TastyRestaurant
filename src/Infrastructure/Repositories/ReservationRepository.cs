@@ -49,7 +49,10 @@ namespace Infrastructure.Repositories
 
         public async Task<int> CancelReservation(int reservationId)
         {
-            return await DeleteAsync(reservationId);
+            return await _dbContext.Reservations
+                .Where(x => x.Id == reservationId)
+                .ExecuteUpdateAsync(x => x
+                    .SetProperty(x => x.Status, ReservationStatus.Cancelled));
         }
 
         public async Task<List<Reservation>> GetExistingReservations(int tableId, DateTimeOffset from,

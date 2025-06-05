@@ -26,7 +26,7 @@ namespace Restaurant.WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var effectedRows = await _reservationService.DeletAsync(id);
+            var effectedRows = await _reservationService.DeleteAsync(id);
             if (effectedRows > 0)
                 return Ok();
             return NotFound();
@@ -52,7 +52,7 @@ namespace Restaurant.WebApi.Controllers
             return await _reservationService.UpdateAsync(id, request);
         }
 
-        [HttpDelete("cancel/{id}")]
+        [HttpPut("cancel/{id}")]
         public async Task<IActionResult> Cancel(int id)
         {
             var effectedRows = await _reservationService.CancelReservationAsync(id);

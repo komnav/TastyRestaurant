@@ -41,13 +41,7 @@ namespace Restaurant.WebApi.Middleware
             var code = HttpStatusCode.InternalServerError;
             var message = _environment.IsProduction() ? "Internal server error" : GetMessageDetails(exception);
 
-            if (IsPostgresDuplicateException(exception))
-            {
-                code = HttpStatusCode.Conflict;
-                message = "Duplicate data was added.";
-            }
-
-            if (exception is ResourceAlreadyExist)
+            if (IsPostgresDuplicateException(exception) || exception is ResourceAlreadyExistException)
             {
                 code = HttpStatusCode.Conflict;
                 message = "Duplicate data was added.";

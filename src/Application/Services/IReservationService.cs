@@ -8,10 +8,9 @@ namespace Application.Services
     {
         Task<CreateReservationResponseModel> CreateAsync(CreateReservationRequestModel request);
         Task<UpdateResponseModel> UpdateAsync(int id, UpdateReservationRequestModel request);
-        Task<int> DeletAsync(int id);
+        Task<int> DeleteAsync(int id);
         Task<GetReservationResponseModel?> GetAsync(int id);
         Task<List<GetReservationResponseModel>> GetAllAsync();
         Task<int> CancelReservationAsync(int reservationId);
-        Task<bool> GetExistingReservations(int tableId, DateTimeOffset from, DateTimeOffset to);
     }
 }

@@ -1,24 +1,40 @@
 ﻿using Application.Dtos;
 using Application.Dtos.Role.Requests;
-using Infrastructure.Repositories;
 using RestaurantLayer.Dtos.Role.Responses;
+using RestaurantLayer.Repositories;
 
 namespace Application.Services
 {
-    public class RolesService(IUpdateRolesRepository updateRolesRepository) : IRolesService
+    public class RolesService(IRolesRepository rolesRepository) : IRolesService
     {
-        private readonly IUpdateRolesRepository _updateRolesRepository = updateRolesRepository;
-
-        public Task<CreateRolesResponseModel> CreateAsync(CreateRolesRequestModel requestModel)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly IRolesRepository _rolesRepository = rolesRepository;
 
         public async Task<UpdateResponseModel> UpdateAsync(UpdateRolesRequestModel request)
         {
-            var updateRoles = await _updateRolesRepository.UpdateAsync(request.UserName, request.Role);
+            var updateRoles = await _rolesRepository.UpdateAsync(request.UserName, request.Role);
 
             return new UpdateResponseModel(updateRoles);
+        }
+
+        public async Task<int> DeleteAsync(string userName, string roles)
+        {
+            return await _rolesRepository.DeleteAsync(userName, roles);
+        }
+
+        public async Task<GetRoleResponseModel> GetUserRoleByNameAsync(string role)
+        {
+            var getRole = await _rolesRepository.GetUserRoleByNameAsync(role);
+            if (getRole == null)
+                return null!;
+            return new GetRoleResponseModel(getRole.Role);
+        }
+
+        public async Task<List<GetRoleResponseModel>> GetUsersAsync()
+        {
+            var getRole = await _rolesRepository.GetUsersAsync();
+            return getRole.Select(role => new GetRoleResponseModel(
+                role.Role
+            )).ToList();
         }
     }
 }

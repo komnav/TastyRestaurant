@@ -43,7 +43,7 @@ namespace Application.Services
             return new AuthResponse { Token = token };
         }
 
-        public string CreateToken(User user)
+        public string CreateToken(User? user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_jwtSettings.Key);

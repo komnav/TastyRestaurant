@@ -15,7 +15,7 @@ namespace Infrastructure
         }
 
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<User?> Users { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<MenuCategory> MenuCategories { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }

@@ -2,7 +2,6 @@
 using Application.Dtos.Table.Requests;
 using Application.Dtos.Table.Responses;
 using Domain.Entities;
-using Infrastructure.Repositories;
 using RestaurantLayer.Exceptions;
 using RestaurantLayer.Repositories;
 
