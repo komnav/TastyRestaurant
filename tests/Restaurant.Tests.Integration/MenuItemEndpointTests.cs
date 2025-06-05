@@ -93,7 +93,7 @@ public class MenuItemEndpointTests : BaseTest
         //Assert
         response.EnsureSuccessStatusCode();
         var findMenuItem = await GetEntity<MenuItem>(x => x.Id == menuItem.Id);
-        findMenuItem.Should().NotBeNull();
+        findMenuItem.Should().BeNull();
     }
 
     [Test]
