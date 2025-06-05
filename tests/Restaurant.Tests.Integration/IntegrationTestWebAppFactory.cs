@@ -16,12 +16,13 @@ public class IntegrationTestWebAppFactory<TProgram> : WebApplicationFactory<TPro
         .WithDatabase("RestaurantDbInContainer")
         .WithUsername("postgres")
         .WithPassword("admin")
-        .WithPortBinding(5433)
+        .WithPortBinding(5433, 5432)
         .Build();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         _dbContainer.StartAsync().GetAwaiter().GetResult();
+        var port = _dbContainer.GetMappedPublicPort(5432);
         builder.ConfigureTestServices(services =>
         {
             var descriptor = services

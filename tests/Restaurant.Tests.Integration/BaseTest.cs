@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Domain.Entities;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,17 @@ public abstract class BaseTest
             await dbContext.Set<T>().AddAsync(entity);
             await dbContext.SaveChangesAsync();
             return entity;
+        }
+    }
+
+    protected async Task<int> CreateUser(Contact contact, User entity)
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            await dbContext.Contacts.AddAsync(contact);
+            await dbContext.Users.AddAsync(entity);
+            return await dbContext.SaveChangesAsync();
         }
     }
 }
