@@ -14,8 +14,7 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly IReservationService _reservationService = reservationService;
 
-
-        [Authorize(Roles = UserRoles.Admin)]
+        //[Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateReservationResponseModel> Create(CreateReservationRequestModel request)
         {
@@ -23,11 +22,14 @@ namespace Restaurant.WebApi.Controllers
         }
 
 
-        [Authorize(Roles = UserRoles.Admin)]
-        [HttpDelete]
-        public async Task<int> Delete(int id)
+        //[Authorize(Roles = UserRoles.Admin)]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            return await _reservationService.DeletAsync(id);
+            var effectedRows = await _reservationService.DeletAsync(id);
+            if (effectedRows > 0)
+                return Ok();
+            return NotFound();
         }
 
         [HttpGet]
@@ -43,11 +45,20 @@ namespace Restaurant.WebApi.Controllers
         }
 
 
-        [Authorize(Roles = UserRoles.Admin)]
-        [HttpPut]
+        //[Authorize(Roles = UserRoles.Admin)]
+        [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, UpdateReservationRequestModel request)
         {
             return await _reservationService.UpdateAsync(id, request);
+        }
+
+        [HttpDelete("cancel/{id}")]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var effectedRows = await _reservationService.CancelReservationAsync(id);
+            if (effectedRows > 0)
+                return Ok();
+            return NotFound();
         }
     }
 }

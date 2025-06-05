@@ -1,4 +1,4 @@
-﻿namespace ResrautantLayer.Exceptions
+﻿namespace RestaurantLayer.Exceptions
 {
     public class ResourceWasNotCreatedException : Exception
     {

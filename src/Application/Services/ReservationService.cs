@@ -1,14 +1,16 @@
 ﻿using Application.Dtos;
 using Application.Dtos.Reservation.Requests;
 using Application.Dtos.Reservation.Responses;
+using Application.Exceptions;
 using Domain.Entities;
-using Infrastructure.Repositories;
-using ResrautantLayer.Exceptions;
+using RestaurantLayer.Exceptions;
 using RestaurantLayer.Repositories;
 
 namespace Application.Services
 {
-    public class ReservationService(IReservationRepository reservationRepository) : IReservationService
+    public class ReservationService(
+        IReservationRepository reservationRepository)
+        : IReservationService
     {
         private readonly IReservationRepository _reservationRepository = reservationRepository;
 
@@ -18,11 +20,16 @@ namespace Application.Services
             {
                 UserId = request.CustomerId,
                 TableId = request.TableId,
-                From = request.From,
-                To = request.To,
-                Notes = request.Notes,
-                Status = request.Status
+                From = request.From.AddSeconds(-request.From.Second),
+                To = request.To.AddSeconds(-request.To.Second),
+                Notes = request.Notes
             };
+
+            var checkForDuplicate = await GetExistingReservations(request.TableId, request.From, request.To);
+            if (!checkForDuplicate)
+            {
+                throw new ResourceAlreadyExist(nameof(addReservation));
+            }
 
             var rows = await _reservationRepository.CreateAsync(addReservation);
 
@@ -35,8 +42,8 @@ namespace Application.Services
                 addReservation.Id,
                 addReservation.TableId,
                 addReservation.UserId,
-                addReservation.From,
-                addReservation.To,
+                addReservation.From.AddSeconds(-addReservation.From.Second),
+                addReservation.To.AddSeconds(-addReservation.To.Second),
                 addReservation.Notes,
                 addReservation.Status);
         }
@@ -54,11 +61,23 @@ namespace Application.Services
                 getReservations.Id,
                 getReservations.TableId,
                 getReservations.UserId,
-                getReservations.From,
-                getReservations.To,
+                getReservations.From.AddSeconds(-getReservations.From.Second),
+                getReservations.To.AddSeconds(-getReservations.To.Second),
                 getReservations.Notes,
                 getReservations.Status
             )).ToList();
+        }
+
+        public async Task<int> CancelReservationAsync(int reservationId)
+        {
+            return await _reservationRepository.CancelReservation(reservationId);
+        }
+
+        public async Task<bool> GetExistingReservations(int tableId, DateTimeOffset from,
+            DateTimeOffset to)
+        {
+            var checkExistingReservations = await _reservationRepository.GetExistingReservations(tableId, from, to);
+            return checkExistingReservations.Count == 0;
         }
 
         public async Task<GetReservationResponseModel?> GetAsync(int id)
@@ -74,8 +93,8 @@ namespace Application.Services
                 getReservation.Id,
                 getReservation.TableId,
                 getReservation.UserId,
-                getReservation.From,
-                getReservation.To,
+                getReservation.From.AddSeconds(-getReservation.From.Second),
+                getReservation.To.AddSeconds(-getReservation.To.Second),
                 getReservation.Notes,
                 getReservation.Status
             );
@@ -83,9 +102,24 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateReservationRequestModel request)
         {
+            var checkForDuplicate = await GetExistingReservations(request.TableId, request.From, request.To);
+            if (!checkForDuplicate)
+            {
+                throw new ResourceAlreadyExist(nameof(request));
+            }
+
             var updateReservation = await _reservationRepository
-                .UpdateAsync(id, request.TableId, request.CustomerId, request.From, request.To, request.Notes,
+                .UpdateAsync(
+                    id,
+                    request.TableId,
+                    request.CustomerId,
+                    request.From.AddSeconds(-request.From.Second),
+                    request.To.AddSeconds(-request.To.Second), request.Notes,
                     request.Status);
+            if (updateReservation <= 0)
+            {
+                throw new ResourceWasNotUpdatedException(nameof(updateReservation));
+            }
 
             return new UpdateResponseModel(updateReservation);
         }

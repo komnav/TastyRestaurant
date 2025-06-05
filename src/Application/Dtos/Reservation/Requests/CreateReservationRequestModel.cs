@@ -5,8 +5,8 @@ namespace Application.Dtos.Reservation.Requests;
 public record CreateReservationRequestModel(
     int TableId,
     int CustomerId,
-    DateTime From,
-    DateTime To,
+    DateTimeOffset From,
+    DateTimeOffset To,
     string? Notes,
     ReservationStatus Status
     );

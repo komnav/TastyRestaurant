@@ -3,6 +3,7 @@ using ResraurantLayer.Dtos;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using RestaurantLayer.Exceptions;
 
 
 namespace Restaurant.WebApi.Middleware
@@ -12,6 +13,7 @@ namespace Restaurant.WebApi.Middleware
         private readonly RequestDelegate _next;
         private readonly IWebHostEnvironment _environment;
         private readonly ILogger<ExceptionHandlerMiddleware> _logger;
+
         public ExceptionHandlerMiddleware(
             RequestDelegate next,
             IWebHostEnvironment environment,
@@ -20,7 +22,6 @@ namespace Restaurant.WebApi.Middleware
             _next = next;
             _environment = environment;
             _logger = logger;
-
         }
 
         public async Task Invoke(HttpContext context)
@@ -46,6 +47,12 @@ namespace Restaurant.WebApi.Middleware
                 message = "Duplicate data was added.";
             }
 
+            if (exception is ResourceAlreadyExist)
+            {
+                code = HttpStatusCode.Conflict;
+                message = "Duplicate data was added.";
+            }
+
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
 
@@ -62,13 +69,15 @@ namespace Restaurant.WebApi.Middleware
         {
             while (exception != null)
             {
-                if (exception is PostgresException postgresException && postgresException.SqlState == PostgresErrorCodes.UniqueViolation)
+                if (exception is PostgresException postgresException &&
+                    postgresException.SqlState == PostgresErrorCodes.UniqueViolation)
                 {
                     return true;
                 }
 
                 exception = exception.InnerException;
             }
+
             return false;
         }
 
