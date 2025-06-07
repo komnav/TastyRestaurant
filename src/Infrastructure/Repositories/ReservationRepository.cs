@@ -8,6 +8,7 @@ namespace Infrastructure.Repositories
     public class ReservationRepository(ApplicationDbContext dbContext) : IReservationRepository
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
+
         public async Task<int> CreateAsync(Reservation reservation)
         {
             await _dbContext.Reservations.AddAsync(reservation);
@@ -21,9 +22,12 @@ namespace Infrastructure.Repositories
                 .ExecuteDeleteAsync();
         }
 
-        public async Task<List<Reservation>> GetAllAsync()
+        public async Task<List<Reservation>> GetAllAsync(int page = 1, int pageSize = 10)
         {
-            return await _dbContext.Reservations.ToListAsync();
+            return await _dbContext.Reservations
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<Reservation?> GetAsync(int id)
@@ -32,17 +36,37 @@ namespace Infrastructure.Repositories
         }
 
         public async Task<int> UpdateAsync
-            (int id, int tableId, int customerId, DateTime from, DateTime to, string? notes, ReservationStatus status)
+        (int id, int tableId, int customerId, DateTimeOffset from, DateTimeOffset to, string? notes,
+            ReservationStatus status)
         {
             return await _dbContext.Reservations
                 .Where(x => x.Id == id)
                 .ExecuteUpdateAsync(x => x
-                .SetProperty(x => x.TableId, tableId)
-                .SetProperty(x => x.UserId, customerId)
-                .SetProperty(x => x.From, from)
-                .SetProperty(x => x.To, to)
-                .SetProperty(x => x.Notes, notes)
-                .SetProperty(x => x.Status, status));
+                    .SetProperty(x => x.TableId, tableId)
+                    .SetProperty(x => x.UserId, customerId)
+                    .SetProperty(x => x.From, from)
+                    .SetProperty(x => x.To, to)
+                    .SetProperty(x => x.Notes, notes)
+                    .SetProperty(x => x.Status, status));
+        }
+
+        public async Task<int> CancelReservation(int reservationId)
+        {
+            return await _dbContext.Reservations
+                .Where(x => x.Id == reservationId)
+                .ExecuteUpdateAsync(x => x
+                    .SetProperty(x => x.Status, ReservationStatus.Cancelled));
+        }
+
+        public async Task<List<Reservation>> GetExistingReservations(
+            int tableId,
+            DateTimeOffset from,
+            DateTimeOffset to)
+        {
+            return await _dbContext.Reservations
+                .Where(x => x.TableId == tableId &&
+                            x.From < to && x.To > from)
+                .ToListAsync();
         }
     }
 }

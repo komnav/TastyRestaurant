@@ -9,7 +9,7 @@ public static class ServiceExtensions
 {
     public static void AddServiceLayer(this WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<IUpdateRolesService, UpdateRolesService>();
+        builder.Services.AddScoped<IRolesService, RolesService>();
         builder.Services.AddScoped<IAccountService, AccountService>();
         builder.Services.AddScoped<IMenuCategoryService, MenuCategoryService>();
         builder.Services.AddScoped<IMenuItemService, MenuItemService>();

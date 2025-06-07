@@ -9,6 +9,6 @@ namespace Application.Services
     {
         Task<AuthResponse> CreateAsync(RegisterUserRequest request);
         Task<GetUserResponseModel> GetAsync(string userName, string password);
-        string CreateToken(User request);
+        string CreateToken(User? request);
     }
 }

@@ -6,8 +6,8 @@ public record GetReservationResponseModel(
     int Id,
     int TableId,
     int CustomerId,
-    DateTime From,
-    DateTime To,
+    DateTimeOffset From,
+    DateTimeOffset To,
     string? Notes,
     ReservationStatus Status
     );

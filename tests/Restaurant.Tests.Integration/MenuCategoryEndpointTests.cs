@@ -63,6 +63,8 @@ public class MenuCategoryEndpointTests : BaseTest
 
         //Assert
         response.EnsureSuccessStatusCode();
+        var tryToFindMenuCategory = await GetEntity<MenuCategory>(x => x.Id == menuCategory.Id);
+        tryToFindMenuCategory.Should().BeNull();
     }
 
     [Test]

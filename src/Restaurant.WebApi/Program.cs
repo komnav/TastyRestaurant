@@ -1,5 +1,7 @@
+using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Extensions;
+using Microsoft.Extensions.Options;
 using Restaurant.WebApi.Extensions;
 using Restaurant.WebApi.Middleware;
 using RestaurantLayer.Extensions;

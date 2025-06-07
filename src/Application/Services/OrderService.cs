@@ -2,8 +2,7 @@
 using Application.Dtos.Order.Requests;
 using Application.Dtos.Order.Responses;
 using Domain.Entities;
-using Infrastructure.Repositories;
-using ResrautantLayer.Exceptions;
+using RestaurantLayer.Exceptions;
 using RestaurantLayer.Repositories;
 
 namespace Application.Services
