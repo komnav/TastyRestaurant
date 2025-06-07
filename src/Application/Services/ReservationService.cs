@@ -16,6 +16,7 @@ namespace Application.Services
 
         public async Task<CreateReservationResponseModel> CreateAsync(CreateReservationRequestModel request)
         {
+            await GetExistingReservations(request.TableId, request.From, request.To);
             var addReservation = new Reservation
             {
                 UserId = request.CustomerId,
@@ -43,22 +44,10 @@ namespace Application.Services
                 Notes = request.Notes
             };
 
-            var getExistingReservationsList =
-                await GetExistingReservations(addReservation.TableId, addReservation.From, addReservation.To);
-
-            var checkForDuplicate = getExistingReservationsList.Where(x =>
-                x.From < request.To && x.To > request.From);
-            if (checkForDuplicate is not null)
-            {
-                throw new ResourceAlreadyExistException(nameof(addReservation));
-            }
-
             var rows = await _reservationRepository.CreateAsync(addReservation);
 
             if (rows <= 0)
-            {
                 throw new ResourceWasNotCreatedException(nameof(addReservation));
-            }
 
             return new CreateReservationResponseModel(
                 addReservation.Id,
@@ -93,37 +82,24 @@ namespace Application.Services
             return await _reservationRepository.DeleteAsync(id);
         }
 
-        public async Task<List<GetReservationResponseModel>> GetAllAsync()
+        public async Task<List<GetReservationResponseModel>> GetAllAsync(int page = 1, int pageSize = 10)
         {
             var getReservations = await _reservationRepository.GetAllAsync();
+            var totalCount = getReservations.Count;
+            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             return getReservations.Select(reservations => new GetReservationResponseModel(
-                reservations.Id,
-                reservations.TableId,
-                reservations.UserId,
-                new DateTimeOffset
-                (
-                    reservations.From.Year,
-                    reservations.From.Month,
-                    reservations.From.Day,
-                    reservations.From.Hour,
-                    reservations.From.Minute,
-                    0,
-                    reservations.From.Offset
-                ),
-                new DateTimeOffset
-                (
-                    reservations.To.Year,
-                    reservations.To.Month,
-                    reservations.To.Day,
-                    reservations.To.Hour,
-                    reservations.To.Minute,
-                    0,
-                    reservations.To.Offset
-                ),
-                reservations.Notes,
-                reservations.Status
-            )).ToList();
+                    reservations.Id,
+                    reservations.TableId,
+                    reservations.UserId,
+                    reservations.From,
+                    reservations.To,
+                    reservations.Notes,
+                    reservations.Status
+                ))
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
         }
 
         public async Task<int> CancelReservationAsync(int reservationId)
@@ -131,32 +107,17 @@ namespace Application.Services
             return await _reservationRepository.CancelReservation(reservationId);
         }
 
-        public async Task<List<GetExistingReservations>> GetExistingReservations(int tableId, DateTimeOffset from,
+        public async Task<bool> GetExistingReservations(int tableId, DateTimeOffset from,
             DateTimeOffset to)
         {
-            var getExistingReservations = await _reservationRepository.GetExistingReservations(tableId, from, to);
-            return getExistingReservations.Select(reservations => new GetExistingReservations(
-                reservations.TableId,
-                new DateTimeOffset
-                (
-                    reservations.From.Year,
-                    reservations.From.Month,
-                    reservations.From.Day,
-                    reservations.From.Hour,
-                    reservations.From.Minute,
-                    0,
-                    reservations.From.Offset
-                ),
-                new DateTimeOffset
-                (
-                    reservations.To.Year,
-                    reservations.To.Month,
-                    reservations.To.Day,
-                    reservations.To.Hour,
-                    reservations.To.Minute,
-                    0,
-                    reservations.To.Offset
-                ))).ToList();
+            var getExistReservation =
+                await _reservationRepository.GetExistingReservations(tableId, from, to);
+            if (getExistReservation is not null)
+            {
+                throw new ResourceAlreadyExistException(nameof(getExistReservation));
+            }
+
+            return false;
         }
 
         public async Task<GetReservationResponseModel?> GetAsync(int id)
@@ -164,33 +125,14 @@ namespace Application.Services
             var getReservation = await _reservationRepository.GetAsync(id);
 
             if (getReservation == null)
-            {
                 return null;
-            }
 
             return new GetReservationResponseModel(
                 getReservation.Id,
                 getReservation.TableId,
-                getReservation.UserId, new DateTimeOffset
-                (
-                    getReservation.From.Year,
-                    getReservation.From.Month,
-                    getReservation.From.Day,
-                    getReservation.From.Hour,
-                    getReservation.From.Minute,
-                    0,
-                    getReservation.From.Offset
-                ),
-                new DateTimeOffset
-                (
-                    getReservation.To.Year,
-                    getReservation.To.Month,
-                    getReservation.To.Day,
-                    getReservation.To.Hour,
-                    getReservation.To.Minute,
-                    0,
-                    getReservation.To.Offset
-                ),
+                getReservation.UserId,
+                getReservation.From,
+                getReservation.To,
                 getReservation.Notes,
                 getReservation.Status
             );
@@ -198,15 +140,7 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateReservationRequestModel request)
         {
-            var getExistingReservationsList =
-                await GetExistingReservations(request.TableId, request.From, request.To);
-
-            var checkForDuplicate = getExistingReservationsList.Where(x =>
-                x.From < request.To && x.To > request.From);
-            if (checkForDuplicate is not null)
-            {
-                throw new ResourceAlreadyExistException(nameof(request));
-            }
+            await GetExistingReservations(request.TableId, request.From, request.To);
 
             var updateReservation = await _reservationRepository
                 .UpdateAsync(

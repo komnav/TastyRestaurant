@@ -33,9 +33,9 @@ namespace Restaurant.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GetReservationResponseModel>> GetAll()
+        public async Task<List<GetReservationResponseModel>> GetAll(int page = 1, int pageSize = 10)
         {
-            return await _reservationService.GetAllAsync();
+            return await _reservationService.GetAllAsync(page, pageSize);
         }
 
         [HttpGet("{id}")]

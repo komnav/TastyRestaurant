@@ -58,8 +58,9 @@ namespace Infrastructure.Repositories
         public async Task<List<Reservation>> GetExistingReservations(int tableId, DateTimeOffset from,
             DateTimeOffset to)
         {
-            return await _dbContext.Reservations.Where(x => x.TableId == tableId && x.From == from && x.To == to)
-                .ToListAsync();
+            return await _dbContext.Reservations
+                .Where(x => x.TableId == tableId &&
+                            x.From < to && x.To > from).ToListAsync();
         }
     }
 }
