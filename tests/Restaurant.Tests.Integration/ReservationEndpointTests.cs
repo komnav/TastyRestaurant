@@ -24,10 +24,11 @@ public class ReservationEndpointTests : BaseTest
 
         var now = DateTimeOffset.UtcNow;
         var reservation =
-            new CreateReservationRequestModel(
-                table.Id,
-                1,
-                new DateTimeOffset
+            new CreateReservationRequestModel
+            {
+                TableId = table.Id,
+                CustomerId = 1,
+                From = new DateTimeOffset
                 (
                     now.Year,
                     now.Month,
@@ -37,7 +38,7 @@ public class ReservationEndpointTests : BaseTest
                     0,
                     now.Offset
                 ),
-                new DateTimeOffset
+                To = new DateTimeOffset
                 (
                     now.Year,
                     now.Month,
@@ -47,8 +48,9 @@ public class ReservationEndpointTests : BaseTest
                     0,
                     now.Offset
                 ),
-                "string",
-                0);
+                Notes = "string",
+                Status = 0
+            };
         //Act
         var response = await HttpClient.PostAsJsonAsync("Reservation", reservation);
 
@@ -122,13 +124,15 @@ public class ReservationEndpointTests : BaseTest
         await CreateEntity(reservation);
 
         var request =
-            new CreateReservationRequestModel(
-                reservation.TableId,
-                reservation.UserId,
-                reservation.From,
-                reservation.To,
-                reservation.Notes,
-                reservation.Status);
+            new CreateReservationRequestModel
+            {
+                TableId = reservation.TableId,
+                CustomerId = reservation.UserId,
+                From = reservation.From,
+                To = reservation.To,
+                Notes = reservation.Notes,
+                Status = reservation.Status
+            };
         //Act
         var response = await HttpClient.PostAsJsonAsync("Reservation", request);
 
@@ -277,14 +281,15 @@ public class ReservationEndpointTests : BaseTest
         };
         await CreateEntity(reservation);
 
-        var updateReservation = new UpdateReservationRequestModel(
-            secondTable.Id,
-            1,
-            reservation.From,
-            reservation.To,
-            "stringUpdate",
-            ReservationStatus.Cancelled
-        );
+        var updateReservation = new UpdateReservationRequestModel
+        {
+            TableId = secondTable.Id,
+            CustomerId = 1,
+            From = reservation.From,
+            To = reservation.To,
+            Notes = "stringUpdate",
+            Status = ReservationStatus.Cancelled
+        };
 
         //Act
         var response = await HttpClient.PutAsJsonAsync($"Reservation/{reservation.Id}", updateReservation);
@@ -388,14 +393,15 @@ public class ReservationEndpointTests : BaseTest
         };
         await CreateEntity(secondReservation);
 
-        var updateReservation = new UpdateReservationRequestModel(
-            firstTable.Id,
-            firstReservation.UserId,
-            firstReservation.From,
-            firstReservation.To,
-            firstReservation.Notes,
-            firstReservation.Status
-        );
+        var updateReservation = new UpdateReservationRequestModel
+        {
+            TableId = firstTable.Id,
+            CustomerId = firstReservation.UserId,
+            From = firstReservation.From,
+            To = firstReservation.To,
+            Notes = firstReservation.Notes,
+            Status = firstReservation.Status
+        };
 
         //Act
         var response = await HttpClient.PutAsJsonAsync($"Reservation/{secondReservation.Id}", updateReservation);

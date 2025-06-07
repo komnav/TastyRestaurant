@@ -3,6 +3,7 @@ using Application.Dtos.Reservation.Requests;
 using Application.Dtos.Reservation.Responses;
 using Application.Exceptions;
 using Domain.Entities;
+using RestaurantLayer.Dtos.Reservation;
 using RestaurantLayer.Exceptions;
 using RestaurantLayer.Repositories;
 
@@ -16,31 +17,21 @@ namespace Application.Services
 
         public async Task<CreateReservationResponseModel> CreateAsync(CreateReservationRequestModel request)
         {
-            await GetExistingReservations(request.TableId, request.From, request.To);
+            NormalizeDates(request);
+
+            var existingReservations =
+                await _reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
+            if (existingReservations.Count > 0)
+            {
+                throw new ResourceAlreadyExistException(nameof(Reservation), request.TableId, request.From, request.To);
+            }
+
             var addReservation = new Reservation
             {
                 UserId = request.CustomerId,
                 TableId = request.TableId,
-                From = new DateTimeOffset
-                (
-                    request.From.Year,
-                    request.From.Month,
-                    request.From.Day,
-                    request.From.Hour,
-                    request.From.Minute,
-                    0,
-                    request.From.Offset
-                ),
-                To = new DateTimeOffset
-                (
-                    request.To.Year,
-                    request.To.Month,
-                    request.To.Day,
-                    request.To.Hour,
-                    request.To.Minute,
-                    0,
-                    request.To.Offset
-                ),
+                From = request.From,
+                To = request.To,
                 Notes = request.Notes
             };
 
@@ -53,28 +44,35 @@ namespace Application.Services
                 addReservation.Id,
                 addReservation.TableId,
                 addReservation.UserId,
-                new DateTimeOffset
-                (
-                    addReservation.From.Year,
-                    addReservation.From.Month,
-                    addReservation.From.Day,
-                    addReservation.From.Hour,
-                    addReservation.From.Minute,
-                    0,
-                    request.From.Offset
-                ),
-                new DateTimeOffset
-                (
-                    addReservation.To.Year,
-                    addReservation.To.Month,
-                    addReservation.To.Day,
-                    addReservation.To.Hour,
-                    addReservation.To.Minute,
-                    0,
-                    request.To.Offset
-                ),
+                addReservation.From,
+                addReservation.To,
                 addReservation.Notes,
                 addReservation.Status);
+        }
+
+        private void NormalizeDates<T>(T request) where T :
+            class, IDateTimeDto
+        {
+            request.From = new DateTimeOffset
+            (
+                request.From.Year,
+                request.From.Month,
+                request.From.Day,
+                request.From.Hour,
+                request.From.Minute,
+                0,
+                request.From.Offset
+            );
+            request.To = new DateTimeOffset
+            (
+                request.To.Year,
+                request.To.Month,
+                request.To.Day,
+                request.To.Hour,
+                request.To.Minute,
+                0,
+                request.To.Offset
+            );
         }
 
         public async Task<int> DeleteAsync(int id)
@@ -84,9 +82,7 @@ namespace Application.Services
 
         public async Task<List<GetReservationResponseModel>> GetAllAsync(int page = 1, int pageSize = 10)
         {
-            var getReservations = await _reservationRepository.GetAllAsync();
-            var totalCount = getReservations.Count;
-            var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            var getReservations = await _reservationRepository.GetAllAsync(page, pageSize);
 
             return getReservations.Select(reservations => new GetReservationResponseModel(
                     reservations.Id,
@@ -97,27 +93,12 @@ namespace Application.Services
                     reservations.Notes,
                     reservations.Status
                 ))
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .ToList();
         }
 
         public async Task<int> CancelReservationAsync(int reservationId)
         {
             return await _reservationRepository.CancelReservation(reservationId);
-        }
-
-        public async Task<bool> GetExistingReservations(int tableId, DateTimeOffset from,
-            DateTimeOffset to)
-        {
-            var getExistReservation =
-                await _reservationRepository.GetExistingReservations(tableId, from, to);
-            if (getExistReservation is not null)
-            {
-                throw new ResourceAlreadyExistException(nameof(getExistReservation));
-            }
-
-            return false;
         }
 
         public async Task<GetReservationResponseModel?> GetAsync(int id)
@@ -140,32 +121,24 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateReservationRequestModel request)
         {
-            await GetExistingReservations(request.TableId, request.From, request.To);
+            NormalizeDates(request);
+
+            var existingReservations =
+                await _reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
+
+            if (existingReservations.Count(s => s.TableId != request.TableId) > 0)
+            {
+                throw new ResourceAlreadyExistException(nameof(Reservation),
+                    request.TableId, request.From, request.To);
+            }
 
             var updateReservation = await _reservationRepository
                 .UpdateAsync(
                     id,
                     request.TableId,
                     request.CustomerId,
-                    new DateTimeOffset
-                    (
-                        request.From.Year,
-                        request.From.Month,
-                        request.From.Day,
-                        request.From.Hour,
-                        request.From.Minute,
-                        0,
-                        request.From.Offset
-                    ),
-                    new DateTimeOffset(
-                        request.To.Year,
-                        request.To.Month,
-                        request.To.Day,
-                        request.To.Hour,
-                        request.To.Minute,
-                        0,
-                        request.To.Offset
-                    ),
+                    request.From,
+                    request.To,
                     request.Notes,
                     request.Status);
             if (updateReservation <= 0)
