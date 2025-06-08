@@ -1,5 +1,4 @@
 using Application.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using ResraurantLayer.Services;
 
@@ -7,15 +6,15 @@ namespace RestaurantLayer.Extensions;
 
 public static class ServiceExtensions
 {
-    public static void AddServiceLayer(this WebApplicationBuilder builder)
+    public static void AddServiceLayer(this IServiceCollection service)
     {
-        builder.Services.AddScoped<IRolesService, RolesService>();
-        builder.Services.AddScoped<IAccountService, AccountService>();
-        builder.Services.AddScoped<IMenuCategoryService, MenuCategoryService>();
-        builder.Services.AddScoped<IMenuItemService, MenuItemService>();
-        builder.Services.AddScoped<ITableService, TableService>();
-        builder.Services.AddScoped<IReservationService, ReservationService>();
-        builder.Services.AddScoped<IOrderDetailService, OrderDetailService>();
-        builder.Services.AddScoped<IOrderService, OrderService>();
+        service.AddScoped<IRolesService, RolesService>();
+        service.AddScoped<IAccountService, AccountService>();
+        service.AddScoped<IMenuCategoryService, MenuCategoryService>();
+        service.AddScoped<IMenuItemService, MenuItemService>();
+        service.AddScoped<ITableService, TableService>();
+        service.AddScoped<IReservationService, ReservationService>();
+        service.AddScoped<IOrderDetailService, OrderDetailService>();
+        service.AddScoped<IOrderService, OrderService>();
     }
 }
