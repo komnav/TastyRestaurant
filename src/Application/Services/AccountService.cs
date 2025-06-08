@@ -8,6 +8,7 @@ using System.Text;
 using Application.Dtos;
 using Application.Dtos.Account.Requests;
 using Application.Dtos.Account.Responses;
+using RestaurantLayer.Exceptions;
 using RestaurantLayer.Repositories;
 
 
@@ -68,14 +69,19 @@ namespace Application.Services
             return tokenHandler.WriteToken(token);
         }
 
-        public async Task<GetUserResponseModel> GetAsync(string userName, string password)
+        public async Task<AuthResponse?> LoginAsync(LoginRequestModel request)
         {
-            var user = await _accountRepository.GetAsync(userName, password);
-
-            var token = CreateToken(user);
-            return new GetUserResponseModel
+            var getUser = await _accountRepository.GetAsync(request.UserName, request.Password);
+            if (getUser == null)
             {
-                Token = token
+                return null;
+            }
+
+            var newToken = CreateToken(getUser);
+
+            return new AuthResponse
+            {
+                Token = newToken
             };
         }
     }

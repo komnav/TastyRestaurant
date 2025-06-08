@@ -8,7 +8,6 @@ namespace Application.Services
     public interface IAccountService
     {
         Task<AuthResponse> CreateAsync(RegisterUserRequest request);
-        Task<GetUserResponseModel> GetAsync(string userName, string password);
-        string CreateToken(User? request);
+        Task<AuthResponse?> LoginAsync(LoginRequestModel request);
     }
 }

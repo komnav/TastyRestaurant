@@ -8,7 +8,7 @@ namespace Application.Services
     {
         Task<UpdateResponseModel> UpdateAsync(UpdateRolesRequestModel request);
         Task<int> DeleteAsync(string userName, string roles);
-        Task<GetRoleResponseModel> GetUserRoleByNameAsync(string role);
-        Task<List<GetRoleResponseModel>> GetUsersAsync();
+        Task<List<GetUserResponseModel>> GetUserNameByRoleAsync(string role);
+        Task<List<GetRoleResponseModel>> GetRolesByUserNameAsync(string userName);
     }
 }

@@ -7,6 +7,7 @@ namespace Infrastructure.Repositories
     public class AccountRepository(ApplicationDbContext dbContext) : IAccountRepository
     {
         private readonly ApplicationDbContext _dbContext = dbContext;
+
         public async Task<int> CreateAsync(Contact contact, User? user)
         {
             await _dbContext.Contacts.AddAsync(contact);

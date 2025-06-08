@@ -23,14 +23,15 @@ namespace Infrastructure.Repositories
                 .ExecuteDeleteAsync();
         }
 
-        public async Task<User?> GetUserRoleByNameAsync(string role)
+        public async Task<List<User?>> GetUserNameByRoleAsync(string role)
         {
-            return await _applicationDbContext.Users.FirstOrDefaultAsync(u => u != null && u.Role == role);
+            return await _applicationDbContext.Users
+                .Where(u => u.Role == role).ToListAsync();
         }
 
-        public async Task<List<User?>> GetUsersAsync()
+        public async Task<List<User?>> GetRolesByUserNameAsync(string userName)
         {
-            return await _applicationDbContext.Users.ToListAsync();
+            return await _applicationDbContext.Users.Where(x => x.UserName == userName).ToListAsync();
         }
     }
 }
