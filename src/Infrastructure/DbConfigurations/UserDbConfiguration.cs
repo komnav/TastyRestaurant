@@ -8,10 +8,7 @@ namespace Infrastructure.DbConfigurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.HasIndex(x => x.UserName).IsUnique();
-            builder.HasIndex(x => x.Password);
+            builder.Property(x=>x.Role).HasMaxLength(10);
         }
     }
 }

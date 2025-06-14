@@ -8,7 +8,7 @@ using RestaurantLayer.Dtos.Role.Responses;
 
 namespace Restaurant.WebApi.Controllers
 {
-    [Authorize(Roles = UserRoles.SuperAdmin)]
+    //[Authorize(Roles = UserRoles.SuperAdmin)]
     [ApiController]
     [Route("api/roles")]
     public class RolesController(IRolesService rolesService) : Controller

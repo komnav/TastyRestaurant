@@ -31,7 +31,6 @@ namespace Application.Services
             var user = new User
             {
                 UserName = request.UserName,
-                Password = request.Password,
                 Role = UserRoles.Customer,
                 Contact = contact
             };

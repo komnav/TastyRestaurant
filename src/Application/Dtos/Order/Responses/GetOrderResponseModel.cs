@@ -5,6 +5,6 @@ namespace Application.Dtos.Order.Responses;
 public record GetOrderResponseModel(
      int Id,
      int tableId,
-     DateTime dateTime,
+     DateTimeOffset dateTime,
      OrdersStatus ordersStatus
     );

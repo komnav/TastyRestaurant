@@ -87,7 +87,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
             Role = UserRoles.Customer,
             Contact = contact
         };
@@ -161,7 +160,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
             Role = UserRoles.Customer,
             Contact = contact
         };
@@ -245,7 +243,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
             Role = UserRoles.Customer,
             Contact = contact
         };
@@ -328,7 +325,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
             Role = UserRoles.Customer,
             Contact = contact
         };
@@ -431,7 +427,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
             Role = UserRoles.Customer,
             Contact = contact
         };
@@ -501,7 +496,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
             Role = UserRoles.Customer,
             Contact = contact
         };
@@ -595,7 +589,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
             Role = UserRoles.Customer,
             Contact = contact
         };

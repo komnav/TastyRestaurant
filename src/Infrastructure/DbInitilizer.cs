@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
@@ -20,8 +21,9 @@ namespace Infrastructure
                 var user = new User
                 {
                     UserName = "superAdmin",
-                    Password = "12345678",
-                    Role = UserRoles.SuperAdmin
+                    Email = "admin@example.com",
+                    Role = UserRoles.SuperAdmin,
+                    PasswordHash = new PasswordHasher<User>().HashPassword(null!, "1234")
                 };
 
                 applicationDbContext.Users.Add(user);

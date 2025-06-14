@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
         public async Task<User?> GetAsync(string username, string password)
         {
             return await _dbContext.Users
-                .FirstOrDefaultAsync(s => s.UserName.ToLower() == username.ToLower() && s.Password == password);
+                .FirstOrDefaultAsync(s => s.UserName!.ToLower() == username.ToLower());
         }
     }
 }
