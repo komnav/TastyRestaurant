@@ -9,7 +9,7 @@ namespace Restaurant.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AccountController(IAccountService accountService, ApplicationDbContext applicationDbContext)
+public class AccountController(IAccountService accountService)
     : ControllerBase
 {
     private readonly IAccountService _accountService = accountService;

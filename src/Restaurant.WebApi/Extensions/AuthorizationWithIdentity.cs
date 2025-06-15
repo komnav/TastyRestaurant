@@ -8,23 +8,22 @@ public static class AuthorizationWithIdentity
 {
     public static void AddAuthorizationWithIdentity(this WebApplicationBuilder builder)
     {
-        
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultScheme = IdentityConstants.ApplicationScheme;
             options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-        }).AddCookie(IdentityConstants.ApplicationScheme);
+        }).AddBearerToken(IdentityConstants.BearerScheme);
 
-        
+
         builder.Services.AddIdentityCore<User>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .AddApiEndpoints();
-        
+
         builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
         {
-            options.SerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+            options.SerializerOptions.Encoder =
+                System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
         });
-        
     }
 }

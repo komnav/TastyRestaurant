@@ -1,9 +1,11 @@
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Extensions;
+using Microsoft.OpenApi.Models;
 using Restaurant.WebApi.Extensions;
 using Restaurant.WebApi.Middleware;
 using RestaurantLayer.Extensions;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,16 @@ builder.Services.AddControllers();
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddServiceLayer();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    options.OperationFilter<SecurityRequirementsOperationFilter>();
+});
 builder.AddAuthorizationWithIdentity();
 
 var app = builder.Build();
@@ -22,7 +33,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var initializer = scope.ServiceProvider.GetRequiredService<DbInitilizer>();
-    initializer.Init();
+    await initializer.Init();
 }
 
 if (app.Environment.IsDevelopment())

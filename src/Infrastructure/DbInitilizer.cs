@@ -5,15 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class DbInitilizer(ApplicationDbContext applicationDbContext)
+    public class DbInitilizer(ApplicationDbContext applicationDbContext, UserManager<User> userManager)
     {
-        public bool SupportMigration { get; set; } = true;
+        private bool SupportMigration { get; set; } = true;
 
-        public void Init()
+        public async Task Init()
         {
             if (SupportMigration)
             {
-                applicationDbContext.Database.Migrate();
+                await applicationDbContext.Database.MigrateAsync();
             }
 
             if (!applicationDbContext.Users.Any(s => s.Role == UserRoles.SuperAdmin))
@@ -23,11 +23,11 @@ namespace Infrastructure
                     UserName = "superAdmin",
                     Email = "admin@example.com",
                     Role = UserRoles.SuperAdmin,
-                    PasswordHash = new PasswordHasher<User>().HashPassword(null!, "1234")
+                    PasswordHash =  new PasswordHasher<User>().HashPassword(null!, "1234String$")
                 };
 
-                applicationDbContext.Users.Add(user);
-                applicationDbContext.SaveChanges();
+                await applicationDbContext.Users.AddAsync(user);
+                await applicationDbContext.SaveChangesAsync();
             }
         }
     }
