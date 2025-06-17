@@ -8,8 +8,6 @@ public static class ServiceExtensions
 {
     public static void AddServiceLayer(this IServiceCollection service)
     {
-        service.AddScoped<IRolesService, RolesService>();
-        service.AddScoped<IAccountService, AccountService>();
         service.AddScoped<IMenuCategoryService, MenuCategoryService>();
         service.AddScoped<IMenuItemService, MenuItemService>();
         service.AddScoped<ITableService, TableService>();

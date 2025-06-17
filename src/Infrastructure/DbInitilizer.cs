@@ -5,7 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class DbInitilizer(ApplicationDbContext applicationDbContext, UserManager<User> userManager)
+    public class DbInitilizer(
+        ApplicationDbContext applicationDbContext,
+        UserManager<User> userManager,
+        RoleManager<IdentityRole<int>> roleManager)
     {
         private bool SupportMigration { get; set; } = true;
 
@@ -16,18 +19,41 @@ namespace Infrastructure
                 await applicationDbContext.Database.MigrateAsync();
             }
 
-            if (!applicationDbContext.Users.Any(s => s.Role == UserRoles.SuperAdmin))
+            var adminRole = await roleManager.FindByNameAsync("admin");
+            if (adminRole == null)
+            {
+                var role = new IdentityRole<int>("admin");
+
+                var result = await roleManager.CreateAsync(role);
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Error creating role");
+                }
+            }
+
+            var users = await userManager.GetUsersInRoleAsync("admin");
+
+            if (users.Count == 0)
             {
                 var user = new User
                 {
                     UserName = "superAdmin",
                     Email = "admin@example.com",
-                    Role = UserRoles.SuperAdmin,
-                    PasswordHash =  new PasswordHasher<User>().HashPassword(null!, "1234String$")
                 };
 
-                await applicationDbContext.Users.AddAsync(user);
-                await applicationDbContext.SaveChangesAsync();
+                var result = await userManager.CreateAsync(user, "Admin1234$");
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Error creating user");
+                }
+
+                result = await userManager.AddToRoleAsync(user, "admin");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Error assigning role to user");
+                }
             }
         }
     }

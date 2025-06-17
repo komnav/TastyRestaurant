@@ -15,7 +15,7 @@ public static class AuthorizationWithIdentity
         }).AddBearerToken(IdentityConstants.BearerScheme);
 
 
-        builder.Services.AddIdentityCore<User>()
+        builder.Services.AddIdentity<User, IdentityRole<int>>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .AddApiEndpoints();
