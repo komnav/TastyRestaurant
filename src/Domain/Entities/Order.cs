@@ -7,7 +7,7 @@ namespace Domain.Entities
         public int Id { get; set; }
         public int TableId { get; set; }
         public Table? Table { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTimeOffset DateTime { get; set; }
         public OrdersStatus Status { get; set; }
     }
 }

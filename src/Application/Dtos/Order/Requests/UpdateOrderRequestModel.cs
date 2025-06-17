@@ -3,7 +3,7 @@
 namespace Application.Dtos.Order.Requests;
 
 public record UpdateOrderRequestModel(
-     int TableId,
-     DateTime DateTime,
-     OrdersStatus Status
-    );
+    int TableId,
+    DateTimeOffset DateTime,
+    OrdersStatus Status
+);
