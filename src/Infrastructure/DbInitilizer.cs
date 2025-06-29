@@ -1,31 +1,59 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class DbInitilizer(ApplicationDbContext applicationDbContext)
+    public class DbInitilizer(
+        ApplicationDbContext applicationDbContext,
+        UserManager<User> userManager,
+        RoleManager<IdentityRole<int>> roleManager)
     {
-        public bool SupportMigration { get; set; } = true;
+        private bool SupportMigration { get; set; } = true;
 
-        public void Init()
+        public async Task Init()
         {
             if (SupportMigration)
             {
-                applicationDbContext.Database.Migrate();
+                await applicationDbContext.Database.MigrateAsync();
             }
 
-            if (!applicationDbContext.Users.Any(s => s.Role == UserRoles.SuperAdmin))
+            var adminRole = await roleManager.FindByNameAsync("admin");
+            if (adminRole == null)
+            {
+                var role = new IdentityRole<int>("admin");
+
+                var result = await roleManager.CreateAsync(role);
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Error creating role");
+                }
+            }
+
+            var users = await userManager.GetUsersInRoleAsync("admin");
+
+            if (users.Count == 0)
             {
                 var user = new User
                 {
                     UserName = "superAdmin",
-                    Password = "12345678",
-                    Role = UserRoles.SuperAdmin
+                    Email = "admin@example.com",
                 };
 
-                applicationDbContext.Users.Add(user);
-                applicationDbContext.SaveChanges();
+                var result = await userManager.CreateAsync(user, "Admin1234$");
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Error creating user");
+                }
+
+                result = await userManager.AddToRoleAsync(user, "admin");
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Error assigning role to user");
+                }
             }
         }
     }

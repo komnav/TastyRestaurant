@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
             await _dbContext.AddAsync(order);
             return await _dbContext.SaveChangesAsync();
         }
-        public async Task<int> UpdateAsync(int id, int tableId, DateTime dateTime, OrdersStatus ordersStatus)
+        public async Task<int> UpdateAsync(int id, int tableId, DateTimeOffset dateTime, OrdersStatus ordersStatus)
         {
             return await _dbContext.Orders
                   .Where(x => x.Id == id)

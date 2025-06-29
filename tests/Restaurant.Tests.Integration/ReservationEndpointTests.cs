@@ -87,8 +87,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -161,8 +159,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -245,8 +241,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -328,8 +322,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -431,8 +423,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -501,8 +491,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -595,8 +583,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Password = "Password",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);

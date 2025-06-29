@@ -1,4 +1,6 @@
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using Domain.Entities;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -55,5 +57,22 @@ public abstract class BaseTest
             await dbContext.Users.AddAsync(entity);
             return await dbContext.SaveChangesAsync();
         }
+    }
+
+    protected async Task LoginAsync(string userName, string password)
+    {
+        var loginRequest = new
+        {
+            email = userName,
+            password = password
+        };
+
+        var responseMessage = await HttpClient.PostAsJsonAsync("/login", loginRequest);
+
+        var dictionary = await responseMessage.Content.ReadFromJsonAsync<Dictionary<string, object>>();
+
+        var token = dictionary["accessToken"];
+
+        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.ToString());
     }
 }

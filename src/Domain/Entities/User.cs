@@ -1,14 +1,10 @@
-﻿namespace Domain.Entities;
-public class User
+﻿using Domain.Enums;
+using Microsoft.AspNetCore.Identity;
+
+namespace Domain.Entities;
+
+public class User : IdentityUser<int>
 {
-    public int Id { get; set; }
-
-    public required string UserName { get; set; }
-
-    public required string Password { get; set; }
-
-    public required string Role { get; set; }
-
     public int? ContactId { get; set; }
 
     public Contact? Contact { get; set; }
