@@ -65,7 +65,7 @@ namespace Infrastructure.Repositories
         {
             return await _dbContext.Reservations
                 .Where(x => x.TableId == tableId &&
-                            x.From < to && x.To > from)
+                            x.From <= to && x.To >= from)
                 .ToListAsync();
         }
     }

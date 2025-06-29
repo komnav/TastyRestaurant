@@ -18,6 +18,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var createMenuItem = new MenuItem
@@ -49,6 +50,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -59,7 +61,7 @@ public class MenuItemEndpointTests : BaseTest
         };
         await CreateEntity(menuItem);
 
-        var request = new CreateMenuItemRequestModel(menuCategory.Id, 50, "Burger");
+        var request = new CreateMenuItemRequestModel(menuCategory.Id, menuItem.Price, menuItem.Name);
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("/MenuItem", request);
@@ -77,6 +79,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -99,6 +102,9 @@ public class MenuItemEndpointTests : BaseTest
     [Test]
     public async Task DeleteEmptyMenuItemEndpointTest()
     {
+        //Arrange
+        await LoginAsync("superadmin", "Admin1234$");
+
         //Act
         var response = await HttpClient.DeleteAsync("/MenuItem/123");
 
@@ -115,6 +121,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -150,6 +157,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var firstMenuItem = new MenuItem
@@ -167,7 +175,8 @@ public class MenuItemEndpointTests : BaseTest
             Name = "KFC"
         };
         await CreateEntity(secondMenuItem);
-        var updateMenuItem = new UpdateMenuItemRequestModel(1, 34, "KFC", MenuItemStatus.NotAvailable);
+        var updateMenuItem = new UpdateMenuItemRequestModel(menuCategory.Id, secondMenuItem.Price, secondMenuItem.Name,
+            MenuItemStatus.NotAvailable);
 
         //Act
         var responseForUpdate2 = await HttpClient.PutAsJsonAsync($"/MenuItem/{firstMenuItem.Id}", updateMenuItem);
@@ -185,6 +194,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -211,6 +221,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -242,6 +253,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
