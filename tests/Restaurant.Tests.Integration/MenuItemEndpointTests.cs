@@ -226,6 +226,7 @@ public class MenuItemEndpointTests : BaseTest
         var response = await HttpClient.GetFromJsonAsync<MenuItem>($"/MenuItem/{menuItem.Id}");
 
         //Assert
+        response.Should().NotBeNull();
         response.CategoryId.Should().Be(menuItem.CategoryId);
         response.Price.Should().Be(menuItem.Price);
         response.Name.Should().Be(menuItem.Name);
