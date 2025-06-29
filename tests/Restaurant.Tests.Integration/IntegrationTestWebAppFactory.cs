@@ -4,24 +4,21 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Testcontainers.PostgreSql;
 
 namespace Restaurant.Tests.Integration;
 
 public class IntegrationTestWebAppFactory<TProgram> : WebApplicationFactory<TProgram>
     where TProgram : class
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
-        .WithDatabase("RestaurantDbInContainer")
-        .WithUsername("postgres")
-        .WithPassword("admin")
-        .WithPortBinding(5433, 5432)
-        .Build();
+    private readonly string _connectionString;
+
+    public IntegrationTestWebAppFactory(string connectionString)
+    {
+        this._connectionString = connectionString;
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        _dbContainer.StartAsync().GetAwaiter().GetResult();
         builder.ConfigureTestServices(services =>
         {
             var descriptor = services
@@ -33,19 +30,8 @@ public class IntegrationTestWebAppFactory<TProgram> : WebApplicationFactory<TPro
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseNpgsql(_dbContainer.GetConnectionString());
+                options.UseNpgsql(_connectionString);
             });
         });
-    }
-
-    public Task InitializeAsync()
-    {
-        return _dbContainer.StartAsync();
-    }
-
-    public override async ValueTask DisposeAsync()
-    {
-        await _dbContainer.DisposeAsync();
-        await base.DisposeAsync();
     }
 }
