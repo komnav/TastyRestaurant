@@ -38,6 +38,7 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
+        await LoginAsync("superadmin", "Admin1234$");
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("/Table", createTable);

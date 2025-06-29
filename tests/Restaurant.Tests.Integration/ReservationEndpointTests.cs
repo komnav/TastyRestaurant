@@ -87,7 +87,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -160,7 +159,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -243,7 +241,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -325,7 +322,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -427,7 +423,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -496,7 +491,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);
@@ -589,7 +583,6 @@ public class ReservationEndpointTests : BaseTest
         var user = new User
         {
             UserName = "UserName",
-            Role = UserRoles.Customer,
             Contact = contact
         };
         await CreateUser(contact, user);

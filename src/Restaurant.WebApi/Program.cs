@@ -9,7 +9,6 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.JwtAuthServiceExtensions();
 builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
