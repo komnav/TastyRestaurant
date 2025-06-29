@@ -48,7 +48,7 @@ public abstract class BaseTest
         }
     }
 
-    protected async Task<int> CreateUser(Contact contact, User? entity)
+    protected async Task<int> CreateUser(Contact contact, User entity)
     {
         using (var scope = _factory.Services.CreateScope())
         {
@@ -71,8 +71,9 @@ public abstract class BaseTest
 
         var dictionary = await responseMessage.Content.ReadFromJsonAsync<Dictionary<string, object>>();
 
-        var token = dictionary["accessToken"];
-
-        HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.ToString());
+        if (dictionary?.TryGetValue("accessToken", out object? token) == true)
+        {
+            HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.ToString());
+        }
     }
 }

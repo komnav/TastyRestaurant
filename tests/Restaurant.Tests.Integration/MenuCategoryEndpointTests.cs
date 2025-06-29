@@ -145,8 +145,8 @@ public class MenuCategoryEndpointTests : BaseTest
         var response = await HttpClient.GetFromJsonAsync<List<MenuCategory>>("/MenuCategory");
 
         //Assert
-        response.Count.Should().Be(1);
         response.Should().NotBeNull();
+        response.Count.Should().Be(1);
     }
 
     [Test]
@@ -163,6 +163,7 @@ public class MenuCategoryEndpointTests : BaseTest
         var response = await HttpClient.GetFromJsonAsync<MenuCategory>($"/MenuCategory/{createMenuCategory.Id}");
 
         //Assert
+        response.Should().NotBeNull();
         response.ParentId.Should().Be(createMenuCategory.ParentId);
         response.Name.Should().Be(createMenuCategory.Name);
     }

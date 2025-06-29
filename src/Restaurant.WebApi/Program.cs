@@ -1,3 +1,4 @@
+using Application.Dtos;
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Extensions;
@@ -9,11 +10,10 @@ using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthorization();
-
 builder.Services.AddControllers();
 builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddServiceLayer();
+builder.Services.AddOptions<JwtSettingOptions>().BindConfiguration(JwtSettingOptions.Section);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -25,6 +25,7 @@ builder.Services.AddSwaggerGen(options =>
     });
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
 builder.AddAuthorizationWithIdentity();
 
 var app = builder.Build();

@@ -99,6 +99,7 @@ public class TableEndpointTests : BaseTest
             HttpClient.GetFromJsonAsync<Table>($"/Table/{table.Id}");
 
         //Assert
+        response.Should().NotBeNull();
         response.Id.Should().Be(table.Id);
         response.Number.Should().Be(table.Number);
         response.Capacity.Should().Be(table.Capacity);

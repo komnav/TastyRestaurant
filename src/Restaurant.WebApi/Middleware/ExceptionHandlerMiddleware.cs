@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Net;
 using System.Text;
 using RestaurantLayer.Exceptions;
+using Microsoft.AspNetCore.Authentication;
+using System.Xml.Linq;
 
 
 namespace Restaurant.WebApi.Middleware
@@ -28,6 +30,9 @@ namespace Restaurant.WebApi.Middleware
         {
             try
             {
+                var service = context.RequestServices.GetService<IAuthenticationService>();
+
+
                 await _next(context);
             }
             catch (Exception exception)
