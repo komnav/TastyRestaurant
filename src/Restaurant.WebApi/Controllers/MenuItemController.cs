@@ -15,14 +15,14 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly IMenuItemService _menuItemService = menuItemService;
 
-       [Authorize(Roles = UserRoles.SuperAdmin)]
+       [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateMenuItemResponseModel> Create([FromBody] CreateMenuItemRequestModel menuItem)
         {
             return await _menuItemService.CreateAsync(menuItem);
         }
 
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -35,7 +35,7 @@ namespace Restaurant.WebApi.Controllers
             return NotFound();
         }
 
-        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuItemRequestModel menuItem)
         {

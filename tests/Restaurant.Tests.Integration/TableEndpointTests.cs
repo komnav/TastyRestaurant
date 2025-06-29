@@ -10,25 +10,6 @@ namespace Restaurant.Tests.Integration;
 public class TableEndpointTests : BaseTest
 {
     [Test]
-    public async Task CreateDuplicateTableEndpointTest()
-    {
-        //Arrange
-        var table = new Table
-        {
-            Number = 74,
-            Capacity = 213,
-            Type = TableType.Cabin
-        };
-        await CreateEntity(table);
-
-        //Act
-        var response = await HttpClient.PostAsJsonAsync("/Table", table);
-
-        //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-    }
-
-    [Test]
     public async Task CreateTableEndpointTest()
     {
         //Arrange
@@ -54,13 +35,23 @@ public class TableEndpointTests : BaseTest
     }
 
     [Test]
-    public async Task DeleteEmptyTableEndpointTest()
+    public async Task CreateDuplicateTableEndpointTest()
     {
+        //Arrange
+        var table = new Table
+        {
+            Number = 74,
+            Capacity = 213,
+            Type = TableType.Cabin
+        };
+        await CreateEntity(table);
+        await LoginAsync("superadmin", "Admin1234$");
+
         //Act
-        var response = await HttpClient.DeleteAsync("/Table/524");
+        var response = await HttpClient.PostAsJsonAsync("/Table", table);
 
         //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 
     [Test]
@@ -74,6 +65,7 @@ public class TableEndpointTests : BaseTest
             Type = TableType.Cabin
         };
         await CreateEntity(table);
+        await LoginAsync("superadmin", "Admin1234$");
 
         //Act
         var response = await HttpClient.DeleteAsync($"/Table/{table.Id}");
@@ -81,11 +73,24 @@ public class TableEndpointTests : BaseTest
         //Assert
         response.EnsureSuccessStatusCode();
     }
+    
+    [Test]
+    public async Task DeleteEmptyTableEndpointTest()
+    {
+        //Arrange
+        await LoginAsync("superadmin", "Admin1234$");
+        
+        //Act
+        var response = await HttpClient.DeleteAsync("/Table/524");
+
+        //Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
 
     [Test]
     public async Task GetTableByIdEndpointTest()
     {
-        //Assert
+        //Arrange
         var table = new Table
         {
             Number = 74,
@@ -109,7 +114,7 @@ public class TableEndpointTests : BaseTest
     [Test]
     public async Task GetTableEndpointTest()
     {
-        //Assert
+        //Arrange
         var table = new Table
         {
             Number = 74,
@@ -125,35 +130,7 @@ public class TableEndpointTests : BaseTest
         //Assert
         tables.Should().NotBeEmpty();
     }
-
-    [Test]
-    public async Task UpdateDuplicateTableEndpointTest()
-    {
-        //Arrange
-        var firstTable = new Table
-        {
-            Number = 4,
-            Capacity = 213,
-            Type = TableType.Cabin
-        };
-        await CreateEntity(firstTable);
-
-        var secondTable = new Table
-        {
-            Number = 74,
-            Capacity = 213,
-            Type = TableType.Cabin
-        };
-        await CreateEntity(secondTable);
-        var request = new UpdateTableRequestModel(74, 123, TableType.Table);
-        
-        //Act
-        var response = await HttpClient.PutAsJsonAsync($"/Table/{firstTable.Id}", request);
-
-        //Assert
-        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-    }
-
+    
     [Test]
     public async Task UpdateTableEndpointTest()
     {
@@ -165,6 +142,7 @@ public class TableEndpointTests : BaseTest
             Type = TableType.Cabin
         };
         await CreateEntity(table);
+        await LoginAsync("superadmin", "Admin1234$");
         var request = new UpdateTableRequestModel(4, 123, TableType.Table);
 
         //Act
@@ -178,5 +156,34 @@ public class TableEndpointTests : BaseTest
             t.Capacity == request.Capacity &&
             t.Type == request.Type);
         resultTable.Should().NotBeNull();
+    }
+    
+    [Test]
+    public async Task UpdateDuplicateTableEndpointTest()
+    {
+        //Arrange
+        var firstTable = new Table
+        {
+            Number = 4,
+            Capacity = 213,
+            Type = TableType.Cabin
+        };
+        await CreateEntity(firstTable);
+        await LoginAsync("superadmin", "Admin1234$");
+
+        var secondTable = new Table
+        {
+            Number = 74,
+            Capacity = 213,
+            Type = TableType.Cabin
+        };
+        await CreateEntity(secondTable);
+        var request = new UpdateTableRequestModel(74, 123, TableType.Table);
+
+        //Act
+        var response = await HttpClient.PutAsJsonAsync($"/Table/{firstTable.Id}", request);
+
+        //Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Conflict);
     }
 }

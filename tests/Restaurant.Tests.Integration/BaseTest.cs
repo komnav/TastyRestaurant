@@ -11,13 +11,26 @@ namespace Restaurant.Tests.Integration;
 public abstract class BaseTest
 {
     private IntegrationTestWebAppFactory<Program> _factory;
+    private DatabaseFixture databaseFixture = new();
     protected HttpClient HttpClient;
 
-    [SetUp]
-    public async Task SetUp()
+    [OneTimeSetUp]
+    public async Task OneTimeSetup()
     {
-        _factory = new IntegrationTestWebAppFactory<Program>();
-        await _factory.InitializeAsync();
+        await databaseFixture.Startasync();
+    }
+
+    [OneTimeTearDown]
+    public async Task OneTimeTurnDownSetup()
+    {
+        await databaseFixture.RestartAsync();
+    }
+
+
+    [SetUp]
+    public void SetUp()
+    {
+        _factory = new IntegrationTestWebAppFactory<Program>(databaseFixture.GetConnectionString());
         HttpClient = _factory.CreateClient();
     }
 
@@ -26,6 +39,7 @@ public abstract class BaseTest
     {
         HttpClient.Dispose();
         await _factory.DisposeAsync();
+        await databaseFixture.ResetDatabase();
     }
 
     protected async Task<T?> GetEntity<T>(Expression<Func<T, bool>> expression) where T : class

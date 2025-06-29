@@ -20,6 +20,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(table);
 
         var now = DateTimeOffset.UtcNow;
@@ -76,6 +77,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(table);
 
         var contact = new Contact
@@ -148,6 +150,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(table);
 
         var contact = new Contact
@@ -205,6 +208,9 @@ public class ReservationEndpointTests : BaseTest
     [Test]
     public async Task DeleteEmptyReservationEndpointTest()
     {
+        //Arrange
+        await LoginAsync("superadmin", "Admin1234$");
+
         //Act
         var response = await HttpClient.DeleteAsync($"/Reservation/1234");
 
@@ -222,6 +228,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(firstTable);
 
         var secondTable = new Table
@@ -311,6 +318,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(firstTable);
 
         var contact = new Contact
@@ -326,7 +334,7 @@ public class ReservationEndpointTests : BaseTest
         };
         await CreateUser(contact, user);
 
-        var now = DateTimeOffset.UtcNow;
+        var now = DateTimeOffset.UtcNow.AddDays(2);
         var firstReservation = new Reservation
         {
             UserId = user.Id,
@@ -335,7 +343,7 @@ public class ReservationEndpointTests : BaseTest
             (
                 now.Year,
                 now.Month,
-                now.Day + 1,
+                now.Day,
                 now.Hour,
                 now.Minute,
                 0,
@@ -345,7 +353,7 @@ public class ReservationEndpointTests : BaseTest
             (
                 now.Year,
                 now.Month,
-                now.Day + 2,
+                now.Day,
                 now.Hour,
                 now.Minute,
                 0,
@@ -356,29 +364,30 @@ public class ReservationEndpointTests : BaseTest
         };
         await CreateEntity(firstReservation);
 
+        var now2 = DateTimeOffset.UtcNow;
         var secondReservation = new Reservation
         {
             UserId = user.Id,
             TableId = firstTable.Id,
             From = new DateTimeOffset
             (
-                now.Year,
-                now.Month,
-                now.Day,
-                now.Hour,
-                now.Minute,
+                now2.Year,
+                now2.Month,
+                now2.Day,
+                now2.Hour,
+                now2.Minute,
                 0,
-                now.Offset
+                now2.Offset
             ),
             To = new DateTimeOffset
             (
-                now.Year,
-                now.Month,
-                now.Day,
-                now.Hour,
-                now.Minute,
+                now2.Year,
+                now2.Month,
+                now2.Day,
+                now2.Hour,
+                now2.Minute,
                 0,
-                now.Offset
+                now2.Offset
             ),
             Notes = "Notes",
             Status = 0
@@ -572,6 +581,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
+        await LoginAsync("superadmin", "Admin1234$");
         await CreateEntity(table);
 
         var contact = new Contact
@@ -618,11 +628,11 @@ public class ReservationEndpointTests : BaseTest
         await CreateEntity(reservation);
 
         //Act
-        var response = await HttpClient.DeleteAsync($"/Reservation/cancel/{reservation.Id}");
+        var response = await HttpClient.PutAsJsonAsync($"/Reservation/cancel/{reservation.Id}", reservation);
 
         //Assert
         response.EnsureSuccessStatusCode();
         var tryToFindReservation = await GetEntity<Reservation>(x => x.Id == reservation.Id);
-        tryToFindReservation.Should().BeNull();
+        tryToFindReservation!.Status.Should().Be(ReservationStatus.Cancelled);
     }
 }

@@ -126,7 +126,7 @@ namespace Application.Services
             var existingReservations =
                 await _reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
 
-            if (existingReservations.Count(s => s.TableId != request.TableId) > 0)
+            if (existingReservations.Count > 0)
             {
                 throw new ResourceAlreadyExistException(nameof(Reservation),
                     request.TableId, request.From, request.To);
