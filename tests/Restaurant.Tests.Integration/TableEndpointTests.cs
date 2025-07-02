@@ -1,9 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
-using Application.Dtos.Table.Requests;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
+using RestaurantLayer.Dtos.Table.Requests;
 
 namespace Restaurant.Tests.Integration;
 

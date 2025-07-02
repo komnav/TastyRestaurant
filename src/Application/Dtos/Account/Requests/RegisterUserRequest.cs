@@ -1,4 +1,4 @@
-﻿namespace Application.Dtos.Account.Requests
+﻿namespace RestaurantLayer.Dtos.Account.Requests
 {
     public class RegisterUserRequest
     {

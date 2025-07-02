@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Application.Dtos.Order.Responses;
+namespace RestaurantLayer.Dtos.Order.Responses;
 
 public record GetOrderResponseModel(
      int Id,

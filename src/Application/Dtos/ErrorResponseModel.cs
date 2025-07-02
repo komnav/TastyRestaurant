@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace ResraurantLayer.Dtos
+﻿namespace Application.Dtos
 {
     public record ErrorResponseModel(
         int Code,

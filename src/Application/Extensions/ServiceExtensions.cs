@@ -1,7 +1,5 @@
-using Application.Dtos;
-using Application.Services;
 using Microsoft.Extensions.DependencyInjection;
-using ResraurantLayer.Services;
+using RestaurantLayer.Services;
 
 namespace RestaurantLayer.Extensions;
 
@@ -15,5 +13,6 @@ public static class ServiceExtensions
         service.AddScoped<IReservationService, ReservationService>();
         service.AddScoped<IOrderDetailService, OrderDetailService>();
         service.AddScoped<IOrderService, OrderService>();
+        service.AddScoped<IRoleService, RoleService>();
     }
 }

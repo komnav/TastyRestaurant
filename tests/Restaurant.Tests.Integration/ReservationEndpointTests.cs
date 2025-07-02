@@ -5,6 +5,7 @@ using Application.Dtos.Reservation.Responses;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
+using RestaurantLayer.Dtos.Reservation.Requests;
 
 namespace Restaurant.Tests.Integration;
 

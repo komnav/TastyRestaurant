@@ -1,4 +1,4 @@
-namespace Application.Dtos.Account.Responses;
+namespace RestaurantLayer.Dtos.Account.Responses;
 
 public class LoginResponseModel
 {

@@ -4,6 +4,7 @@ using Application.Dtos.MenuItem.Requests;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
+using RestaurantLayer.Dtos.MenuItem.Requests;
 
 namespace Restaurant.Tests.Integration;
 

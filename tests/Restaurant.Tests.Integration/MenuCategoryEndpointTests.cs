@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
-using Application.Dtos.MenuCategory.Requests;
 using Domain.Entities;
 using FluentAssertions;
+using RestaurantLayer.Dtos.MenuCategory.Requests;
 
 namespace Restaurant.Tests.Integration;
 

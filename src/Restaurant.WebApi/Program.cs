@@ -1,5 +1,5 @@
-using Application.Dtos;
 using Domain.Entities;
+using Domain.Token;
 using Infrastructure;
 using Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
@@ -54,6 +54,9 @@ app.MapIdentityApi<User>();
 
 app.Run();
 
-public partial class Program
+namespace Restaurant.WebApi
 {
+    public partial class Program
+    {
+    }
 }

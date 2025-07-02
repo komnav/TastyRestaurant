@@ -1,7 +1,6 @@
 ﻿using Domain.Enums;
-using RestaurantLayer.Dtos.Reservation;
 
-namespace Application.Dtos.Reservation.Requests;
+namespace RestaurantLayer.Dtos.Reservation.Requests;
 
 public record UpdateReservationRequestModel(
 ) : IDateTimeDto

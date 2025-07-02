@@ -1,5 +1,5 @@
-namespace RestaurantLayer.Dtos.Role.Responses;
+namespace Application.Dtos.Role.Responses;
 
 public record GetUserResponseModel(
-    string UserName
+    string? UserName
 );

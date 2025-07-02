@@ -1,8 +1,9 @@
-﻿using Application.Dtos;
-using Application.Dtos.OrderDetail.Requests;
+﻿using Application.Dtos.OrderDetail.Requests;
 using Application.Dtos.OrderDetail.Responses;
+using RestaurantLayer.Dtos;
+using RestaurantLayer.Dtos.OrderDetail.Requests;
 
-namespace Application.Services
+namespace RestaurantLayer.Services
 {
     public interface IOrderDetailService
     {

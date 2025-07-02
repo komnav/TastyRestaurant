@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Application.Dtos.Table.Requests;
+namespace RestaurantLayer.Dtos.Table.Requests;
 
 public record UpdateTableRequestModel(
     int Number,

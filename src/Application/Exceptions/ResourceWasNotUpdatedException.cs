@@ -1,4 +1,4 @@
-﻿namespace Application.Exceptions
+﻿namespace RestaurantLayer.Exceptions
 {
     public class ResourceWasNotUpdatedException : Exception
     {

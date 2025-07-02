@@ -3,34 +3,36 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Domain.Entities;
 using Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Restaurant.WebApi;
 
 namespace Restaurant.Tests.Integration;
 
 public abstract class BaseTest
 {
     private IntegrationTestWebAppFactory<Program> _factory;
-    private DatabaseFixture databaseFixture = new();
+    private readonly DatabaseFixture _databaseFixture = new();
     protected HttpClient HttpClient;
 
     [OneTimeSetUp]
     public async Task OneTimeSetup()
     {
-        await databaseFixture.Startasync();
+        await _databaseFixture.Startasync();
     }
 
     [OneTimeTearDown]
     public async Task OneTimeTurnDownSetup()
     {
-        await databaseFixture.RestartAsync();
+        await _databaseFixture.RestartAsync();
     }
 
 
     [SetUp]
     public void SetUp()
     {
-        _factory = new IntegrationTestWebAppFactory<Program>(databaseFixture.GetConnectionString());
+        _factory = new IntegrationTestWebAppFactory<Program>(_databaseFixture.GetConnectionString());
         HttpClient = _factory.CreateClient();
     }
 
@@ -39,7 +41,7 @@ public abstract class BaseTest
     {
         HttpClient.Dispose();
         await _factory.DisposeAsync();
-        await databaseFixture.ResetDatabase();
+        await _databaseFixture.ResetDatabase();
     }
 
     protected async Task<T?> GetEntity<T>(Expression<Func<T, bool>> expression) where T : class
@@ -48,6 +50,17 @@ public abstract class BaseTest
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             return await dbContext.Set<T>().FirstOrDefaultAsync(expression);
+        }
+    }
+
+    protected async Task<string> GetRole(string role)
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+            var adminRole = await roleManager.FindByNameAsync(role);
+            if (adminRole != null) return role;
+            else return null!;
         }
     }
 
@@ -71,6 +84,17 @@ public abstract class BaseTest
             await dbContext.Users.AddAsync(entity);
             return await dbContext.SaveChangesAsync();
         }
+    }
+
+    protected async Task RegisterAsync(string userName, string password)
+    {
+        var registerRequest = new
+        {
+            email = userName,
+            password = password
+        };
+
+        await HttpClient.PostAsJsonAsync("/register", registerRequest);
     }
 
     protected async Task LoginAsync(string userName, string password)
