@@ -19,10 +19,10 @@ namespace Infrastructure
                 await applicationDbContext.Database.MigrateAsync();
             }
 
-            var adminRole = await roleManager.FindByNameAsync("admin");
+            var adminRole = await roleManager.FindByNameAsync("SuperAdmin");
             if (adminRole == null)
             {
-                var role = new IdentityRole<int>("admin");
+                var role = new IdentityRole<int>("SuperAdmin");
 
                 var result = await roleManager.CreateAsync(role);
 
@@ -32,7 +32,7 @@ namespace Infrastructure
                 }
             }
 
-            var users = await userManager.GetUsersInRoleAsync("admin");
+            var users = await userManager.GetUsersInRoleAsync("SuperAdmin");
 
             if (users.Count == 0)
             {
@@ -48,7 +48,7 @@ namespace Infrastructure
                     throw new Exception("Error creating user");
                 }
 
-                result = await userManager.AddToRoleAsync(user, "admin");
+                result = await userManager.AddToRoleAsync(user, "SuperAdmin");
 
                 if (!result.Succeeded)
                 {

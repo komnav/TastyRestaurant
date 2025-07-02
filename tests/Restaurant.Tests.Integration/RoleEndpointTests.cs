@@ -11,6 +11,7 @@ public class RoleEndpointTests : BaseTest
     {
         //Arrange
         string roleRequest = "Cooker";
+        await LoginAsync("SuperAdmin", "Admin1234$");
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("/Role", roleRequest);
@@ -25,36 +26,34 @@ public class RoleEndpointTests : BaseTest
     public async Task UpdateRoleEndpointTest()
     {
         //Arrange
-        const string userName = "Admin1243@gmail.com";
-        const string password = "Admin1243#";
-        const string role = "Cooker";
+        string role = "Cooker";
+        string newName = "Waiter";
 
-        await RegisterAsync(userName, password);
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await HttpClient.PostAsJsonAsync("/Role", role);
-        var request = new UpdateRolesRequestModel(userName, role);
+
+        var request = new UpdateRolesRequestModel(role, newName);
 
         //Act
         var response = await HttpClient.PutAsJsonAsync("/Role", request);
 
         //Assert
         response.EnsureSuccessStatusCode();
-        var checkRoleToUpdate = await GetRole(role);
-        checkRoleToUpdate.Should().Be(role);
+        var checkRoleToUpdate = await GetRole(newName);
+        checkRoleToUpdate.Should().Be(newName);
     }
 
     [Test]
     public async Task DeleteRoleEndpointTest()
     {
         //Arrange
-        const string userName = "Admin1243@gmail.com";
-        const string password = "Admin1243#";
-        const string role = "Cooker";
+        string role = "Cooker";
 
-        await RegisterAsync(userName, password);
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await HttpClient.PostAsJsonAsync("/Role", role);
 
         //Act
-        var response = await HttpClient.DeleteAsync($"/Role{userName}/{role}");
+        var response = await HttpClient.DeleteAsync($"/Role/{role}");
 
         //Assert
         response.EnsureSuccessStatusCode();

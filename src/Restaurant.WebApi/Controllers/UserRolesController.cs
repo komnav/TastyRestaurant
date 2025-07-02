@@ -1,4 +1,6 @@
 using Domain.Entities;
+using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ namespace Restaurant.WebApi.Controllers;
 
 [ApiController]
 [Route("UserRoles")]
+[Authorize(Roles = UserRoles.SuperAdmin)]
 public class UserRolesController(
     UserManager<User> userManager,
     RoleManager<IdentityRole<int>> roleManager) : ControllerBase

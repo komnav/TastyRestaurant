@@ -1,14 +1,17 @@
 using Domain.Entities;
 using Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantLayer.Dtos;
+using RestaurantLayer.Dtos.Role.Requests;
 
 namespace Restaurant.WebApi.Controllers;
 
 [ApiController]
 [Route("Role")]
+[Authorize(Roles = UserRoles.SuperAdmin)]
 public class RoleController(
     UserManager<User> userManager,
     RoleManager<IdentityRole<int>> roleManager) : ControllerBase
@@ -33,15 +36,15 @@ public class RoleController(
     }
 
     [HttpPut]
-    public async Task<UpdateResponseModel> Update(string role, string newName)
+    public async Task<UpdateResponseModel> Update(UpdateRolesRequestModel rolesRequestModel)
     {
-        var findOldRoleByName = await _roleManager.FindByNameAsync(role);
-        var findNewRoleByName = await _roleManager.FindByNameAsync(role);
+        var findOldRoleByName = await _roleManager.FindByNameAsync(rolesRequestModel.Role);
+        var findNewRoleByName = await _roleManager.FindByNameAsync(rolesRequestModel.NewName);
 
         if (findOldRoleByName == null && findNewRoleByName == null)
             return new UpdateResponseModel(0);
 
-        findOldRoleByName!.Name = newName;
+        findOldRoleByName!.Name = rolesRequestModel.NewName;
         var update = await _roleManager.UpdateAsync(findOldRoleByName);
         if (update.Succeeded)
         {
@@ -51,7 +54,7 @@ public class RoleController(
         return new UpdateResponseModel(0);
     }
 
-    [HttpDelete]
+    [HttpDelete("{role}")]
     public async Task<IActionResult> Delete(string role)
     {
         var findRoleByName = await _roleManager.FindByNameAsync(role);
