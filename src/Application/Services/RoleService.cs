@@ -11,7 +11,7 @@ public class RoleService(IRoleRepository rolesRepository) : IRoleService
 
     public async Task<UpdateResponseModel> UpdateAsync(UpdateRolesRequestModel request)
     {
-        var updateRoles = await _rolesRepository.UpdateAsync(request.UserName, request.Role);
+        var updateRoles = await _rolesRepository.AddToRoleAsync(request.UserName, request.Role);
 
         return new UpdateResponseModel(updateRoles);
     }

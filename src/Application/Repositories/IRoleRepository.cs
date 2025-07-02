@@ -5,7 +5,7 @@ namespace RestaurantLayer.Repositories;
 
 public interface IRoleRepository
 {
-    Task<int> UpdateAsync(string user, string role);
+    Task<int> AddToRoleAsync(string user, string role);
     Task<int> DeleteAsync(string userName, string roles);
     Task<int> AddRoleAsync(string role);
 

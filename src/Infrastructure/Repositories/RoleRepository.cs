@@ -14,7 +14,7 @@ public class RoleRepository(
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<IdentityRole<int>> _roleManager = roleManager;
 
-    public async Task<int> UpdateAsync(string userName, string role)
+    public async Task<int> AddToRoleAsync(string userName, string role)
     {
         var getUser = await _userManager.Users
             .FirstOrDefaultAsync(u => u.UserName == userName);
