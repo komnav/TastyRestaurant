@@ -60,7 +60,7 @@ public class RoleController(
         var findRoleByName = await _roleManager.FindByNameAsync(role);
         if (findRoleByName is null)
         {
-            return BadRequest("Role not found");
+            return NotFound("Role not found");
         }
 
         await _roleManager.DeleteAsync(findRoleByName);

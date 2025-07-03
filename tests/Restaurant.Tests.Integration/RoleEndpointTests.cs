@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
 using RestaurantLayer.Dtos.Role.Requests;
@@ -30,7 +31,7 @@ public class RoleEndpointTests : BaseTest
         string newName = "Waiter";
 
         await LoginAsync("SuperAdmin", "Admin1234$");
-        await HttpClient.PostAsJsonAsync("/Role", role);
+        await CreateRole(role);
 
         var request = new UpdateRolesRequestModel(role, newName);
 
@@ -50,14 +51,51 @@ public class RoleEndpointTests : BaseTest
         string role = "Cooker";
 
         await LoginAsync("SuperAdmin", "Admin1234$");
-        await HttpClient.PostAsJsonAsync("/Role", role);
+        await CreateRole(role);
 
         //Act
         var response = await HttpClient.DeleteAsync($"/Role/{role}");
 
         //Assert
         response.EnsureSuccessStatusCode();
-        var checkRoleToAdd = await GetRole(role);
-        checkRoleToAdd.Should().BeNull(role);
+        var checkRoleToDeleted = await GetRole(role);
+        checkRoleToDeleted.Should().BeNull(role);
+    }
+
+    [Test]
+    public async Task DeleteEmptyRoleEndpointTest()
+    {
+        //Arrange
+        await LoginAsync("SuperAdmin", "Admin1234$");
+
+        //Act
+        var response = await HttpClient.DeleteAsync("/Role/Cooker");
+
+        //Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        var checkRoleToDeleted = await GetAllRole();
+        checkRoleToDeleted.Should().BeNull();
+    }
+
+    [Test]
+    public async Task GetRoleEndpointTest()
+    {
+        //Arrange
+        string role1 = "Cooker";
+        string role2 = "Waiter";
+        string role3 = "Cashier";
+
+        await LoginAsync("SuperAdmin", "Admin1234$");
+        await CreateRole(role1);
+        await CreateRole(role2);
+        await CreateRole(role3);
+
+        //Act
+        var response = await HttpClient.GetAsync("/Role");
+
+        //Assert
+        response.EnsureSuccessStatusCode();
+        var getRoles = await GetAllRole();
+        getRoles.Should().HaveCount(4);
     }
 }

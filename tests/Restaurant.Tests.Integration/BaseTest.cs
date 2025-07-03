@@ -64,6 +64,16 @@ public abstract class BaseTest
         }
     }
 
+    protected async Task<List<string?>> GetAllRole()
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+            var roles = await roleManager.Roles.ToListAsync();
+            return roles.Select(x => x.Name).ToList();
+        }
+    }
+
     protected async Task<T?> CreateEntity<T>(T entity) where T : class
     {
         using (var scope = _factory.Services.CreateScope())
@@ -86,17 +96,6 @@ public abstract class BaseTest
         }
     }
 
-    protected async Task RegisterAsync(string userName, string password)
-    {
-        var registerRequest = new
-        {
-            email = userName,
-            password = password
-        };
-
-        await HttpClient.PostAsJsonAsync("/register", registerRequest);
-    }
-
     protected async Task LoginAsync(string userName, string password)
     {
         var loginRequest = new
@@ -112,6 +111,16 @@ public abstract class BaseTest
         if (dictionary?.TryGetValue("accessToken", out object? token) == true)
         {
             HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.ToString());
+        }
+    }
+
+    protected async Task CreateRole(string role)
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+            var newRole = new IdentityRole<int>(role);
+            await roleManager.CreateAsync(newRole);
         }
     }
 }
