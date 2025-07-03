@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Enums;
 
-namespace RestaurantLayer.Repositories
+namespace Application.Repositories
 {
     public interface IOrderDetailRepository
     {

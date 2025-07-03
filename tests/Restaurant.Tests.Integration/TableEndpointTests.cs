@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
-using RestaurantLayer.Dtos.Table.Requests;
+using Application.Dtos.Table.Requests;
 
 namespace Restaurant.Tests.Integration;
 

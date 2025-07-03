@@ -1,12 +1,11 @@
-﻿using Application.Dtos.OrderDetail.Requests;
+﻿using Domain.Entities;
+using Application.Dtos;
+using Application.Dtos.OrderDetail.Requests;
 using Application.Dtos.OrderDetail.Responses;
-using Domain.Entities;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.OrderDetail.Requests;
-using RestaurantLayer.Exceptions;
-using RestaurantLayer.Repositories;
+using Application.Exceptions;
+using Application.Repositories;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public class OrderDetailService(IOrderDetailRepository orderDetailRepository) : IOrderDetailService
     {

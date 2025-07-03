@@ -1,8 +1,8 @@
-﻿using Application.Dtos.MenuCategory.Responses;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.MenuCategory.Requests;
+﻿using Application.Dtos;
+using Application.Dtos.MenuCategory.Requests;
+using Application.Dtos.MenuCategory.Responses;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public interface IMenuCategoryService
     {

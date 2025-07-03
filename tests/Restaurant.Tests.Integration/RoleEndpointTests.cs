@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using FluentAssertions;
-using RestaurantLayer.Dtos.Role.Requests;
+using Application.Dtos.Role.Requests;
 
 namespace Restaurant.Tests.Integration;
 

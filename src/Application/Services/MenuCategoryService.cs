@@ -1,11 +1,11 @@
-﻿using Application.Dtos.MenuCategory.Responses;
-using Domain.Entities;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.MenuCategory.Requests;
-using RestaurantLayer.Exceptions;
-using RestaurantLayer.Repositories;
+﻿using Domain.Entities;
+using Application.Dtos;
+using Application.Dtos.MenuCategory.Requests;
+using Application.Dtos.MenuCategory.Responses;
+using Application.Exceptions;
+using Application.Repositories;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public class MenuCategoryService(
         IMenuCategoryRepository menuCategoryRepository

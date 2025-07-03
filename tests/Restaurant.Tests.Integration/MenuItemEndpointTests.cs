@@ -1,10 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
-using Application.Dtos.MenuItem.Requests;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
-using RestaurantLayer.Dtos.MenuItem.Requests;
+using Application.Dtos.MenuItem.Requests;
 
 namespace Restaurant.Tests.Integration;
 

@@ -1,12 +1,11 @@
-﻿using Application.Dtos.MenuItem.Requests;
+﻿using Domain.Entities;
+using Application.Dtos;
+using Application.Dtos.MenuItem.Requests;
 using Application.Dtos.MenuItem.Response;
-using Domain.Entities;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.MenuItem.Requests;
-using RestaurantLayer.Exceptions;
-using RestaurantLayer.Repositories;
+using Application.Exceptions;
+using Application.Repositories;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public class MenuItemService(IMenuItemRepository menuItemRepository) : IMenuItemService
     {

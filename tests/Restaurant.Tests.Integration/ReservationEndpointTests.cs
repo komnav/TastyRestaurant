@@ -1,11 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-using Application.Dtos.Reservation.Requests;
-using Application.Dtos.Reservation.Responses;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
-using RestaurantLayer.Dtos.Reservation.Requests;
+using Application.Dtos.Reservation.Requests;
+using Application.Dtos.Reservation.Responses;
 
 namespace Restaurant.Tests.Integration;
 

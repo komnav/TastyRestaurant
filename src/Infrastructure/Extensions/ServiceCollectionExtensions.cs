@@ -2,7 +2,7 @@ using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RestaurantLayer.Repositories;
+using Application.Repositories;
 
 namespace Infrastructure.Extensions;
 

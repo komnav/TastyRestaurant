@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using RestaurantLayer.Services;
+using Application.Services;
 
-namespace RestaurantLayer.Extensions;
+namespace Application.Extensions;
 
 public static class ServiceExtensions
 {

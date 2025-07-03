@@ -74,6 +74,19 @@ public abstract class BaseTest
         }
     }
 
+    protected async Task<List<string>> GetUserRoles(int idUser)
+    {
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var getUser = await userManager.Users
+                .FirstOrDefaultAsync(u => u.Id == idUser);
+
+            var getRoles = await userManager.GetRolesAsync(getUser!);
+            return getRoles.ToList();
+        }
+    }
+
     protected async Task<T?> CreateEntity<T>(T entity) where T : class
     {
         using (var scope = _factory.Services.CreateScope())
@@ -85,14 +98,26 @@ public abstract class BaseTest
         }
     }
 
-    protected async Task<int> CreateUser(Contact contact, User entity)
+    protected async Task<int> CreateUser(
+        Contact contact,
+        User entity,
+        string password = "Admin1234$")
     {
         using (var scope = _factory.Services.CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             await dbContext.Contacts.AddAsync(contact);
-            await dbContext.Users.AddAsync(entity);
-            return await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
+
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var result = await userManager.CreateAsync(entity, password);
+
+            if (result.Succeeded)
+            {
+                return 1;
+            }
+
+            return 0;
         }
     }
 

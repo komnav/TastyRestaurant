@@ -2,7 +2,7 @@
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
-using RestaurantLayer.Repositories;
+using Application.Repositories;
 
 namespace Infrastructure.Repositories
 {

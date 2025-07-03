@@ -1,4 +1,4 @@
-﻿namespace RestaurantLayer.Dtos.Role.Requests;
+﻿namespace Application.Dtos.Role.Requests;
 
 public record UpdateRolesRequestModel(
     string Role,

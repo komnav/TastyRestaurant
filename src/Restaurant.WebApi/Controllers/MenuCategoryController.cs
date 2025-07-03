@@ -1,11 +1,10 @@
-﻿using Application.Dtos.MenuCategory.Requests;
-using Application.Dtos.MenuCategory.Responses;
-using Domain.Enums;
+﻿using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.MenuCategory.Requests;
-using RestaurantLayer.Services;
+using Application.Dtos;
+using Application.Dtos.MenuCategory.Requests;
+using Application.Dtos.MenuCategory.Responses;
+using Application.Services;
 
 namespace Restaurant.WebApi.Controllers
 {

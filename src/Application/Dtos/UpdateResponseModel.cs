@@ -1,4 +1,4 @@
-﻿namespace RestaurantLayer.Dtos
+﻿namespace Application.Dtos
 {
     public record UpdateResponseModel(
         int AffectedRows

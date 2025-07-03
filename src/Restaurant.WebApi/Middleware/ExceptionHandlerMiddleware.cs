@@ -1,9 +1,9 @@
 ﻿using Npgsql;
 using System.Net;
 using System.Text;
-using RestaurantLayer.Exceptions;
 using Microsoft.AspNetCore.Authentication;
 using Application.Dtos;
+using Application.Exceptions;
 
 
 namespace Restaurant.WebApi.Middleware

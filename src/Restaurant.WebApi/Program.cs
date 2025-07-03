@@ -5,7 +5,7 @@ using Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
 using Restaurant.WebApi.Extensions;
 using Restaurant.WebApi.Middleware;
-using RestaurantLayer.Extensions;
+using Application.Extensions;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);

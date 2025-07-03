@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.Role.Requests;
+using Application.Dtos;
+using Application.Dtos.Role.Requests;
 
 namespace Restaurant.WebApi.Controllers;
 

@@ -1,3 +1,4 @@
+using Application.Dtos.Role.Requests;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -19,30 +20,30 @@ public class UserRolesController(
 
 
     [HttpPost]
-    public async Task<IActionResult> LinkRoleToUser(int idUser, string role)
+    public async Task<IActionResult> LinkRoleToUser(LinkRoleToUserRequestModel request)
     {
         var getUser = await _userManager.Users
-            .FirstOrDefaultAsync(u => u.Id == idUser);
+            .FirstOrDefaultAsync(u => u.Id == request.IdUser);
         if (getUser is null)
-            return BadRequest($"This user: {idUser} not found");
+            return NotFound($"This user: {request.IdUser} not found");
 
-        var getRole = await _roleManager.FindByNameAsync(role);
-        if (getRole == null) return BadRequest($"This role: {role} doesn't exist to {getUser}");
+        var getRole = await _roleManager.FindByNameAsync(request.Role);
+        if (getRole == null) return NotFound($"This role: {request.Role} doesn't exist to {getUser}");
 
-        await _userManager.AddToRoleAsync(getUser, $"{role}");
+        await _userManager.AddToRoleAsync(getUser, $"{request.Role}");
         return Ok($"User {getUser.UserName} has been linked to role {getRole.Name}");
     }
 
-    [HttpDelete]
+    [HttpDelete("{idUser}/{role}")]
     public async Task<IActionResult> UnLinkRoleToUser(int idUser, string role)
     {
         var getUser = await _userManager.Users
             .FirstOrDefaultAsync(u => u.Id == idUser);
         if (getUser is null)
-            return BadRequest($"This user: {idUser} not found");
+            return NotFound($"This user: {idUser} not found");
 
         var getRole = await _roleManager.FindByNameAsync(role);
-        if (getRole == null) return BadRequest($"This role: {role} doesn't exist to {getUser}");
+        if (getRole == null) return NotFound($"This role: {role} doesn't exist to {getUser}");
 
         var delete = await _userManager.RemoveFromRoleAsync(getUser, $"{role}");
         if (delete.Succeeded)
@@ -53,13 +54,13 @@ public class UserRolesController(
         return BadRequest($"There isn't user {getUser} linked to this {role}");
     }
 
-    [HttpGet]
+    [HttpGet("{idUser}")]
     public async Task<IActionResult> GetUserRoles(int idUser)
     {
         var getUser = await _userManager.Users
             .FirstOrDefaultAsync(u => u.Id == idUser);
         if (getUser is null)
-            return BadRequest($"This user: {idUser} not found");
+            return NotFound($"This user: {idUser} not found");
 
         var getRoles = await _userManager.GetRolesAsync(getUser);
 

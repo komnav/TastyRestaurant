@@ -1,9 +1,8 @@
-﻿using Application.Dtos.MenuItem.Requests;
+﻿using Application.Dtos;
+using Application.Dtos.MenuItem.Requests;
 using Application.Dtos.MenuItem.Response;
-using RestaurantLayer.Dtos;
-using RestaurantLayer.Dtos.MenuItem.Requests;
 
-namespace RestaurantLayer.Services
+namespace Application.Services
 {
     public interface IMenuItemService
     {
