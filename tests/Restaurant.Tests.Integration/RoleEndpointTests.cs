@@ -73,7 +73,7 @@ public class RoleEndpointTests : BaseTest
 
         //Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        var checkRoleToDeleted = await GetAllRole();
+        var checkRoleToDeleted = await GetRole("Cooker");
         checkRoleToDeleted.Should().BeNull();
     }
 
@@ -96,6 +96,6 @@ public class RoleEndpointTests : BaseTest
         //Assert
         response.EnsureSuccessStatusCode();
         var getRoles = await GetAllRole();
-        getRoles.Should().HaveCount(4);
+        getRoles.Should().HaveCount(5);
     }
 }
