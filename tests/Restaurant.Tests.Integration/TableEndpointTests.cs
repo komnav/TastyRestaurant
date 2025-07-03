@@ -19,8 +19,8 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
-        await LoginAsync("superadmin", "Admin1234$");
-
+        await LoginAsync("SuperAdmin", "Admin1234$");
+        
         //Act
         var response = await HttpClient.PostAsJsonAsync("/Table", createTable);
 
@@ -44,8 +44,8 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(table);
-        await LoginAsync("superadmin", "Admin1234$");
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("/Table", table);
@@ -64,8 +64,8 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(table);
-        await LoginAsync("superadmin", "Admin1234$");
 
         //Act
         var response = await HttpClient.DeleteAsync($"/Table/{table.Id}");
@@ -73,13 +73,13 @@ public class TableEndpointTests : BaseTest
         //Assert
         response.EnsureSuccessStatusCode();
     }
-    
+
     [Test]
     public async Task DeleteEmptyTableEndpointTest()
     {
         //Arrange
-        await LoginAsync("superadmin", "Admin1234$");
-        
+        await LoginAsync("SuperAdmin", "Admin1234$");
+
         //Act
         var response = await HttpClient.DeleteAsync("/Table/524");
 
@@ -130,7 +130,7 @@ public class TableEndpointTests : BaseTest
         //Assert
         tables.Should().NotBeEmpty();
     }
-    
+
     [Test]
     public async Task UpdateTableEndpointTest()
     {
@@ -141,8 +141,9 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(table);
-        await LoginAsync("superadmin", "Admin1234$");
+
         var request = new UpdateTableRequestModel(4, 123, TableType.Table);
 
         //Act
@@ -157,7 +158,7 @@ public class TableEndpointTests : BaseTest
             t.Type == request.Type);
         resultTable.Should().NotBeNull();
     }
-    
+
     [Test]
     public async Task UpdateDuplicateTableEndpointTest()
     {
@@ -168,8 +169,8 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(firstTable);
-        await LoginAsync("superadmin", "Admin1234$");
 
         var secondTable = new Table
         {

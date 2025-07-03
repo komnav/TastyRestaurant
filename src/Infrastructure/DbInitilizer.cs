@@ -19,14 +19,16 @@ namespace Infrastructure
                 await applicationDbContext.Database.MigrateAsync();
             }
 
-            var adminRole = await roleManager.FindByNameAsync("SuperAdmin");
-            if (adminRole == null)
+            var findAdminRole = await roleManager.FindByNameAsync("SuperAdmin");
+            if (findAdminRole == null)
             {
-                var role = new IdentityRole<int>("SuperAdmin");
+                var superAdminRole = new IdentityRole<int>("SuperAdmin");
+                var adminRole = new IdentityRole<int>("admin");
 
-                var result = await roleManager.CreateAsync(role);
+                var resultSuperAdmin = await roleManager.CreateAsync(superAdminRole);
+                var resultAdmin = await roleManager.CreateAsync(adminRole);
 
-                if (!result.Succeeded)
+                if (!resultSuperAdmin.Succeeded && !resultAdmin.Succeeded)
                 {
                     throw new Exception("Error creating role");
                 }
@@ -38,7 +40,7 @@ namespace Infrastructure
             {
                 var user = new User
                 {
-                    UserName = "superAdmin",
+                    UserName = "SuperAdmin",
                     Email = "admin@example.com",
                 };
 
@@ -49,6 +51,7 @@ namespace Infrastructure
                 }
 
                 result = await userManager.AddToRoleAsync(user, "SuperAdmin");
+                result = await userManager.AddToRoleAsync(user, "admin");
 
                 if (!result.Succeeded)
                 {

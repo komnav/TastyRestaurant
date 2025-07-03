@@ -19,7 +19,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var createMenuItem = new MenuItem
@@ -51,7 +51,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -80,7 +80,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -104,7 +104,7 @@ public class MenuItemEndpointTests : BaseTest
     public async Task DeleteEmptyMenuItemEndpointTest()
     {
         //Arrange
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
 
         //Act
         var response = await HttpClient.DeleteAsync("/MenuItem/123");
@@ -122,7 +122,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -158,7 +158,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var firstMenuItem = new MenuItem
@@ -195,7 +195,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -222,7 +222,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
@@ -254,7 +254,7 @@ public class MenuItemEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(menuCategory);
 
         var menuItem = new MenuItem
