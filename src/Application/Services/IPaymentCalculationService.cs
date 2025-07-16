@@ -1,6 +1,8 @@
+using Application.Dtos.PaymentCalculation.Responses;
+
 namespace Application.Services;
 
-public interface IPaymentCalculation
+public interface IPaymentCalculationService
 {
-    
+    Task<PaymentCalculationResponseModel> PaymentCalculation(int idOrder);
 }

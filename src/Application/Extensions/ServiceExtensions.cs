@@ -13,5 +13,6 @@ public static class ServiceExtensions
         service.AddScoped<IReservationService, ReservationService>();
         service.AddScoped<IOrderDetailService, OrderDetailService>();
         service.AddScoped<IOrderService, OrderService>();
+        service.AddScoped<IPaymentCalculationService, PaymentCalculationService>();
     }
 }

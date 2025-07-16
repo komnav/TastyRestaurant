@@ -1,6 +1,8 @@
 namespace Application.Dtos.PaymentCalculation.Responses;
 
-public class PaymentCalculationResponseModel
-{
-    
-}
+public record PaymentCalculationResponseModel(
+    string MenuItemName,
+    int Quantity,
+    decimal Price,
+    decimal TotalPrice
+);
