@@ -1,4 +1,4 @@
-namespace RestaurantLayer.Dtos.Reservation;
+namespace Application.Dtos.Reservation;
 
 public interface IDateTimeDto
 {

@@ -1,9 +1,8 @@
-﻿using Domain.Entities;
-using Application.Dtos;
+﻿using Application.Dtos;
 using Application.Dtos.MenuCategory.Requests;
 using Application.Dtos.MenuCategory.Responses;
 
-namespace ResraurantLayer.Services
+namespace Application.Services
 {
     public interface IMenuCategoryService
     {

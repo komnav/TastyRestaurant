@@ -1,7 +1,6 @@
 ﻿using Application.Dtos;
 using Application.Dtos.MenuItem.Requests;
 using Application.Dtos.MenuItem.Response;
-using Domain.Entities;
 
 namespace Application.Services
 {

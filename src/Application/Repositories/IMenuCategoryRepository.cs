@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace RestaurantLayer.Repositories
+namespace Application.Repositories
 {
     public interface IMenuCategoryRepository
     {

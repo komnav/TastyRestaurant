@@ -1,9 +1,9 @@
-﻿using Application.Dtos;
+﻿using Domain.Entities;
+using Application.Dtos;
 using Application.Dtos.OrderDetail.Requests;
 using Application.Dtos.OrderDetail.Responses;
-using Domain.Entities;
-using RestaurantLayer.Exceptions;
-using RestaurantLayer.Repositories;
+using Application.Exceptions;
+using Application.Repositories;
 
 namespace Application.Services
 {

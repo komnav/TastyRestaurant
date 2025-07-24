@@ -1,11 +1,11 @@
-using Application.Dtos;
 using Domain.Entities;
+using Domain.Token;
 using Infrastructure;
 using Infrastructure.Extensions;
 using Microsoft.OpenApi.Models;
 using Restaurant.WebApi.Extensions;
 using Restaurant.WebApi.Middleware;
-using RestaurantLayer.Extensions;
+using Application.Extensions;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -54,6 +54,9 @@ app.MapIdentityApi<User>();
 
 app.Run();
 
-public partial class Program
+namespace Restaurant.WebApi
 {
+    public partial class Program
+    {
+    }
 }

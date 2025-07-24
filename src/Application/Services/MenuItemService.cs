@@ -2,11 +2,10 @@
 using Application.Dtos;
 using Application.Dtos.MenuItem.Requests;
 using Application.Dtos.MenuItem.Response;
-using Application.Services;
-using RestaurantLayer.Exceptions;
-using RestaurantLayer.Repositories;
+using Application.Exceptions;
+using Application.Repositories;
 
-namespace ResraurantLayer.Services
+namespace Application.Services
 {
     public class MenuItemService(IMenuItemRepository menuItemRepository) : IMenuItemService
     {

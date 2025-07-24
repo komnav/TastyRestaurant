@@ -2,7 +2,7 @@ using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RestaurantLayer.Repositories;
+using Application.Repositories;
 
 namespace Infrastructure.Extensions;
 
@@ -29,5 +29,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IReservationRepository, ReservationRepository>();
         services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPaymentCalculationRepository, PaymentCalculationRepository>();
     }
 }

@@ -1,10 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
-using Application.Dtos.Reservation.Requests;
-using Application.Dtos.Reservation.Responses;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
+using Application.Dtos.Reservation.Requests;
+using Application.Dtos.Reservation.Responses;
 
 namespace Restaurant.Tests.Integration;
 
@@ -20,7 +20,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(table);
 
         var now = DateTimeOffset.UtcNow;
@@ -77,7 +77,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(table);
 
         var contact = new Contact
@@ -150,7 +150,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(table);
 
         var contact = new Contact
@@ -209,7 +209,7 @@ public class ReservationEndpointTests : BaseTest
     public async Task DeleteEmptyReservationEndpointTest()
     {
         //Arrange
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
 
         //Act
         var response = await HttpClient.DeleteAsync($"/Reservation/1234");
@@ -228,7 +228,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(firstTable);
 
         var secondTable = new Table
@@ -318,7 +318,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(firstTable);
 
         var contact = new Contact
@@ -581,7 +581,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("superadmin", "Admin1234$");
+        await LoginAsync("SuperAdmin", "Admin1234$");
         await CreateEntity(table);
 
         var contact = new Contact
