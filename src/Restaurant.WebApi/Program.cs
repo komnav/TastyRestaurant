@@ -1,3 +1,4 @@
+using System.Reflection;
 using Domain.Entities;
 using Domain.Token;
 using Infrastructure;
@@ -6,6 +7,8 @@ using Microsoft.OpenApi.Models;
 using Restaurant.WebApi.Extensions;
 using Restaurant.WebApi.Middleware;
 using Application.Extensions;
+using Application.RwabbitMasstransit;
+using MassTransit;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,7 @@ builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddServiceLayer();
 builder.Services.AddOptions<JwtSettingOptions>().BindConfiguration(JwtSettingOptions.Section);
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -27,6 +31,19 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 builder.AddAuthorizationWithIdentity();
+
+// builder.Services.AddMassTransit(x =>
+// {
+//     x.UsingRabbitMq((context, cfg) =>
+//     {
+//         cfg.Host("rabbitmq://localhost", h =>
+//         {
+//             h.Username("guest");
+//             h.Password("guest");
+//         });
+//     });
+// });
+
 
 var app = builder.Build();
 

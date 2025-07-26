@@ -15,6 +15,6 @@ namespace Application.Repositories
         Task<Reservation?> GetAsync(int id);
         Task<List<Reservation>> GetAllAsync(int page = 1, int pageSize = 10);
         Task<int> CancelReservation(int reservationId);
-        Task<List<Reservation>> GetExistingReservations(int tableId, DateTimeOffset from, DateTimeOffset to);
+        Task<List<Reservation>> GetExistingReservations(int? tableId, DateTimeOffset from, DateTimeOffset to);
     }
 }

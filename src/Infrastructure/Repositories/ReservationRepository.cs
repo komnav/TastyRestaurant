@@ -59,7 +59,7 @@ namespace Infrastructure.Repositories
         }
 
         public async Task<List<Reservation>> GetExistingReservations(
-            int tableId,
+            int? tableId,
             DateTimeOffset from,
             DateTimeOffset to)
         {

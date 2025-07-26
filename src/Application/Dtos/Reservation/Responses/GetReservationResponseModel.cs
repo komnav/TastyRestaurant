@@ -4,7 +4,7 @@ namespace Application.Dtos.Reservation.Responses;
 
 public record GetReservationResponseModel(
     int Id,
-    int TableId,
+    int? TableId,
     int CustomerId,
     DateTimeOffset From,
     DateTimeOffset To,

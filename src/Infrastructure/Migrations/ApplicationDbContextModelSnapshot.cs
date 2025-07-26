@@ -193,7 +193,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TableId")
+                    b.Property<int?>("TableId")
                         .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("To")
@@ -483,9 +483,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Table", "Table")
                         .WithMany()
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TableId");
 
                     b.HasOne("Domain.Entities.User", "Customer")
                         .WithMany()

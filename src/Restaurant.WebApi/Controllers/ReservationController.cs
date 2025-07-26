@@ -14,7 +14,7 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly IReservationService _reservationService = reservationService;
 
-        [Authorize(Roles = UserRoles.Admin)]
+       // [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateReservationResponseModel> Create(CreateReservationRequestModel request)
         {

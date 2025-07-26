@@ -1,0 +1,6 @@
+@MasstransitDemo.Consumer_HostAddress = http://localhost:5034
+
+GET {{MasstransitDemo.Consumer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
