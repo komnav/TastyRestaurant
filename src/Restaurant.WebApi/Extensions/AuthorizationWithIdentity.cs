@@ -18,7 +18,7 @@ public static class AuthorizationWithIdentity
 
         builder.Services.AddAuthentication(options =>
         {
-            options.DefaultScheme = IdentityConstants.BearerScheme; // Use Bearer by default
+            options.DefaultScheme = IdentityConstants.BearerScheme;
             options.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
             options.DefaultChallengeScheme = IdentityConstants.BearerScheme;
         }).AddBearerToken(IdentityConstants.BearerScheme);

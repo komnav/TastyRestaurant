@@ -1,4 +1,4 @@
-namespace Application.RwabbitMasstransit.Repos;
+namespace Application.RabbitMqMasstransit.Repos;
 
 public interface INotificationCreated
 {

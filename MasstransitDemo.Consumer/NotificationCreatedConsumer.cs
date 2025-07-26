@@ -1,5 +1,5 @@
 using System.Text.Json;
-using Application.RwabbitMasstransit.Repos;
+using Application.RabbitMqMasstransit.Repos;
 using MassTransit;
 
 namespace MasstransitDemo.Consumer;

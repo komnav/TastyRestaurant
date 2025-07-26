@@ -1,4 +1,4 @@
-namespace Application.RwabbitMasstransit;
+namespace Application.RabbitMqMasstransit;
 
 public enum NotificationType
 {

@@ -1,5 +1,5 @@
-using Application.RwabbitMasstransit;
-using Application.RwabbitMasstransit.Repos;
+using Application.RabbitMqMasstransit;
+using Application.RabbitMqMasstransit.Repos;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
