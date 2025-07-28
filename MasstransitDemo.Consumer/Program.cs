@@ -17,10 +17,8 @@ builder.ConfigureServices((hostContext, services) =>
                 h.Password("guest");
             });
 
-            cfg.ReceiveEndpoint("notification-created-queue", e =>
-            {
-                e.ConfigureConsumer<NotificationCreatedConsumer>(context);
-            });
+            cfg.ReceiveEndpoint("notification-created-queue",
+                e => { e.ConfigureConsumer<NotificationCreatedConsumer>(context); });
         });
     });
 });

@@ -8,6 +8,7 @@ public class NotificationCreatedConsumer : IConsumer<INotificationCreated>
 {
     public async Task Consume(ConsumeContext<INotificationCreated> context)
     {
+        await ReceivedMessage.Received();
         var message = context.Message;
         var serialized = JsonSerializer.Serialize(message);
         Console.WriteLine($"Received message: {serialized}");

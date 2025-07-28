@@ -28,7 +28,7 @@ namespace Restaurant.WebApi.Middleware
         {
             try
             {
-                var service = context.RequestServices.GetService<IAuthenticationService>();
+                context.RequestServices.GetService<IAuthenticationService>();
 
 
                 await _next(context);

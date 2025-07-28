@@ -22,7 +22,7 @@ namespace Application.Services
                 await _reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
             if (existingReservations.Count > 0)
             {
-                throw new ResourceAlreadyExistException(nameof(Reservation), request.TableId, request.From, request.To);
+                throw new ResourceAlreadyExistException(nameof(Reservation), request.TableId!, request.From, request.To);
             }
 
             var addReservation = new Reservation

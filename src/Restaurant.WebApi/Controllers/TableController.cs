@@ -14,7 +14,7 @@ namespace Restaurant.WebApi.Controllers
     {
         private readonly ITableService _tableService = tableService;
 
-        [Authorize(Roles = UserRoles.Admin)]
+        //[Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateTableResponseModel> Create([FromBody] CreateTableRequestModel request)
         {

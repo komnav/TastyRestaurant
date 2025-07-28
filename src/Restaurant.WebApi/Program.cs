@@ -1,4 +1,5 @@
-using System.Reflection;
+using System.Net.Mime;
+using System.Reflection.Metadata;
 using Domain.Entities;
 using Domain.Token;
 using Infrastructure;
@@ -7,8 +8,9 @@ using Microsoft.OpenApi.Models;
 using Restaurant.WebApi.Extensions;
 using Restaurant.WebApi.Middleware;
 using Application.Extensions;
-using Application.RwabbitMasstransit;
-using MassTransit;
+using FluentValidation;
+using Infrastructure.Validation;
+using MediatR;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,12 @@ builder.Services.AddInfrastructureLayer(builder.Configuration);
 builder.Services.AddServiceLayer();
 builder.Services.AddOptions<JwtSettingOptions>().BindConfiguration(JwtSettingOptions.Section);
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddValidatorsFromAssemblyContaining<CreateTableCommandValidator>();
+
 
 builder.Services.AddSwaggerGen(options =>
 {
@@ -32,9 +40,10 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.AddAuthorizationWithIdentity();
 
-// builder.Services.AddMassTransit(x =>
+// builder.Services.AddMassTransit(configurator =>
 // {
-//     x.UsingRabbitMq((context, cfg) =>
+//     configurator.SetKebabCaseEndpointNameFormatter();
+//     configurator.UsingRabbitMq((context, cfg) =>
 //     {
 //         cfg.Host("rabbitmq://localhost", h =>
 //         {
@@ -61,6 +70,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<EfficientStopwatch>();
+app.UseMiddleware<CatchingExceptionsFromServicesMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

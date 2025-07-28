@@ -3,6 +3,7 @@ using Application.Dtos;
 using Application.Dtos.Table.Requests;
 using Application.Dtos.Table.Responses;
 using Application.Exceptions;
+using Application.RabbitMqMasstransit;
 using Application.Repositories;
 
 namespace Application.Services
@@ -26,6 +27,7 @@ namespace Application.Services
                 throw new ResourceWasNotCreatedException(nameof(table));
             }
 
+            await Message.SendMessage();
             return new CreateTableResponseModel(table.Id, table.Number, table.Capacity, table.Type);
         }
 

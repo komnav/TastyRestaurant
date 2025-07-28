@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace Restaurant.WebApi.Middleware
 {
@@ -7,6 +6,7 @@ namespace Restaurant.WebApi.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<EfficientStopwatch> _logger;
+        
         public EfficientStopwatch(RequestDelegate next, ILogger<EfficientStopwatch> logger)
         {
             _next = next;
