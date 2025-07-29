@@ -27,7 +27,7 @@ namespace Application.Services
                 throw new ResourceWasNotCreatedException(nameof(table));
             }
 
-            await Message.SendMessage();
+            //await Message.SendMessage();
             return new CreateTableResponseModel(table.Id, table.Number, table.Capacity, table.Type);
         }
 

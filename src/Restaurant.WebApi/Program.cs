@@ -70,8 +70,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<EfficientStopwatch>();
-app.UseMiddleware<CatchingExceptionsFromServicesMiddleware>();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
