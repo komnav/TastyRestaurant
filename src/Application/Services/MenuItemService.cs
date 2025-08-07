@@ -9,8 +9,6 @@ namespace Application.Services
 {
     public class MenuItemService(IMenuItemRepository menuItemRepository) : IMenuItemService
     {
-        private readonly IMenuItemRepository _menuItemRepository = menuItemRepository;
-
         public async Task<CreateMenuItemResponseModel> CreateAsync(CreateMenuItemRequestModel request)
         {
             var menuItem = new MenuItem
@@ -19,7 +17,7 @@ namespace Application.Services
                 Price = request.Price,
                 Name = request.Name
             };
-            var rows = await _menuItemRepository.CreateAsync(menuItem);
+            var rows = await menuItemRepository.CreateAsync(menuItem);
 
             if (rows <= 0)
             {
@@ -31,25 +29,26 @@ namespace Application.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _menuItemRepository.DeleteAsync(id);
+            return await menuItemRepository.DeleteAsync(id);
         }
 
         public async Task<List<GetMenuItemResponseModel>> GetAll()
         {
-            var menuItem = await _menuItemRepository.GetAllAsync();
+            var menuItem = await menuItemRepository.GetAllAsync();
 
-            return menuItem.Select(menuItem => new GetMenuItemResponseModel(
-                menuItem.Id,
-                menuItem.CategoryId,
-                menuItem.Price,
-                menuItem.Name,
-                menuItem.Status
-            )).ToList();
+            return menuItem.Select(
+                item => new GetMenuItemResponseModel(
+                    item.Id,
+                    item.CategoryId,
+                    item.Price,
+                    item.Name,
+                    item.Status
+                )).ToList();
         }
 
         public async Task<GetMenuItemResponseModel?> GetAsync(int id)
         {
-            var menuItem = await _menuItemRepository.GetAsync(id);
+            var menuItem = await menuItemRepository.GetAsync(id);
 
             if (menuItem == null)
             {
@@ -62,7 +61,7 @@ namespace Application.Services
 
         public async Task<List<GetMenuItemResponseModel>> GetByCategoryAsync(int categoryId)
         {
-            var menuItems = await _menuItemRepository.GetByCategoryAsync(categoryId);
+            var menuItems = await menuItemRepository.GetByCategoryAsync(categoryId);
 
             return menuItems.Select(menuItem => new GetMenuItemResponseModel(
                 menuItem.Id,
@@ -75,7 +74,7 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuItemRequestModel request)
         {
-            var rows = await _menuItemRepository.UpdateAsync(id, request.CategoryId, request.Price, request.Name,
+            var rows = await menuItemRepository.UpdateAsync(id, request.CategoryId, request.Price, request.Name,
                 request.Status);
 
             return new UpdateResponseModel(rows);

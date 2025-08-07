@@ -12,13 +12,11 @@ namespace Restaurant.WebApi.Controllers
     [Route("Order")]
     public class OrderController(IOrderService orderService) : Controller
     {
-        private readonly IOrderService _orderService = orderService;
-
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateOrderResponseModel> Create(CreateOrderRequestModel request)
         {
-            return await _orderService.CreateAsync(request);
+            return await orderService.CreateAsync(request);
         }
 
 
@@ -26,7 +24,7 @@ namespace Restaurant.WebApi.Controllers
         [HttpPut]
         public async Task<UpdateResponseModel> Update(int id, UpdateOrderRequestModel request)
         {
-            return await _orderService.UpdateAsync(id, request);
+            return await orderService.UpdateAsync(id, request);
         }
 
 
@@ -34,19 +32,19 @@ namespace Restaurant.WebApi.Controllers
         [HttpDelete]
         public async Task<int> Delete(int id)
         {
-            return await _orderService.DeleteAsync(id);
+            return await orderService.DeleteAsync(id);
         }
 
         [HttpGet]
         public async Task<List<GetOrderResponseModel>> GetAll()
         {
-            return await _orderService.GetAllAsync();
+            return await orderService.GetAllAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<GetOrderResponseModel?> Get(int id)
         {
-            return await _orderService.GetAsync(id);
+            return await orderService.GetAsync(id);
         }
     }
 }

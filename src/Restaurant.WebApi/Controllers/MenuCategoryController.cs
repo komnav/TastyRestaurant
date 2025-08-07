@@ -12,20 +12,18 @@ namespace Restaurant.WebApi.Controllers
     [Route("MenuCategory")]
     public class MenuCategoryController(IMenuCategoryService menuCategoryService) : ControllerBase
     {
-        private readonly IMenuCategoryService _menuCategoryService = menuCategoryService;
-
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateMenuCategoryResponseModel> Create([FromBody] CreateMenuCategoryRequestModel request)
         {
-            return await _menuCategoryService.CreateAsync(request.Name);
+            return await menuCategoryService.CreateAsync(request.Name);
         }
 
         [Authorize(Roles = UserRoles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var affectedRows = await _menuCategoryService.DeleteAsync(id);
+            var affectedRows = await menuCategoryService.DeleteAsync(id);
             if (affectedRows > 0)
             {
                 return Ok();
@@ -38,20 +36,20 @@ namespace Restaurant.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuCategoryRequestModel request)
         {
-            var updateCategory = await _menuCategoryService.UpdateAsync(id, request);
+            var updateCategory = await menuCategoryService.UpdateAsync(id, request);
             return updateCategory;
         }
 
         [HttpGet("{id}")]
         public async Task<GetMenuCategoryResponseModel?> Get([FromRoute] int id)
         {
-            return await _menuCategoryService.GetAsync(id);
+            return await menuCategoryService.GetAsync(id);
         }
 
         [HttpGet]
         public async Task<List<GetMenuCategoryResponseModel>> GetAll()
         {
-            return await _menuCategoryService.GetAllAsync();
+            return await menuCategoryService.GetAllAsync();
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Application.Dtos.Order.Responses;
 
 public record GetOrderResponseModel(
      int Id,
-     int tableId,
+     int UserId,
      DateTimeOffset dateTime,
      OrdersStatus ordersStatus
     );

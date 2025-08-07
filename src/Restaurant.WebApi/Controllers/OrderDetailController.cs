@@ -11,14 +11,11 @@ namespace Restaurant.WebApi.Controllers
     [Route("OrderDetail")]
     public class OrderDetailController(IOrderDetailService orderDetailService) : Controller
     {
-        private readonly IOrderDetailService _orderDetailService = orderDetailService;
-
-
         [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateOrderDetailResponseModel> Create(CreateOrderDetailRequestModel request)
         {
-            return await _orderDetailService.CreateAsync(request);
+            return await orderDetailService.CreateAsync(request);
         }
 
 
@@ -26,19 +23,19 @@ namespace Restaurant.WebApi.Controllers
         [HttpDelete]
         public async Task<int> Delete(int id)
         {
-            return await _orderDetailService.DeleteAsync(id);
+            return await orderDetailService.DeleteAsync(id);
         }
 
         [HttpGet]
         public async Task<List<GetOrderDetailResponseModel>> GetAll()
         {
-            return await _orderDetailService.GetAllAsync();
+            return await orderDetailService.GetAllAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<GetOrderDetailResponseModel?> Get(int id)
         {
-            return await _orderDetailService.GetAsync(id);
+            return await orderDetailService.GetAsync(id);
         }
     }
 }

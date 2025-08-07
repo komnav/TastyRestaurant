@@ -15,37 +15,33 @@ public class UserRolesController(
     UserManager<User> userManager,
     RoleManager<IdentityRole<int>> roleManager) : ControllerBase
 {
-    private readonly UserManager<User> _userManager = userManager;
-    private readonly RoleManager<IdentityRole<int>> _roleManager = roleManager;
-
-
     [HttpPost]
     public async Task<IActionResult> LinkRoleToUser(LinkRoleToUserRequestModel request)
     {
-        var getUser = await _userManager.Users
+        var getUser = await userManager.Users
             .FirstOrDefaultAsync(u => u.Id == request.IdUser);
         if (getUser is null)
             return NotFound($"This user: {request.IdUser} not found");
 
-        var getRole = await _roleManager.FindByNameAsync(request.Role);
+        var getRole = await roleManager.FindByNameAsync(request.Role);
         if (getRole == null) return NotFound($"This role: {request.Role} doesn't exist to {getUser}");
 
-        await _userManager.AddToRoleAsync(getUser, $"{request.Role}");
+        await userManager.AddToRoleAsync(getUser, $"{request.Role}");
         return Ok($"User {getUser.UserName} has been linked to role {getRole.Name}");
     }
 
     [HttpDelete("{idUser}/{role}")]
     public async Task<IActionResult> UnLinkRoleToUser(int idUser, string role)
     {
-        var getUser = await _userManager.Users
+        var getUser = await userManager.Users
             .FirstOrDefaultAsync(u => u.Id == idUser);
         if (getUser is null)
             return NotFound($"This user: {idUser} not found");
 
-        var getRole = await _roleManager.FindByNameAsync(role);
+        var getRole = await roleManager.FindByNameAsync(role);
         if (getRole == null) return NotFound($"This role: {role} doesn't exist to {getUser}");
 
-        var delete = await _userManager.RemoveFromRoleAsync(getUser, $"{role}");
+        var delete = await userManager.RemoveFromRoleAsync(getUser, $"{role}");
         if (delete.Succeeded)
         {
             return Ok($"User {getUser.UserName} has been unlinked to role {getRole.Name}");
@@ -57,12 +53,12 @@ public class UserRolesController(
     [HttpGet("{idUser}")]
     public async Task<IActionResult> GetUserRoles(int idUser)
     {
-        var getUser = await _userManager.Users
+        var getUser = await userManager.Users
             .FirstOrDefaultAsync(u => u.Id == idUser);
         if (getUser is null)
             return NotFound($"This user: {idUser} not found");
 
-        var getRoles = await _userManager.GetRolesAsync(getUser);
+        var getRoles = await userManager.GetRolesAsync(getUser);
 
         return Ok(getRoles.ToList());
     }

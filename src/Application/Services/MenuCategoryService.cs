@@ -11,8 +11,6 @@ namespace Application.Services
         IMenuCategoryRepository menuCategoryRepository
     ) : IMenuCategoryService
     {
-        private readonly IMenuCategoryRepository _menuCategoryRepository = menuCategoryRepository;
-
         public async Task<CreateMenuCategoryResponseModel> CreateAsync(string name)
         {
             var menuCategory = new MenuCategory
@@ -20,7 +18,7 @@ namespace Application.Services
                 Name = name
             };
 
-            var rows = await _menuCategoryRepository.CreateAsync(menuCategory);
+            var rows = await menuCategoryRepository.CreateAsync(menuCategory);
             if (rows <= 0)
             {
                 throw new ResourceWasNotCreatedException(nameof(menuCategory), name);
@@ -31,23 +29,24 @@ namespace Application.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _menuCategoryRepository.DeleteAsync(id);
+            return await menuCategoryRepository.DeleteAsync(id);
         }
 
         public async Task<List<GetMenuCategoryResponseModel>> GetAllAsync()
         {
-            var menuCategory = await _menuCategoryRepository.GetAllAsync();
+            var menuCategory = await menuCategoryRepository.GetAllAsync();
 
-            return menuCategory.Select(menuCategory => new GetMenuCategoryResponseModel(
-                menuCategory.Id,
-                menuCategory.Name,
-                menuCategory.ParentId
-            )).ToList();
+            return menuCategory.Select(
+                category => new GetMenuCategoryResponseModel(
+                    category.Id,
+                    category.Name,
+                    category.ParentId
+                )).ToList();
         }
 
         public async Task<GetMenuCategoryResponseModel?> GetAsync(int id)
         {
-            var menuCategory = await _menuCategoryRepository.GetAsync(id);
+            var menuCategory = await menuCategoryRepository.GetAsync(id);
 
             if (menuCategory == null)
             {
@@ -62,7 +61,7 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateMenuCategoryRequestModel request)
         {
-            var rows = await _menuCategoryRepository.UpdateAsync(id, request.Name, request.ParentId);
+            var rows = await menuCategoryRepository.UpdateAsync(id, request.Name, request.ParentId);
 
             return new UpdateResponseModel(rows);
         }

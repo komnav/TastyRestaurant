@@ -9,8 +9,6 @@ namespace Application.Services
 {
     public class OrderDetailService(IOrderDetailRepository orderDetailRepository) : IOrderDetailService
     {
-        private readonly IOrderDetailRepository _orderDetailRepository = orderDetailRepository;
-
         public async Task<CreateOrderDetailResponseModel> CreateAsync(CreateOrderDetailRequestModel request)
         {
             var addOrderDetail = new OrderDetail
@@ -22,7 +20,7 @@ namespace Application.Services
                 Status = request.Status
             };
 
-            var rows = await _orderDetailRepository.CreateAsync(addOrderDetail);
+            var rows = await orderDetailRepository.CreateAsync(addOrderDetail);
 
             if (rows <= 0)
             {
@@ -35,12 +33,12 @@ namespace Application.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _orderDetailRepository.DeleteAsync(id);
+            return await orderDetailRepository.DeleteAsync(id);
         }
 
         public async Task<List<GetOrderDetailResponseModel>> GetAllAsync()
         {
-            var getOrderDetails = await _orderDetailRepository.GetAllAsync();
+            var getOrderDetails = await orderDetailRepository.GetAllAsync();
 
             return getOrderDetails.Select(getOrderDetails => new GetOrderDetailResponseModel(
                 getOrderDetails.Id,
@@ -54,7 +52,7 @@ namespace Application.Services
 
         public async Task<GetOrderDetailResponseModel?> GetAsync(int id)
         {
-            var getOrderDetail = await _orderDetailRepository.GetAsync(id);
+            var getOrderDetail = await orderDetailRepository.GetAsync(id);
 
             if (getOrderDetail == null)
             {
@@ -72,7 +70,7 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateOrderDetailRequestModel request)
         {
-            var updateOrderDetail = await _orderDetailRepository.UpdateAsync(id, request.OrderId, request.MenuItemId,
+            var updateOrderDetail = await orderDetailRepository.UpdateAsync(id, request.OrderId, request.MenuItemId,
                 request.Quantity, request.Price, request.Status);
 
             return new UpdateResponseModel(updateOrderDetail);

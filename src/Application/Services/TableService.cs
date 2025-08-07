@@ -10,8 +10,6 @@ namespace Application.Services
 {
     public class TableService(ITableRepository tableRepository) : ITableService
     {
-        private readonly ITableRepository _tableRepository = tableRepository;
-
         public async Task<CreateTableResponseModel> CreateAsync(CreateTableRequestModel request)
         {
             var table = new Table
@@ -20,7 +18,7 @@ namespace Application.Services
                 Capacity = request.Capacity,
                 Type = request.Type
             };
-            var rows = await _tableRepository.CreateAsync(table);
+            var rows = await tableRepository.CreateAsync(table);
 
             if (rows <= 0)
             {
@@ -33,12 +31,12 @@ namespace Application.Services
 
         public async Task<int> Delete(int id)
         {
-            return await _tableRepository.DeleteAsync(id);
+            return await tableRepository.DeleteAsync(id);
         }
 
         public async Task<List<GetTableResponseModel>> GetAllAsync()
         {
-            var table = await _tableRepository.GetAllAsync();
+            var table = await tableRepository.GetAllAsync();
 
             return table.Select(table => new GetTableResponseModel(
                 table.Id,
@@ -50,7 +48,7 @@ namespace Application.Services
 
         public async Task<GetTableResponseModel?> GetAsync(int id)
         {
-            var table = await _tableRepository.GetAsync(id);
+            var table = await tableRepository.GetAsync(id);
 
             if (table == null)
             {
@@ -62,7 +60,7 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateTableRequestModel request)
         {
-            var table = await _tableRepository.UpdateAsync(id, request.Number, request.Capacity, request.Type);
+            var table = await tableRepository.UpdateAsync(id, request.Number, request.Capacity, request.Type);
             return new UpdateResponseModel(table);
         }
     }

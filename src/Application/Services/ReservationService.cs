@@ -12,14 +12,12 @@ namespace Application.Services
         IReservationRepository reservationRepository)
         : IReservationService
     {
-        private readonly IReservationRepository _reservationRepository = reservationRepository;
-
         public async Task<CreateReservationResponseModel> CreateAsync(CreateReservationRequestModel request)
         {
             NormalizeDates(request);
 
             var existingReservations =
-                await _reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
+                await reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
             if (existingReservations.Count > 0)
             {
                 throw new ResourceAlreadyExistException(nameof(Reservation), request.TableId!, request.From, request.To);
@@ -34,7 +32,7 @@ namespace Application.Services
                 Notes = request.Notes
             };
 
-            var rows = await _reservationRepository.CreateAsync(addReservation);
+            var rows = await reservationRepository.CreateAsync(addReservation);
 
             if (rows <= 0)
                 throw new ResourceWasNotCreatedException(nameof(addReservation));
@@ -76,12 +74,12 @@ namespace Application.Services
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _reservationRepository.DeleteAsync(id);
+            return await reservationRepository.DeleteAsync(id);
         }
 
         public async Task<List<GetReservationResponseModel>> GetAllAsync(int page = 1, int pageSize = 10)
         {
-            var getReservations = await _reservationRepository.GetAllAsync(page, pageSize);
+            var getReservations = await reservationRepository.GetAllAsync(page, pageSize);
 
             return getReservations.Select(reservations => new GetReservationResponseModel(
                     reservations.Id,
@@ -97,12 +95,12 @@ namespace Application.Services
 
         public async Task<int> CancelReservationAsync(int reservationId)
         {
-            return await _reservationRepository.CancelReservation(reservationId);
+            return await reservationRepository.CancelReservation(reservationId);
         }
 
         public async Task<GetReservationResponseModel?> GetAsync(int id)
         {
-            var getReservation = await _reservationRepository.GetAsync(id);
+            var getReservation = await reservationRepository.GetAsync(id);
 
             if (getReservation == null)
                 return null;
@@ -123,7 +121,7 @@ namespace Application.Services
             NormalizeDates(request);
 
             var existingReservations =
-                await _reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
+                await reservationRepository.GetExistingReservations(request.TableId, request.From, request.To);
 
             if (existingReservations.Count > 0)
             {
@@ -131,7 +129,7 @@ namespace Application.Services
                     request.TableId, request.From, request.To);
             }
 
-            var updateReservation = await _reservationRepository
+            var updateReservation = await reservationRepository
                 .UpdateAsync(
                     id,
                     request.TableId,

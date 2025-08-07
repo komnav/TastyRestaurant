@@ -13,20 +13,18 @@ namespace Restaurant.WebApi.Controllers
     [Route("MenuItem")]
     public class MenuItemController(IMenuItemService menuItemService) : ControllerBase
     {
-        private readonly IMenuItemService _menuItemService = menuItemService;
-
-       [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateMenuItemResponseModel> Create([FromBody] CreateMenuItemRequestModel menuItem)
         {
-            return await _menuItemService.CreateAsync(menuItem);
+            return await menuItemService.CreateAsync(menuItem);
         }
 
         [Authorize(Roles = UserRoles.Admin)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var affectedRows = await _menuItemService.DeleteAsync(id);
+            var affectedRows = await menuItemService.DeleteAsync(id);
             if (affectedRows > 0)
             {
                 return Ok();
@@ -39,25 +37,25 @@ namespace Restaurant.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<UpdateResponseModel> Update(int id, [FromBody] UpdateMenuItemRequestModel menuItem)
         {
-            return await _menuItemService.UpdateAsync(id, menuItem);
+            return await menuItemService.UpdateAsync(id, menuItem);
         }
 
         [HttpGet("{id}")]
         public async Task<GetMenuItemResponseModel?> Get([FromRoute] int id)
         {
-            return await _menuItemService.GetAsync(id);
+            return await menuItemService.GetAsync(id);
         }
 
         [HttpGet]
         public async Task<List<GetMenuItemResponseModel>> GetAll()
         {
-            return await _menuItemService.GetAll();
+            return await menuItemService.GetAll();
         }
 
         [HttpGet("GetByCategory/{categoryId}")]
         public async Task<List<GetMenuItemResponseModel>> GetByCategory(int categoryId)
         {
-            return await _menuItemService.GetByCategoryAsync(categoryId);
+            return await menuItemService.GetByCategoryAsync(categoryId);
         }
     }
 }

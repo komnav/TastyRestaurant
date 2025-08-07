@@ -5,8 +5,8 @@ namespace Domain.Entities
     public class Order
     {
         public int Id { get; set; }
-        public int TableId { get; set; }
-        public Table? Table { get; set; }
+        public int UserId { get; set; }
+        public User? User { get; set; }
         public DateTimeOffset DateTime { get; set; }
         public OrdersStatus Status { get; set; }
     }

@@ -10,7 +10,7 @@ namespace Infrastructure.DbConfigurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-            builder.HasOne(x => x.Table).WithMany().HasForeignKey(x => x.TableId);
+            builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
         }
     }
 }

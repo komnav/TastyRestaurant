@@ -12,21 +12,16 @@ namespace Restaurant.WebApi.Controllers;
 [ApiController]
 [Route("Role")]
 [Authorize(Roles = UserRoles.SuperAdmin)]
-public class RoleController(
-    UserManager<User> userManager,
-    RoleManager<IdentityRole<int>> roleManager) : ControllerBase
+public class RoleController(RoleManager<IdentityRole<int>> roleManager) : ControllerBase
 {
-    private readonly UserManager<User> _userManager = userManager;
-    private readonly RoleManager<IdentityRole<int>> _roleManager = roleManager;
-
     [HttpPost]
     public async Task<IActionResult> CreateRole([FromBody] string role)
     {
-        var adminRole = await _roleManager.FindByNameAsync(role);
+        var adminRole = await roleManager.FindByNameAsync(role);
         if (adminRole == null)
         {
             var newRole = new IdentityRole<int>(role);
-            await _roleManager.CreateAsync(newRole);
+            await roleManager.CreateAsync(newRole);
             return Ok(role);
         }
         else
@@ -38,14 +33,14 @@ public class RoleController(
     [HttpPut]
     public async Task<UpdateResponseModel> Update(UpdateRolesRequestModel rolesRequestModel)
     {
-        var findOldRoleByName = await _roleManager.FindByNameAsync(rolesRequestModel.Role);
-        var findNewRoleByName = await _roleManager.FindByNameAsync(rolesRequestModel.NewName);
+        var findOldRoleByName = await roleManager.FindByNameAsync(rolesRequestModel.Role);
+        var findNewRoleByName = await roleManager.FindByNameAsync(rolesRequestModel.NewName);
 
         if (findOldRoleByName == null && findNewRoleByName == null)
             return new UpdateResponseModel(0);
 
         findOldRoleByName!.Name = rolesRequestModel.NewName;
-        var update = await _roleManager.UpdateAsync(findOldRoleByName);
+        var update = await roleManager.UpdateAsync(findOldRoleByName);
         if (update.Succeeded)
         {
             return new UpdateResponseModel(1);
@@ -57,20 +52,20 @@ public class RoleController(
     [HttpDelete("{role}")]
     public async Task<IActionResult> Delete(string role)
     {
-        var findRoleByName = await _roleManager.FindByNameAsync(role);
+        var findRoleByName = await roleManager.FindByNameAsync(role);
         if (findRoleByName is null)
         {
             return NotFound("Role not found");
         }
 
-        await _roleManager.DeleteAsync(findRoleByName);
+        await roleManager.DeleteAsync(findRoleByName);
         return Ok($"{role} is deleted");
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var getFromDb = await _roleManager.Roles.ToListAsync();
+        var getFromDb = await roleManager.Roles.ToListAsync();
         return Ok(getFromDb.Select(x => x.Name));
     }
 }

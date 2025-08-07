@@ -9,47 +9,46 @@ namespace Application.Services
 {
     public class OrderService(IOrderRepository orderRepository) : IOrderService
     {
-        private readonly IOrderRepository _orderRepository = orderRepository;
-
         public async Task<CreateOrderResponseModel> CreateAsync(CreateOrderRequestModel request)
         {
             var addOrder = new Order
             {
-                TableId = request.TableId,
+                UserId = request.UserId,
                 DateTime = request.DateTime,
                 Status = request.Status,
             };
 
-            var rows = await _orderRepository.CreateAsync(addOrder);
+            var rows = await orderRepository.CreateAsync(addOrder);
 
             if (rows <= 0)
             {
                 throw new ResourceWasNotCreatedException(nameof(addOrder));
             }
 
-            return new CreateOrderResponseModel(addOrder.Id, addOrder.TableId, addOrder.DateTime, addOrder.Status);
+            return new CreateOrderResponseModel(addOrder.Id, addOrder.DateTime, addOrder.Status);
         }
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _orderRepository.DeleteAsync(id);
+            return await orderRepository.DeleteAsync(id);
         }
 
         public async Task<List<GetOrderResponseModel>> GetAllAsync()
         {
-            var getOrders = await _orderRepository.GetAllAsync();
+            var getOrders = await orderRepository.GetAllAsync();
 
-            return getOrders.Select(getOrders => new GetOrderResponseModel(
-                getOrders.Id,
-                getOrders.TableId,
-                getOrders.DateTime,
-                getOrders.Status
-            )).ToList();
+            return getOrders.Select(
+                orders => new GetOrderResponseModel(
+                    orders.Id,
+                    orders.UserId,
+                    orders.DateTime,
+                    orders.Status
+                )).ToList();
         }
 
         public async Task<GetOrderResponseModel?> GetAsync(int id)
         {
-            var getOrder = await _orderRepository.GetAsync(id);
+            var getOrder = await orderRepository.GetAsync(id);
 
             if (getOrder == null)
             {
@@ -58,7 +57,7 @@ namespace Application.Services
 
             return new GetOrderResponseModel(
                 getOrder.Id,
-                getOrder.TableId,
+                getOrder.UserId,
                 getOrder.DateTime,
                 getOrder.Status
             );
@@ -66,7 +65,7 @@ namespace Application.Services
 
         public async Task<UpdateResponseModel> UpdateAsync(int id, UpdateOrderRequestModel request)
         {
-            var updateOrder = await _orderRepository.UpdateAsync(id, request.TableId, request.DateTime, request.Status);
+            var updateOrder = await orderRepository.UpdateAsync(id, request.UserId, request.DateTime, request.Status);
 
             return new UpdateResponseModel(updateOrder);
         }
