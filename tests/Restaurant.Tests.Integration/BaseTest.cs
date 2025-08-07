@@ -1,20 +1,26 @@
 using System.Linq.Expressions;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using Application.Repositories;
+using Application.Services;
 using Domain.Entities;
 using Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Moq;
 using Restaurant.WebApi;
 
 namespace Restaurant.Tests.Integration;
 
 public abstract class BaseTest
 {
-    private IntegrationTestWebAppFactory<Program> _factory;
+    public IntegrationTestWebAppFactory<Program> _factory;
     private readonly DatabaseFixture _databaseFixture = new();
     protected HttpClient HttpClient;
+    public OrderService _orderService;
 
     [OneTimeSetUp]
     public async Task OneTimeSetup()
@@ -32,6 +38,20 @@ public abstract class BaseTest
     [SetUp]
     public void SetUp()
     {
+        var mockUserManager = new Mock<UserManager<User>>(
+            new Mock<IUserStore<User>>().Object,
+            new Mock<IOptions<IdentityOptions>>().Object,
+            new Mock<IPasswordHasher<User>>().Object,
+            Array.Empty<IUserValidator<User>>(),
+            Array.Empty<IPasswordValidator<User>>(),
+            new Mock<ILookupNormalizer>().Object,
+            new Mock<IdentityErrorDescriber>().Object,
+            new Mock<IServiceProvider>().Object,
+            new Mock<ILogger<UserManager<User>>>().Object);
+        _orderService = new OrderService(
+            Mock.Of<IOrderRepository>(),
+            mockUserManager.Object);
+        
         _factory = new IntegrationTestWebAppFactory<Program>(_databaseFixture.GetConnectionString());
         HttpClient = _factory.CreateClient();
     }

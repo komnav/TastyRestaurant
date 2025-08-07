@@ -7,33 +7,32 @@ namespace Infrastructure.Repositories
 {
     public class OrderDetailRepository(ApplicationDbContext dbContext) : IOrderDetailRepository
     {
-        private readonly ApplicationDbContext _dbContext = dbContext;
         public async Task<int> CreateAsync(OrderDetail orderDetail)
         {
-            await _dbContext.OrderDetails.AddAsync(orderDetail);
-            return await _dbContext.SaveChangesAsync();
+            await dbContext.OrderDetails.AddAsync(orderDetail);
+            return await dbContext.SaveChangesAsync();
         }
 
         public async Task<int> DeleteAsync(int id)
         {
-            return await _dbContext.OrderDetails
+            return await dbContext.OrderDetails
                 .Where(x => x.Id == id)
                 .ExecuteDeleteAsync();
         }
 
         public async Task<List<OrderDetail>> GetAllAsync()
         {
-            return await _dbContext.OrderDetails.ToListAsync();
+            return await dbContext.OrderDetails.ToListAsync();
         }
 
         public async Task<OrderDetail?> GetAsync(int id)
         {
-            return await _dbContext.OrderDetails.FirstOrDefaultAsync(x => x.Id == id);
+            return await dbContext.OrderDetails.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<int> UpdateAsync(int id, int orderId, int menuItemId, int quantity, decimal price, OrderDetailStatus status)
         {
-            return await _dbContext.OrderDetails
+            return await dbContext.OrderDetails
                 .Where(x => x.Id == id)
                 .ExecuteUpdateAsync(x => x
                 .SetProperty(x => x.OrderId, orderId)

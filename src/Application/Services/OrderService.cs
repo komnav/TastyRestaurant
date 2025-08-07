@@ -4,13 +4,20 @@ using Application.Dtos.Order.Requests;
 using Application.Dtos.Order.Responses;
 using Application.Exceptions;
 using Application.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services
 {
-    public class OrderService(IOrderRepository orderRepository) : IOrderService
+    public class OrderService(IOrderRepository orderRepository, UserManager<User> userManager) : IOrderService
     {
+        private const int WaiterFeePercentage = 10;
+        
         public async Task<CreateOrderResponseModel> CreateAsync(CreateOrderRequestModel request)
         {
+            var checkUserId = await userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+            if (checkUserId == null) throw new UserDoesNotExistException(nameof(request.UserId));
+
             var addOrder = new Order
             {
                 UserId = request.UserId,
@@ -44,6 +51,13 @@ namespace Application.Services
                     orders.DateTime,
                     orders.Status
                 )).ToList();
+        }
+
+        public decimal GetTotalPrice(List<OrderDetail> details)
+        {
+            var calculatePrice = details.Sum(x => x.Price * x.Quantity);
+            var waiterPercentage = (calculatePrice * WaiterFeePercentage) / 100;
+            return waiterPercentage + calculatePrice;
         }
 
         public async Task<GetOrderResponseModel?> GetAsync(int id)
