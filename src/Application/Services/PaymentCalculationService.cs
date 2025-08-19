@@ -1,29 +1,53 @@
+using Application.Dtos.OrderDetail.Responses;
 using Application.Dtos.PaymentCalculation.Responses;
 using Application.Repositories;
+using Domain.Entities;
 
 namespace Application.Services;
 
 public class PaymentCalculationService(
-    IMenuItemRepository menuItemRepository,
     IOrderDetailRepository orderDetailRepository)
     : IPaymentCalculationService
 {
-    public async Task<PaymentCalculationResponseModel> PaymentCalculation(int idOrder)
+    private const int WaiterFeePercentage = 10;
+
+    public async Task<PaymentCalculationResponseModel> PaymentCalculation(int orderId)
     {
-        var orderDetails = await orderDetailRepository.GetAllAsync();
+        var orderDetails = await orderDetailRepository.GetAllByOrderIdAsync(orderId);
         if (orderDetails == null) throw new Exception("Order doesn't exist");
 
-        var orderDetail = orderDetails.FirstOrDefault(x => x.OrderId == idOrder);
-
-        var menuItem = await menuItemRepository.GetAsync(orderDetail!.MenuItemId);
-        if (menuItem == null) throw new Exception("Menu item doesn't exist");
-
-        var calculatePrice = menuItem.Price * orderDetail.Quantity;
+        var totalPrice = GetTotalPrice(orderDetails);
+        var groupedDetail =await GroupByNameQuantityAndPrice(orderDetails);
+        
         return new PaymentCalculationResponseModel(
-            menuItem.Name,
-            orderDetail.Quantity,
-            menuItem.Price,
-            calculatePrice
+            groupedDetail.MenuItemId,
+            groupedDetail.Quantity,
+            groupedDetail.Price,
+            totalPrice
         );
+    }
+
+    private decimal GetTotalPrice(List<OrderDetail> details)
+    {
+        var calculatePrice = details.Sum(x => x.Price * x.Quantity);
+        var waiterPercentage = (calculatePrice * WaiterFeePercentage) / 100;
+        return waiterPercentage + calculatePrice;
+    }
+
+    private Task<GetOrderDetailResponseModel> GroupByNameQuantityAndPrice(List<OrderDetail> orderDetails)
+    {
+        foreach (var detail in orderDetails)
+        {
+            return Task.FromResult(new GetOrderDetailResponseModel(
+                detail.Id,
+                detail.OrderId,
+                detail.MenuItemId,
+                detail.Quantity,
+                detail.Price,
+                detail.Status
+            ));
+        }
+
+        return (Task<GetOrderDetailResponseModel>)Task.CompletedTask;
     }
 }

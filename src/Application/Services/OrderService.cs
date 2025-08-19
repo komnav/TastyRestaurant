@@ -11,8 +11,6 @@ namespace Application.Services
 {
     public class OrderService(IOrderRepository orderRepository, UserManager<User> userManager) : IOrderService
     {
-        private const int WaiterFeePercentage = 10;
-        
         public async Task<CreateOrderResponseModel> CreateAsync(CreateOrderRequestModel request)
         {
             var checkUserId = await userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
@@ -51,13 +49,6 @@ namespace Application.Services
                     orders.DateTime,
                     orders.Status
                 )).ToList();
-        }
-
-        public decimal GetTotalPrice(List<OrderDetail> details)
-        {
-            var calculatePrice = details.Sum(x => x.Price * x.Quantity);
-            var waiterPercentage = (calculatePrice * WaiterFeePercentage) / 100;
-            return waiterPercentage + calculatePrice;
         }
 
         public async Task<GetOrderResponseModel?> GetAsync(int id)

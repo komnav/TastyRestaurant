@@ -6,9 +6,16 @@ namespace Application.Repositories
     public interface IOrderDetailRepository
     {
         Task<int> CreateAsync(OrderDetail orderDetail);
-        Task<int> UpdateAsync(int id, int orderId, int menuItemId, int quantity, decimal price, OrderDetailStatus status);
+
+        Task<int> UpdateAsync(int id, int orderId, int menuItemId, int quantity, decimal price,
+            OrderDetailStatus status);
+
         Task<int> DeleteAsync(int id);
+
         Task<OrderDetail?> GetAsync(int id);
+
         Task<List<OrderDetail>> GetAllAsync();
+
+        Task<List<OrderDetail>> GetAllByOrderIdAsync(int orderId);
     }
 }

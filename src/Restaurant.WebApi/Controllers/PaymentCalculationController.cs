@@ -8,7 +8,7 @@ namespace Restaurant.WebApi.Controllers;
 
 [ApiController]
 [Route("PaymentCalculation")]
-[Authorize(Roles = UserRoles.Cashier)]
+// [Authorize(Roles = UserRoles.Cashier)]
 public class PaymentCalculationController(IPaymentCalculationService calculationService)
     : ControllerBase
 {

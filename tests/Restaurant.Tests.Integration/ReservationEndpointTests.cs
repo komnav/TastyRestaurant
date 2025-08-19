@@ -10,6 +10,9 @@ namespace Restaurant.Tests.Integration;
 
 public class ReservationEndpointTests : BaseTest
 {
+    const string SuperAdmin = "SuperAdmin";
+    const string Password = "Admin1234$";
+
     [Test]
     public async Task CreateReservationEndpointTest()
     {
@@ -20,7 +23,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(table);
 
         var now = DateTimeOffset.UtcNow;
@@ -77,7 +80,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(table);
 
         var contact = new Contact
@@ -150,7 +153,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(table);
 
         var contact = new Contact
@@ -209,7 +212,7 @@ public class ReservationEndpointTests : BaseTest
     public async Task DeleteEmptyReservationEndpointTest()
     {
         //Arrange
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         //Act
         var response = await HttpClient.DeleteAsync($"/Reservation/1234");
@@ -228,7 +231,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(firstTable);
 
         var secondTable = new Table
@@ -318,7 +321,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(firstTable);
 
         var contact = new Contact
@@ -467,7 +470,8 @@ public class ReservationEndpointTests : BaseTest
         await CreateEntity(reservation);
 
         //Act
-        var response = await HttpClient.GetFromJsonAsync<GetReservationResponseModel>($"Reservation/{reservation.Id}");
+        var response = await HttpClient.GetFromJsonAsync<GetReservationResponseModel>(
+            $"Reservation/{reservation.Id}");
 
         //Assert
         response.Should().NotBeNull();
@@ -581,7 +585,7 @@ public class ReservationEndpointTests : BaseTest
             Capacity = 2,
             Type = TableType.Table
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(table);
 
         var contact = new Contact

@@ -30,16 +30,22 @@ namespace Infrastructure.Repositories
             return await dbContext.OrderDetails.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<int> UpdateAsync(int id, int orderId, int menuItemId, int quantity, decimal price, OrderDetailStatus status)
+        public async Task<List<OrderDetail>> GetAllByOrderIdAsync(int orderId)
+        {
+            return await dbContext.OrderDetails.Where(x => x.Id == orderId).ToListAsync();
+        }
+
+        public async Task<int> UpdateAsync(int id, int orderId, int menuItemId, int quantity, decimal price,
+            OrderDetailStatus status)
         {
             return await dbContext.OrderDetails
                 .Where(x => x.Id == id)
                 .ExecuteUpdateAsync(x => x
-                .SetProperty(x => x.OrderId, orderId)
-                .SetProperty(x => x.MenuItemId, menuItemId)
-                .SetProperty(x => x.Quantity, quantity)
-                .SetProperty(x => x.Price, price)
-                .SetProperty(x => x.Status, status));
+                    .SetProperty(x => x.OrderId, orderId)
+                    .SetProperty(x => x.MenuItemId, menuItemId)
+                    .SetProperty(x => x.Quantity, quantity)
+                    .SetProperty(x => x.Price, price)
+                    .SetProperty(x => x.Status, status));
         }
     }
 }

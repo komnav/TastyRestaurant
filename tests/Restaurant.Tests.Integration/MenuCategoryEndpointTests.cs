@@ -8,6 +8,9 @@ namespace Restaurant.Tests.Integration;
 
 public class MenuCategoryEndpointTests : BaseTest
 {
+    const string SuperAdmin = "SuperAdmin";
+    const string Password = "Admin1234$";
+    
     [Test]
     public async Task CreateMenuCategoryEndpointTest()
     {
