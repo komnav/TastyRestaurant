@@ -38,5 +38,4 @@ jobs:
         run: dotnet build --no-restore --configuration Release
       - name: Test
         env:
-        ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=RestaurantDbInContainer;Username=postgres;Password=admin"
         run: dotnet test --no-build --configuration Release --verbosity normal
