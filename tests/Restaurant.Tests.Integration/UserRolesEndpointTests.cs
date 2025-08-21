@@ -8,6 +8,9 @@ namespace Restaurant.Tests.Integration;
 
 public class UserRolesEndpointTests : BaseTest
 {
+    const string SuperAdmin = "SuperAdmin";
+    const string Password = "Admin1234$";
+    
     [Test]
     public async Task LinkRoleToUserEndpointTest()
     {
@@ -60,7 +63,7 @@ public class UserRolesEndpointTests : BaseTest
         string role = "Cooker";
         await CreateRole(role);
 
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         var request = new LinkRoleToUserRequestModel(user.Id, role);
         await HttpClient.PostAsJsonAsync("/UserRoles", request);
@@ -91,7 +94,7 @@ public class UserRolesEndpointTests : BaseTest
         };
         await CreateUser(contact, user);
 
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         //Act
         var response = await HttpClient.DeleteAsync($"/UserRoles/{user.Id}/Cooker");
@@ -122,7 +125,7 @@ public class UserRolesEndpointTests : BaseTest
         string role = "Cooker";
         await CreateRole(role);
 
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         var request = new LinkRoleToUserRequestModel(user.Id, role);
         await HttpClient.PostAsJsonAsync("/UserRoles", request);

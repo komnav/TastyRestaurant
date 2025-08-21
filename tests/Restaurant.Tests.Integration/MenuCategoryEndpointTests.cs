@@ -20,7 +20,7 @@ public class MenuCategoryEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("MenuCategory", request);
@@ -42,7 +42,7 @@ public class MenuCategoryEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(menuCategory);
 
         //Act
@@ -61,7 +61,7 @@ public class MenuCategoryEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(menuCategory);
 
         //Act
@@ -77,7 +77,7 @@ public class MenuCategoryEndpointTests : BaseTest
     public async Task DeleteEmptyMenuCategoryEndpointTest()
     {
         //Arrange
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         //Act
         var response = await HttpClient.DeleteAsync($"/MenuCategory/123");
@@ -95,7 +95,7 @@ public class MenuCategoryEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(createMenuCategory);
 
         var updateMenuCategory = new UpdateMenuCategoryRequestModel("2-um", 1);
@@ -123,7 +123,7 @@ public class MenuCategoryEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(createMenuCategory);
 
         var createSecondMenuCategory = new MenuCategory
@@ -151,7 +151,7 @@ public class MenuCategoryEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(createMenuCategory);
 
         //Act
@@ -171,7 +171,7 @@ public class MenuCategoryEndpointTests : BaseTest
             Name = "1-um",
             ParentId = 1
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(createMenuCategory);
         //Act
         var response = await HttpClient.GetFromJsonAsync<MenuCategory>($"/MenuCategory/{createMenuCategory.Id}");

@@ -9,6 +9,9 @@ namespace Restaurant.Tests.Integration;
 
 public class TableEndpointTests : BaseTest
 {
+    const string SuperAdmin = "SuperAdmin";
+    const string Password = "Admin1234$";
+    
     [Test]
     public async Task CreateTableEndpointTest()
     {
@@ -19,7 +22,7 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         
         //Act
         var response = await HttpClient.PostAsJsonAsync("/Table", createTable);
@@ -44,7 +47,7 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(table);
 
         //Act
@@ -64,7 +67,7 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(table);
 
         //Act
@@ -78,7 +81,7 @@ public class TableEndpointTests : BaseTest
     public async Task DeleteEmptyTableEndpointTest()
     {
         //Arrange
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         //Act
         var response = await HttpClient.DeleteAsync("/Table/524");
@@ -141,7 +144,7 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(table);
 
         var request = new UpdateTableRequestModel(4, 123, TableType.Table);
@@ -169,7 +172,7 @@ public class TableEndpointTests : BaseTest
             Capacity = 213,
             Type = TableType.Cabin
         };
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateEntity(firstTable);
 
         var secondTable = new Table

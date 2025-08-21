@@ -7,12 +7,15 @@ namespace Restaurant.Tests.Integration;
 
 public class RoleEndpointTests : BaseTest
 {
+    const string SuperAdmin = "SuperAdmin";
+    const string Password = "Admin1234$";
+    
     [Test]
     public async Task CreateRoleEndpointTest()
     {
         //Arrange
         string roleRequest = "Cooker";
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         //Act
         var response = await HttpClient.PostAsJsonAsync("/Role", roleRequest);
@@ -30,7 +33,7 @@ public class RoleEndpointTests : BaseTest
         string role = "Cooker";
         string newName = "Waiter";
 
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateRole(role);
 
         var request = new UpdateRolesRequestModel(role, newName);
@@ -50,7 +53,7 @@ public class RoleEndpointTests : BaseTest
         //Arrange
         string role = "Cooker";
 
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateRole(role);
 
         //Act
@@ -66,7 +69,7 @@ public class RoleEndpointTests : BaseTest
     public async Task DeleteEmptyRoleEndpointTest()
     {
         //Arrange
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
 
         //Act
         var response = await HttpClient.DeleteAsync("/Role/Cooker");
@@ -85,7 +88,7 @@ public class RoleEndpointTests : BaseTest
         string role2 = "Waiter";
         string role3 = "Cashier";
 
-        await LoginAsync("SuperAdmin", "Admin1234$");
+        await LoginAsync(SuperAdmin, Password);
         await CreateRole(role1);
         await CreateRole(role2);
         await CreateRole(role3);
