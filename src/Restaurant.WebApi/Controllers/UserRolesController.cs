@@ -50,6 +50,12 @@ public class UserRolesController(
         return BadRequest($"There isn't user {getUser} linked to this {role}");
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAllUsers()
+    {
+       return Ok(await userManager.Users.ToListAsync());
+    }
+
     [HttpGet("{idUser}")]
     public async Task<IActionResult> GetUserRoles(int idUser)
     {

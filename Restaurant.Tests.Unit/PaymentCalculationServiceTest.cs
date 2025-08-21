@@ -70,6 +70,6 @@ public class PaymentCalculationServiceTest : BaseTest
         var totalPrice = await _paymentCalculationService.PaymentCalculation(addOrder.Id);
 
         //Assert
-        totalPrice.TotalPrice.Should().Be(165);
+        totalPrice.Single().TotalPrice.Should().Be(165);
     }
 }

@@ -4,5 +4,6 @@ public record PaymentCalculationResponseModel(
     int IdMenuItem,
     int Quantity,
     decimal Price,
-    decimal TotalPrice
+    decimal TotalPrice,
+    float WaiterPercentage
 );

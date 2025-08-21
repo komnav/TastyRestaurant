@@ -8,12 +8,12 @@ namespace Restaurant.WebApi.Controllers;
 
 [ApiController]
 [Route("PaymentCalculation")]
-// [Authorize(Roles = UserRoles.Cashier)]
+[Authorize(Roles = UserRoles.Admin)]
 public class PaymentCalculationController(IPaymentCalculationService calculationService)
     : ControllerBase
 {
     [HttpGet]
-    public async Task<PaymentCalculationResponseModel> Calculate(int orderId)
+    public async Task<List<PaymentCalculationResponseModel>> Calculate(int orderId)
     {
         return await calculationService.PaymentCalculation(orderId);
     }
