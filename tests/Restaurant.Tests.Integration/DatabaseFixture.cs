@@ -12,7 +12,7 @@ namespace Restaurant.Tests.Integration
             .WithDatabase(_initialSnapshotName)
             .WithUsername("postgres")
             .WithPassword("admin")
-            .WithPortBinding(5433, 5432)
+            .WithPortBinding(5435, 5432)
             .Build();
 
         public async Task Startasync()
