@@ -2,8 +2,8 @@
 
 namespace Application.Dtos.MenuCategory.Requests;
 
-    public record UpdateMenuCategoryRequestModel(
-        [Required] string Name,
-        int? ParentId
-        );
+public record UpdateMenuCategoryRequestModel(
+    [Required] string Name,
+    int? ParentId
+);
 

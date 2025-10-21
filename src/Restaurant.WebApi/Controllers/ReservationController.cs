@@ -12,7 +12,7 @@ namespace Restaurant.WebApi.Controllers
     [Route("Reservation")]
     public class ReservationController(IReservationService reservationService) : Controller
     {
-        // [Authorize(Roles = UserRoles.Admin)]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<CreateReservationResponseModel> Create(CreateReservationRequestModel request)
         {

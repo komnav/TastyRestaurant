@@ -5,7 +5,7 @@ namespace Application.RabbitMqMasstransit;
 
 public class Message
 {
-    public static async Task SendMessage()
+    public static async Task SendMessage(string nameProduct)
     {
         var factory = new ConnectionFactory() { HostName = "localhost" };
         using var connection = await factory.CreateConnectionAsync();
@@ -21,7 +21,7 @@ public class Message
 
         for (int i = 0; i < 10; i++)
         {
-            var message = $"{DateTime.UtcNow} - {Guid.NewGuid()}";
+            var message = $"{DateTime.UtcNow} - {Guid.NewGuid() + " " + nameProduct} was created";
             var body = Encoding.UTF8.GetBytes(message);
 
             await channel.BasicPublishAsync(

@@ -10,6 +10,7 @@ namespace Application.Services
 {
     public class TableService(ITableRepository tableRepository) : ITableService
     {
+        const string Table = "Table";
         public async Task<CreateTableResponseModel> CreateAsync(CreateTableRequestModel request)
         {
             var table = new Table
@@ -25,7 +26,7 @@ namespace Application.Services
                 throw new ResourceWasNotCreatedException(nameof(table));
             }
 
-            //await Message.SendMessage();
+            await Message.SendMessage(Table);
             return new CreateTableResponseModel(table.Id, table.Number, table.Capacity, table.Type);
         }
 

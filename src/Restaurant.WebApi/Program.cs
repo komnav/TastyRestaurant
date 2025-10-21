@@ -1,5 +1,3 @@
-using System.Net.Mime;
-using System.Reflection.Metadata;
 using Domain.Entities;
 using Domain.Token;
 using Infrastructure;
@@ -10,8 +8,8 @@ using Restaurant.WebApi.Middleware;
 using Application.Extensions;
 using FluentValidation;
 using Infrastructure.Validation;
+using MassTransit;
 using MediatR;
-using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +62,15 @@ builder.AddAuthorizationWithIdentity();
 //     });
 // });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy => policy
+            .WithOrigins("http://localhost:5173", "http://localhost:5174")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -81,9 +88,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseMiddleware<EfficientStopwatch>();
+app.UseCors("AllowReactApp");
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 app.MapIdentityApi<User>();
 
